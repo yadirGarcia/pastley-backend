@@ -51,7 +51,8 @@ public class PastleyResponse implements Serializable {
 			this.add(type, object);
 		}
 		if(status != null) {
-			this.add("http", status);
+			this.status = status;
+			this.add("http", this.status.value());
 		}
 		return this.map;
 	}

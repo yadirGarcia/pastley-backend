@@ -12,9 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-Sale.
@@ -24,30 +22,116 @@ import lombok.NoArgsConstructor;
  * @version 1.0.0.
  */
 @Entity
-@Table(name="method_pay")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class MethodPay implements Serializable{
+@Table(name = "method_pay")
+public class MethodPay implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="name", nullable = false, length = 50)
+
+	@Column(name = "name", nullable = false, length = 50)
 	private String name;
-	
-	@Column(name="statu", nullable = false, columnDefinition="tinyint(1) default 1")
+
+	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_register", nullable = false)
+	@Column(name = "date_register", nullable = false)
 	private Date dateRegister;
-	
-	@Column(name="date_update", nullable = true, columnDefinition="datetime default null")
+
+	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
 	private Date dateUpdate;
 
+	///////////////////////////////////////////////////////
+	// Builder
+	///////////////////////////////////////////////////////
+	public MethodPay() {
+	}
+
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////
+	public void update(MethodPay method, boolean id) {
+		if(method != null) {
+			if(id) {
+				setId(method.getId());	
+			}
+			setName(method.getName().toUpperCase());
+			setStatu(method.isStatu());
+			setDateRegister(method.getDateRegister());
+			setDateUpdate(method.getDateUpdate());	
+		}
+	}
+	
+	/**
+	 * Metodo que valida los atributos de la clase.
+	 * @param isId, Representa si se desea validar el id.
+	 * @return el error ocurrido.
+	 */
+	public String validate(boolean isId) {
+		String chain = null;
+		if(isId) {
+			if(id <= 0) {
+				chain = "El id del metodo de pago debe ser mayor a cero.";
+			}
+		}
+		if(chain == null && !PastleyValidate.isChain(name)) {
+			chain = "El nombre del metodo de pago no es valido.";
+		}
+		return chain;
+	}
+	
+	public void uppercase() {
+		this.name = PastleyValidate.uppercase(this.name);
+	}
+
+	///////////////////////////////////////////////////////
+	// Getter and Setters
+	///////////////////////////////////////////////////////
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name.toUpperCase();
+	}
+
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
+	}
+
+	public Date getDateRegister() {
+		return dateRegister;
+	}
+
+	public void setDateRegister(Date dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+	public Date getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(Date dateUpdate) {
+		this.dateUpdate = dateUpdate;
+	}
 }
