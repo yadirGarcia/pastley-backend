@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+	
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.5</version>
-		<relativePath />
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-
+	
 	<!-- -->
 	<!-- APP -->
 	<!-- -->
 	<groupId>com.pastley</groupId>
-	<artifactId>pastley-sale</artifactId>
+	<artifactId>pastley-eureka-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pastley-sale</name>
-	<description>Sales Management Microservice</description>
-
+	<name>pastley-eureka-service</name>
+	<description>Management system of a pastry shop.</description>
+	
 	<!-- -->
 	<!-- JAVA -->
 	<!-- -->
@@ -27,46 +26,12 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.4</spring-cloud.version>
 	</properties>
-
+	
 	<!-- -->
 	<!-- DEPENDENCIES -->
 	<!-- -->
 	<dependencies>
-
-		<!-- -->
-		<!-- WEB -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<!-- -->
-		<!-- TEST -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- -->
-		<!-- JPA -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<!-- -->
-		<!-- MYSQL -->
-		<!-- -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
+	
 		<!-- -->
 		<!-- CONFIG -->
 		<!-- -->
@@ -74,7 +39,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
-
+		
 		<!-- -->
 		<!-- BOOTSTRAP -->
 		<!-- -->
@@ -84,28 +49,23 @@
 		</dependency>
 		
 		<!-- -->
-		<!-- EUREKA CLIENT -->
+		<!-- EUREKA -->
 		<!-- -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
-
+		
 		<!-- -->
-		<!-- SWAGGER -->
+		<!-- TEST -->
 		<!-- -->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	
 	<!-- -->
 	<!-- MANAGEMENT DEPEDENCIES -->
 	<!-- -->
@@ -120,7 +80,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 
 	<build>
 		<!-- -->
