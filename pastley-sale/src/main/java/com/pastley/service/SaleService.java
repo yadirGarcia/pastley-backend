@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.repository.MethodPayRepository;
-import com.pastley.entity.MethodPay;
+import com.pastley.entity.Sale;
+import com.pastley.repository.SaleRepository;
 import com.pastley.util.PastleyInterface;
 
 /**
@@ -18,75 +18,66 @@ import com.pastley.util.PastleyInterface;
  * @version 1.0.0.
  */
 @Service
-public class MethodPayService implements PastleyInterface<Long, MethodPay> {
-
+public class SaleService implements PastleyInterface<Long, Sale> {
+	
 	@Autowired
-	private MethodPayRepository methodPayRepository;
-
+	private SaleRepository saleRepository;
+	
 	///////////////////////////////////////////////////////
 	// Method - Find
 	///////////////////////////////////////////////////////
 	@Override
-	public MethodPay findById(Long id) {
+	public Sale findById(Long id) {
 		try {
-			return methodPayRepository.findById(id).orElse(null);
+			return saleRepository.findById(id).orElse(null);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-
-	public MethodPay findByName(String name) {
-		try {
-			return methodPayRepository.findByName(name);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
+	
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
 	@Override
-	public List<MethodPay> findAll() {
+	public List<Sale> findAll() {
 		try {
-			return methodPayRepository.findAll();
+			return saleRepository.findAll();
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
-
+	
 	@Override
-	public List<MethodPay> findByStatuAll(boolean statu) {
+	public List<Sale> findByStatuAll(boolean statu) {
 		try {
-			return methodPayRepository.findByStatu(statu);
+			return saleRepository.findByStatu(statu);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
-
+	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
 	@Override
-	public MethodPay save(MethodPay entity) {
+	public Sale save(Sale entity) {
 		try {
-			return methodPayRepository.save(entity);
+			return saleRepository.save(entity);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-
+	
 	///////////////////////////////////////////////////////
 	// Method - Delete
 	///////////////////////////////////////////////////////
 	@Override
 	public boolean delete(Long id) {
 		try {
-			methodPayRepository.deleteById(id);
+			saleRepository.deleteById(id);
 			return findById(id) == null;
 		} catch (Exception e) {
 			return false;
 		}
 	}
-
 }

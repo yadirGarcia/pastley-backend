@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.repository.MethodPayRepository;
-import com.pastley.entity.MethodPay;
+import com.pastley.entity.SaleDetail;
+import com.pastley.repository.SaleDetailRepository;
 import com.pastley.util.PastleyInterface;
 
 /**
@@ -18,59 +18,47 @@ import com.pastley.util.PastleyInterface;
  * @version 1.0.0.
  */
 @Service
-public class MethodPayService implements PastleyInterface<Long, MethodPay> {
-
+public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
+	
 	@Autowired
-	private MethodPayRepository methodPayRepository;
-
+	private SaleDetailRepository saleDetailRepository;
+	
 	///////////////////////////////////////////////////////
 	// Method - Find
 	///////////////////////////////////////////////////////
 	@Override
-	public MethodPay findById(Long id) {
+	public SaleDetail findById(Long id) {
 		try {
-			return methodPayRepository.findById(id).orElse(null);
+			return saleDetailRepository.findById(id).orElse(null);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-
-	public MethodPay findByName(String name) {
-		try {
-			return methodPayRepository.findByName(name);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
+	
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
 	@Override
-	public List<MethodPay> findAll() {
+	public List<SaleDetail> findAll() {
 		try {
-			return methodPayRepository.findAll();
+			return saleDetailRepository.findAll();
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
-
+	
 	@Override
-	public List<MethodPay> findByStatuAll(boolean statu) {
-		try {
-			return methodPayRepository.findByStatu(statu);
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
+	public List<SaleDetail> findByStatuAll(boolean statu) {
+		return new ArrayList<>();
 	}
-
+	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
 	@Override
-	public MethodPay save(MethodPay entity) {
+	public SaleDetail save(SaleDetail entity) {
 		try {
-			return methodPayRepository.save(entity);
+			return saleDetailRepository.save(entity);
 		} catch (Exception e) {
 			return null;
 		}
@@ -82,11 +70,10 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 	@Override
 	public boolean delete(Long id) {
 		try {
-			methodPayRepository.deleteById(id);
+			saleDetailRepository.deleteById(id);
 			return findById(id) == null;
 		} catch (Exception e) {
 			return false;
 		}
 	}
-
 }
