@@ -53,7 +53,7 @@ public class Sale implements Serializable{
 	private Date dateUpdate;
 	
 	///////////////////////////////////////////////////////
-	// RELATIONS
+	// Relations
 	///////////////////////////////////////////////////////
 	@ManyToOne
 	@JoinColumn(name="method_pay")

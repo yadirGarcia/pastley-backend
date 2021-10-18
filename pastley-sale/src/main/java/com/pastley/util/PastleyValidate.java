@@ -1,6 +1,7 @@
 package com.pastley.util;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * @project Pastley-Sale.
@@ -36,5 +37,38 @@ public class PastleyValidate implements Serializable{
 			chain = chain.toUpperCase();
 		}
 		return chain;
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - BigInteger
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows verifying if a biginteger is greater than zero.
+	 * 
+	 * @param a, Represents the biginteger.
+	 * @return true if it meets false if not.
+	 */
+	public static boolean bigIntegerHigherZero(BigInteger a) {
+		return (a != null && a.compareTo(BigInteger.ZERO) == 1);
+	}
+
+	/**
+	 * Method that allows verifying if a biginteger is less than zero.
+	 * 
+	 * @param a, Represents the biginteger.
+	 * @return true if it meets false if not.
+	 */
+	public static boolean bigIntegerLessZero(BigInteger a) {
+		return (a != null && a.compareTo(BigInteger.ZERO) == -1);
+	}
+
+	/**
+	 * Method that allows verifying if a biginteger is greater than or equal to zero.
+	 * 
+	 * @param a, Represents the biginteger.
+	 * @return true if it meets false if not.
+	 */
+	public static boolean bigIntegerHigherEqualZero(BigInteger a) {
+		return (a != null && a.compareTo(BigInteger.ZERO) >= 0);
 	}
 }

@@ -54,18 +54,6 @@ public class MethodPay implements Serializable {
 	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////
-	public void update(MethodPay method, boolean id) {
-		if(method != null) {
-			if(id) {
-				setId(method.getId());	
-			}
-			setName(method.getName().toUpperCase());
-			setStatu(method.isStatu());
-			setDateRegister(method.getDateRegister());
-			setDateUpdate(method.getDateUpdate());	
-		}
-	}
-	
 	/**
 	 * Metodo que valida los atributos de la clase.
 	 * @param isId, Representa si se desea validar el id.
