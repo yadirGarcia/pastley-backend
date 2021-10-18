@@ -1,9 +1,10 @@
-server:
-  port: 8080
-  
 spring:
   application:
     name: pastley-sale
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8084
   jpa:
     hibernate:
       ddl-auto: update #create
