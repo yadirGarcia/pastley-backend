@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.MethodPay;
 import com.pastley.service.MethodPayService;
 import com.pastley.util.PastleyResponse;
+import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-Sale.
@@ -52,6 +53,27 @@ public class MethodPayController implements Serializable {
 			response.add("method", methodPay, HttpStatus.OK);
 		} else {
 			response.add("message", "No existe ningun metodo de pago con el id " + id + ".", HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
+	 * Method that allows consulting a payment method by its name.
+	 * @param name, Represents the name of the payment method.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = {"/findByName/{name}"})
+	public ResponseEntity<?> findByName(@PathVariable("name") String name) {
+		PastleyResponse response = new PastleyResponse();
+		if(PastleyValidate.isChain(name)) {
+			MethodPay methodPay = methodPayService.findByName(name);
+			if (methodPay != null) {
+				response.add("method", methodPay, HttpStatus.OK);
+			} else {
+				response.add("message", "No existe ningun metodo de pago con el nombre " + name + ".", HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "El nombre del metodo de pago '" + name + "' no es valido.", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
@@ -170,6 +192,36 @@ public class MethodPayController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
+	
+	/**
+	 * Method that allows changing the status of a payment method.
+	 * @param id, Represents the identifier of the payment method.
+	 * @return The generated response.
+	 */
+	@PutMapping(value = "/update/statu/{id}")
+	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
+		PastleyResponse response = new PastleyResponse();
+		if(id > 0) {
+			MethodPay method = methodPayService.findById(id);
+			if(method != null) {
+				method.setStatu(!method.isStatu());
+				method = methodPayService.save(method);
+				if(method != null) {
+					response.add("method", method, HttpStatus.OK);
+					response.add("message", "Se ha actualizado el estado del metodo de pago con id " + id + ".");
+				}else {
+					response.add("message", "No se ha actualizado el estado del metodo de pago con id " + id + ".",
+							HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No existe ningun metodo de pago con el id " + id + ".", HttpStatus.NOT_FOUND);
+			}
+		}else {
+			response.add("message", "El id del metodo de pago no es valido.", HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
 
 	///////////////////////////////////////////////////////
 	// Method - Delete
