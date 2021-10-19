@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,6 +71,36 @@ public class SaleDetailController implements Serializable {
 			response.add("saleDetails", list, HttpStatus.OK);
 			response.add("message", "Se han encontrado " + list.size() + " detalles de ventas.");
 		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Post
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to register a sale detail.
+	 * 
+	 * @param saleDetail, Represents the sale detail to register.
+	 * @return The generated response.
+	 */
+	@PostMapping(value = "/create")
+	public ResponseEntity<?> create(@RequestBody SaleDetail saleDetail) {
+		PastleyResponse response = new PastleyResponse();
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Put
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows updating a sale detail.
+	 * 
+	 * @param saleDetail, Represents the sale detail to update.
+	 * @return The generated response.
+	 */
+	@PutMapping(value = "/update")
+	public ResponseEntity<?> update(@RequestBody SaleDetail saleDetail) {
+		PastleyResponse response = new PastleyResponse();
 		return ResponseEntity.ok(response.getMap());
 	}
 	
