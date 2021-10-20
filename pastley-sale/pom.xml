@@ -92,7 +92,7 @@
 		</dependency>
 		
 		<!-- -->
-		<!-- ACTUADOR -->
+		<!-- ACTUATOR -->
 		<!-- -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

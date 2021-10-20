@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
 import com.pastley.service.SaleDetailService;
+import com.pastley.service.SaleService;
 import com.pastley.util.PastleyResponse;
 
 /**
@@ -34,6 +36,8 @@ public class SaleDetailController implements Serializable {
 	
 	@Autowired
 	private SaleDetailService saleDetailService;
+	@Autowired
+	private SaleService saleService;
 
 	///////////////////////////////////////////////////////
 	// Method - Get
@@ -70,6 +74,30 @@ public class SaleDetailController implements Serializable {
 		} else {
 			response.add("saleDetails", list, HttpStatus.OK);
 			response.add("message", "Se han encontrado " + list.size() + " detalles de ventas.");
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
+	 * Method that allows knowing the sale details of a sale made.
+	 * 
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findBySale/{sale}")
+	public ResponseEntity<?> findBySale(@PathVariable("sale") Long sale){
+		PastleyResponse response = new PastleyResponse();
+		Sale saleEntity = saleService.findById(sale);
+		if(saleEntity != null) {
+			List<SaleDetail> list = saleDetailService.findBySale(sale);
+			if(list.isEmpty()) {
+				response.add("message", "No hay ningun detalle de venta asociado a la venta con el id "+sale+".", HttpStatus.NO_CONTENT);
+			}else {
+				response.add("sale", saleEntity);
+				response.add("saleDetails", list, HttpStatus.OK);
+				response.add("message", "Se han encontrado " + list.size() + " detalles de ventas asociados a la venta con el id "+sale+".");
+			}
+		}else {
+			response.add("message", "No existe ninguna venta con el id " + sale + ".", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
