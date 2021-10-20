@@ -2,7 +2,7 @@ spring:
   #APP
   application:
     name: pastley-sale
-  #EURKE
+  #EUREKA
   cloud:
     config:
       enabled: true

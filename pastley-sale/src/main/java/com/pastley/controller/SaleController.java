@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Sale;
+import com.pastley.entity.SaleDetail;
+import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
 import com.pastley.util.PastleyResponse;
 
@@ -34,6 +36,9 @@ public class SaleController implements Serializable {
 	
 	@Autowired
 	private SaleService saleService;
+	
+	@Autowired
+	private SaleDetailService saleDetailService;
 	
 	///////////////////////////////////////////////////////
 	// Method - Get
@@ -144,7 +149,7 @@ public class SaleController implements Serializable {
 							HttpStatus.NO_CONTENT);
 				}
 			}else {
-				response.add("message", "No existe ninguna venta con el id " + id + ".", HttpStatus.NOT_FOUND);
+				response.add("message", "No existe ninguna venta con el id " + id + ".", HttpStatus.NO_CONTENT);
 			}
 		}else {
 			response.add("message", "El id de la venta no es valido.", HttpStatus.NOT_FOUND);
@@ -164,6 +169,27 @@ public class SaleController implements Serializable {
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
+		if(id > 0) {
+			Sale sale = saleService.findById(id);
+			if(sale != null) {
+				List<SaleDetail> list = saleDetailService.findBySale(id);
+				if(list.isEmpty()) {
+					if(saleService.delete(id)) {
+						response.add("sale", sale, HttpStatus.OK);
+						response.add("message", "Se ha eliminado la venta con el id " + id + ".");
+					}else {
+						response.add("message", "No se ha eliminado la venta con el id  "+ id +".", HttpStatus.NO_CONTENT);
+					}
+				}else {
+					response.add("saleDetails", list, HttpStatus.NO_CONTENT);
+					response.add("message", "No se ha eliminado la venta con el id  "+ id +", tiene asociado a "+ list.size() + " detalles de ventas.");
+				}
+			}else {
+				response.add("message", "No existe ninguna venta con el id " + id + ".", HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "El id de la venta no es valido.", HttpStatus.NOT_FOUND);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 }

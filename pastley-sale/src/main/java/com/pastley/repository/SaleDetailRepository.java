@@ -17,5 +17,10 @@ import com.pastley.entity.SaleDetail;
 @Repository
 public interface SaleDetailRepository extends JpaRepository<SaleDetail, Long>{
 	
+	/**
+	 * Method that allows knowing the sale details of a sale made.
+	 * @param sale, Represents the sale.
+	 * @return List with sale details.
+	 */
 	public List<SaleDetail> findBySale(Long sale);
 }

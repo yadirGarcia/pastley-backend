@@ -1,6 +1,6 @@
 server:
   port: 8080
-  
+#EUREKA 
 eureka:
   client:
     fetch-registry: true
@@ -9,9 +9,10 @@ eureka:
       default-zone: http://localhost:8761/eureka
   instance:
     hostname: localhost
-
+#SPRING
 spring:
   cloud:
+    #GATEWAY
     gateway:
       discovery:
         locator:
@@ -20,4 +21,8 @@ spring:
         - id: pastley-sale
           uri: lb://pastley-sale
           predicates:
-            - Path=/method/**
+            - Path=/sale/**,/saleDetail/**,/method/**
+        - id: pastley-user
+          uri: lb://pastley-user
+          predicates:
+            - Path=/person/**,/user/**

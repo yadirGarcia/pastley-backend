@@ -52,6 +52,14 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 		return new ArrayList<>();
 	}
 	
+	public List<SaleDetail> findBySale(Long sale){
+		try {
+			return saleDetailRepository.findBySale(sale);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////

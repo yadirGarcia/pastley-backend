@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
@@ -52,13 +50,9 @@ public class SaleDetail implements Serializable {
 
 	@Column(name = "sub_total_gross", nullable = false)
 	private BigInteger subTotalGross;
-
-	///////////////////////////////////////////////////////
-	// Relations
-	///////////////////////////////////////////////////////
-	@ManyToOne
-	@JoinColumn(name = "sale")
-	private Sale sale;
+	
+	@Column
+	private Long sale;
 
 	///////////////////////////////////////////////////////
 	// Builder
@@ -95,7 +89,7 @@ public class SaleDetail implements Serializable {
 				chain = "El subtotal neto del producto con id " + idProduct + " no es valido.";
 			} else if (subTotalGross == null) {
 				chain = "El subtotal bruto del producto con id " + idProduct + " no es valido.";
-			} else if (sale == null || sale.getId() == null || sale.getId() <= 0) {
+			} else if (sale <= 0) {
 				chain = "No has seleccionado la venta donde pertenece este detalle.";
 			}
 		}
@@ -165,11 +159,11 @@ public class SaleDetail implements Serializable {
 		this.subTotalGross = subTotalGross;
 	}
 
-	public Sale getSale() {
+	public Long getSale() {
 		return sale;
 	}
 
-	public void setSale(Sale sale) {
+	public void setSale(Long sale) {
 		this.sale = sale;
 	}
 
