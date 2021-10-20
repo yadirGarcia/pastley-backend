@@ -26,3 +26,7 @@ spring:
           uri: lb://pastley-user
           predicates:
             - Path=/person/**,/user/**
+        - id: pastley-product
+          uri: lb://pastley-product
+          predicates:
+            - Path=/products/**
