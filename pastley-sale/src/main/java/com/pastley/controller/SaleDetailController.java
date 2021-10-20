@@ -148,10 +148,10 @@ public class SaleDetailController implements Serializable {
 			if (saleDetailService.delete(id)) {
 				response.add("message", "Se ha eliminado el detalle de venta con id " + id + ".", HttpStatus.OK);
 			}else {
-				response.add("message", "No se ha eliminado el detalle de venta con id " + id + ".", HttpStatus.NOT_FOUND);
+				response.add("message", "No se ha eliminado el detalle de venta con id " + id + ".", HttpStatus.NO_CONTENT);
 			}
 		} else {
-			response.add("message", "No existe ningun detalle de venta con el id " + id + ".", HttpStatus.NOT_FOUND);
+			response.add("message", "No existe ningun detalle de venta con el id " + id + ".", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

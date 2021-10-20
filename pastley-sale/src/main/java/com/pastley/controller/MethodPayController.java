@@ -238,6 +238,7 @@ public class MethodPayController implements Serializable {
 		MethodPay aux = methodPayService.findById(id);
 		if (aux != null) {
 			if (methodPayService.delete(id)) {
+				response.add("method", aux);
 				response.add("message", "Se ha eliminado el metodo de pago con id " + id + ".", HttpStatus.OK);
 			} else {
 				response.add("message", "No se ha eliminado el metodo de pago con id " + id + ".",
