@@ -33,6 +33,6 @@ public interface MethodPayRepository extends JpaRepository<MethodPay, Long>{
 	 */
 	public List<MethodPay> findByStatu(boolean statu);
 	
-	@Query(nativeQuery = true, value = "SELECT * FROM method_pay WHERE dateRegister BETWEEN ':start' AND ':end' ORDER BY dateRegister")
+	@Query(nativeQuery = false, value = "SELECT mp FROM MethodPay mp WHERE mp.dateRegister BETWEEN ':start' AND ':end' ORDER BY mp.dateRegister")
 	public List<MethodPay> findByRangeDate(@Param("start") String start, @Param("end") String end);
 }

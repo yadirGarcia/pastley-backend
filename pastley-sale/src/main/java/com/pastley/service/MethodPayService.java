@@ -1,7 +1,6 @@
 package com.pastley.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +63,10 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 			return new ArrayList<>();
 		}
 	}
-	
-	public List<MethodPay> findByRangeDate(Date start, Date end){
+
+	public List<MethodPay> findByRangeDate(String start, String end) {
 		try {
-			String date_start = start.toString();
-			String date_end = end.toString();
-			return methodPayRepository.findByRangeDate(date_start, date_end);
+			return methodPayRepository.findByRangeDate(start, end);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
