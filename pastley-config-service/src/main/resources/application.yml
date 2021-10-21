@@ -1,13 +1,16 @@
+#SERVER
 server:
   port: 8084
-
+#SPRING
 spring:
+  #CONFIG
   cloud:
     config:
       server:
         git:
-          default-label: sergio
+          default-label: main
           uri: https://github.com/DeveUp/pastley-backend
           search-paths: pastley-config-data
+  #APP
   application:
     name: pastley-config-service
