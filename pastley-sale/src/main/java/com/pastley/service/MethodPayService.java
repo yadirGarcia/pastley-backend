@@ -64,9 +64,9 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 		}
 	}
 
-	public List<MethodPay> findByRangeDate(String start, String end) {
+	public List<MethodPay> findByRangeDateRegister(String start, String end) {
 		try {
-			return methodPayRepository.findByRangeDate(start, end);
+			return methodPayRepository.findByRangeDateRegister(start, end);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}

@@ -120,24 +120,29 @@ public class MethodPayController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 
-	@GetMapping(value = "/findByRangeDateAll/{start}/{end}")
+	@GetMapping(value = "/findByRangeDateRegisterAll/{start}/{end}")
 	public ResponseEntity<?> findByStatuAll(@PathVariable("start") String start, @PathVariable("end") String end) {
 		PastleyResponse response = new PastleyResponse();
 		PastleyDate date = new PastleyDate();
 		try {
-			String date_start_chain = date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null);
-			String date_end_chain = date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null);
-			List<MethodPay> list = methodPayService.findByRangeDate(date_start_chain, date_end_chain);
+			String array_date[] = { 
+				date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+				date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) 
+			};
+			List<MethodPay> list = methodPayService.findByRangeDateRegister(array_date[0], array_date[1]);
 			if (list.isEmpty()) {
-				response.add("message", "No hay ningun metodo de pago resgitrado en ese rango de fecha " + date_start_chain
-						+ " a " + date_end_chain + ".", HttpStatus.NO_CONTENT);
+				response.add("message", "No hay ningun metodo de pago resgitrado en ese rango de fecha " + array_date[0]
+						+ " a " + array_date[1] + ".", HttpStatus.NO_CONTENT);
 			} else {
 				response.add("methods", list, HttpStatus.OK);
-				response.add("message", "Se han encontrado " + list.size() + " metodos de pago  en ese rango de fecha "
-						+ date_start_chain + " a " + date_end_chain + ".");
+				response.add("message", "Se han encontrado " + list.size() + " metodos de pago en ese rango de fecha "
+						+ array_date[0] + " a " + array_date[1] + ".");
 			}
+			response.add("dates", array_date);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			response.add("message",
+					"No se ha recibido la fecha inicio o la fecha fin, el formato permitido es: 'Año-Mes-Dia'.",
+					HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
@@ -155,7 +160,7 @@ public class MethodPayController implements Serializable {
 	public ResponseEntity<?> create(@RequestBody MethodPay method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			if(method.getId() <= 0) {
+			if (method.getId() <= 0) {
 				String message = method.validate(false);
 				if (message == null) {
 					method.uppercase();
@@ -172,14 +177,16 @@ public class MethodPayController implements Serializable {
 							response.add("message", "No se ha registrado el metodo de pago.", HttpStatus.NO_CONTENT);
 						}
 					} else {
-						response.add("message", "Ya existe un metodo de pago con ese nombre '" + method.getName() + "'.",
+						response.add("message",
+								"Ya existe un metodo de pago con ese nombre '" + method.getName() + "'.",
 								HttpStatus.NO_CONTENT);
 					}
 				} else {
 					response.add("message", message, HttpStatus.NO_CONTENT);
 				}
-			}else {
-				response.add("message", "No se ha registrado el metodo de pago, el ID debe ser menor o igual a 0.", HttpStatus.NO_CONTENT);
+			} else {
+				response.add("message", "No se ha registrado el metodo de pago, el ID debe ser menor o igual a 0.",
+						HttpStatus.NO_CONTENT);
 			}
 		} else {
 			response.add("message", "No se ha recibido el metodo de pago.", HttpStatus.NOT_FOUND);
