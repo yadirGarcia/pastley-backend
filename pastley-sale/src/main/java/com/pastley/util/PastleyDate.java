@@ -109,15 +109,40 @@ public class PastleyDate implements Serializable{
 	     return dt.parse(date);
 	}
 	
+	/**
+	 * Method that converts a date time.
+	 * @param date, Represents the convert date.
+	 * @return the converted date.
+	 * @throws ParseException The error presented.
+	 */
+	public Date convertToDateTime(String date) throws ParseException {
+		 SimpleDateFormat dt = new SimpleDateFormat(PastleyVariable.PASTLEY_DATE_TIME_FORMAT);
+	     return dt.parse(date);
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Format
 	///////////////////////////////////////////////////////
 	public String formatToDateTime(Date date, String format) {
-		if(!PastleyValidate.isChain(format)) {
-			format = PastleyVariable.PASTLEY_DATE_TIME_FORMAT;
+		if(date != null) {
+			if(!PastleyValidate.isChain(format)) {
+				format = PastleyVariable.PASTLEY_DATE_TIME_FORMAT;
+			}
+			DateFormat f = new SimpleDateFormat(format);
+			return f.format(date);
 		}
-		DateFormat f = new SimpleDateFormat(format);
-		return f.format(date);
+		return null;
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Combine
+	///////////////////////////////////////////////////////
+	public Date combineFormatToDateTime(Date date, String format) {
+		try {
+			return convertToDateTime(formatToDateTime(date, format));
+		} catch (ParseException e) {
+			return null;
+		}
 	}
 	
 	///////////////////////////////////////////////////////

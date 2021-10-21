@@ -120,7 +120,7 @@ public class MethodPayController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 
-	@GetMapping(value = "/find/by/range/date/{start}/{end}")
+	@GetMapping(value = "/findByRangeDateAll/{start}/{end}")
 	public ResponseEntity<?> findByStatuAll(@PathVariable("start") String start, @PathVariable("end") String end) {
 		PastleyResponse response = new PastleyResponse();
 		PastleyDate date = new PastleyDate();
@@ -155,24 +155,31 @@ public class MethodPayController implements Serializable {
 	public ResponseEntity<?> create(@RequestBody MethodPay method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			String message = method.validate(false);
-			if (message == null) {
-				method.uppercase();
-				MethodPay aux = methodPayService.findByName(method.getName());
-				if (aux == null) {
-					aux = methodPayService.save(method);
-					if (aux != null) {
-						response.add("method", aux, HttpStatus.OK);
-						response.add("message", "Se ha registrado el metodo de pago con id " + aux.getId() + ".");
+			if(method.getId() <= 0) {
+				String message = method.validate(false);
+				if (message == null) {
+					method.uppercase();
+					MethodPay aux = methodPayService.findByName(method.getName());
+					if (aux == null) {
+						PastleyDate date = new PastleyDate();
+						method.setDateRegister(date.currentToDateTime(null));
+						method.setDateUpdate(null);
+						aux = methodPayService.save(method);
+						if (aux != null) {
+							response.add("method", aux, HttpStatus.OK);
+							response.add("message", "Se ha registrado el metodo de pago con id " + aux.getId() + ".");
+						} else {
+							response.add("message", "No se ha registrado el metodo de pago.", HttpStatus.NO_CONTENT);
+						}
 					} else {
-						response.add("message", "No se ha registrado el metodo de pago.", HttpStatus.NO_CONTENT);
+						response.add("message", "Ya existe un metodo de pago con ese nombre '" + method.getName() + "'.",
+								HttpStatus.NO_CONTENT);
 					}
 				} else {
-					response.add("message", "Ya existe un metodo de pago con ese nombre '" + method.getName() + "'.",
-							HttpStatus.NO_CONTENT);
+					response.add("message", message, HttpStatus.NO_CONTENT);
 				}
-			} else {
-				response.add("message", message, HttpStatus.NO_CONTENT);
+			}else {
+				response.add("message", "No se ha registrado el metodo de pago, el ID debe ser menor o igual a 0.", HttpStatus.NO_CONTENT);
 			}
 		} else {
 			response.add("message", "No se ha recibido el metodo de pago.", HttpStatus.NOT_FOUND);
@@ -198,6 +205,9 @@ public class MethodPayController implements Serializable {
 				method.uppercase();
 				MethodPay aux = methodPayService.findById(method.getId());
 				if (aux != null) {
+					PastleyDate date = new PastleyDate();
+					method.setDateRegister(aux.getDateRegister());
+					method.setDateUpdate(date.currentToDateTime(null));
 					aux = methodPayService.save(method);
 					if (aux != null) {
 						response.add("method", aux, HttpStatus.OK);
