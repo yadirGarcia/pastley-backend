@@ -1,8 +1,9 @@
+#SPRING
 spring:
   #APP
   application:
     name: pastley-sale
-  #EUREKA
+  #CONFIG
   cloud:
     config:
       enabled: true
@@ -19,7 +20,7 @@ spring:
     url: jdbc:mysql://localhost:3306/lsy_sale?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password: 
-#ACTUATOR
+#ACTUATOR EUREKA
 management:
   endpoints:
     web:

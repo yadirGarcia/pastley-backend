@@ -1,6 +1,7 @@
 package com.pastley.controller;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.MethodPay;
 import com.pastley.service.MethodPayService;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyValidate;
 
@@ -56,23 +58,25 @@ public class MethodPayController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
+
 	/**
 	 * Method that allows consulting a payment method by its name.
+	 * 
 	 * @param name, Represents the name of the payment method.
 	 * @return The generated response.
 	 */
-	@GetMapping(value = {"/findByName/{name}"})
+	@GetMapping(value = { "/findByName/{name}" })
 	public ResponseEntity<?> findByName(@PathVariable("name") String name) {
 		PastleyResponse response = new PastleyResponse();
-		if(PastleyValidate.isChain(name)) {
+		if (PastleyValidate.isChain(name)) {
 			MethodPay methodPay = methodPayService.findByName(name);
 			if (methodPay != null) {
 				response.add("method", methodPay, HttpStatus.OK);
 			} else {
-				response.add("message", "No existe ningun metodo de pago con el nombre " + name + ".", HttpStatus.NO_CONTENT);
+				response.add("message", "No existe ningun metodo de pago con el nombre " + name + ".",
+						HttpStatus.NO_CONTENT);
 			}
-		}else {
+		} else {
 			response.add("message", "El nombre del metodo de pago '" + name + "' no es valido.", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
@@ -116,6 +120,33 @@ public class MethodPayController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 
+	@GetMapping(value = "/findByRangeDateRegisterAll/{start}/{end}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("start") String start, @PathVariable("end") String end) {
+		PastleyResponse response = new PastleyResponse();
+		PastleyDate date = new PastleyDate();
+		try {
+			String array_date[] = { 
+				date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+				date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) 
+			};
+			List<MethodPay> list = methodPayService.findByRangeDateRegister(array_date[0], array_date[1]);
+			if (list.isEmpty()) {
+				response.add("message", "No hay ningun metodo de pago resgitrado en ese rango de fecha " + array_date[0]
+						+ " a " + array_date[1] + ".", HttpStatus.NO_CONTENT);
+			} else {
+				response.add("methods", list, HttpStatus.OK);
+				response.add("message", "Se han encontrado " + list.size() + " metodos de pago en ese rango de fecha "
+						+ array_date[0] + " a " + array_date[1] + ".");
+			}
+			response.add("dates", array_date);
+		} catch (ParseException e) {
+			response.add("message",
+					"No se ha recibido la fecha inicio o la fecha fin, el formato permitido es: 'Año-Mes-Dia'.",
+					HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+
 	///////////////////////////////////////////////////////
 	// Method - Post
 	///////////////////////////////////////////////////////
@@ -129,24 +160,33 @@ public class MethodPayController implements Serializable {
 	public ResponseEntity<?> create(@RequestBody MethodPay method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			String message = method.validate(false);
-			if (message == null) {
-				method.uppercase();
-				MethodPay aux = methodPayService.findByName(method.getName());
-				if (aux == null) {
-					aux = methodPayService.save(method);
-					if (aux != null) {
-						response.add("method", aux, HttpStatus.OK);
-						response.add("message", "Se ha registrado el metodo de pago con id " + aux.getId() + ".");
+			if (method.getId() <= 0) {
+				String message = method.validate(false);
+				if (message == null) {
+					method.uppercase();
+					MethodPay aux = methodPayService.findByName(method.getName());
+					if (aux == null) {
+						PastleyDate date = new PastleyDate();
+						method.setDateRegister(date.currentToDateTime(null));
+						method.setDateUpdate(null);
+						aux = methodPayService.save(method);
+						if (aux != null) {
+							response.add("method", aux, HttpStatus.OK);
+							response.add("message", "Se ha registrado el metodo de pago con id " + aux.getId() + ".");
+						} else {
+							response.add("message", "No se ha registrado el metodo de pago.", HttpStatus.NO_CONTENT);
+						}
 					} else {
-						response.add("message", "No se ha registrado el metodo de pago.", HttpStatus.NO_CONTENT);
+						response.add("message",
+								"Ya existe un metodo de pago con ese nombre '" + method.getName() + "'.",
+								HttpStatus.NO_CONTENT);
 					}
 				} else {
-					response.add("message", "Ya existe un metodo de pago con ese nombre '" + method.getName() + "'.",
-							HttpStatus.NO_CONTENT);
+					response.add("message", message, HttpStatus.NO_CONTENT);
 				}
 			} else {
-				response.add("message", message, HttpStatus.NO_CONTENT);
+				response.add("message", "No se ha registrado el metodo de pago, el ID debe ser menor o igual a 0.",
+						HttpStatus.NO_CONTENT);
 			}
 		} else {
 			response.add("message", "No se ha recibido el metodo de pago.", HttpStatus.NOT_FOUND);
@@ -172,6 +212,9 @@ public class MethodPayController implements Serializable {
 				method.uppercase();
 				MethodPay aux = methodPayService.findById(method.getId());
 				if (aux != null) {
+					PastleyDate date = new PastleyDate();
+					method.setDateRegister(aux.getDateRegister());
+					method.setDateUpdate(date.currentToDateTime(null));
 					aux = methodPayService.save(method);
 					if (aux != null) {
 						response.add("method", aux, HttpStatus.OK);
@@ -192,36 +235,36 @@ public class MethodPayController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
+
 	/**
 	 * Method that allows changing the status of a payment method.
+	 * 
 	 * @param id, Represents the identifier of the payment method.
 	 * @return The generated response.
 	 */
 	@PutMapping(value = "/update/statu/{id}")
 	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
-		if(id > 0) {
+		if (id > 0) {
 			MethodPay method = methodPayService.findById(id);
-			if(method != null) {
+			if (method != null) {
 				method.setStatu(!method.isStatu());
 				method = methodPayService.save(method);
-				if(method != null) {
+				if (method != null) {
 					response.add("method", method, HttpStatus.OK);
 					response.add("message", "Se ha actualizado el estado del metodo de pago con id " + id + ".");
-				}else {
+				} else {
 					response.add("message", "No se ha actualizado el estado del metodo de pago con id " + id + ".",
 							HttpStatus.NO_CONTENT);
 				}
-			}else {
+			} else {
 				response.add("message", "No existe ningun metodo de pago con el id " + id + ".", HttpStatus.NOT_FOUND);
 			}
-		}else {
+		} else {
 			response.add("message", "El id del metodo de pago no es valido.", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
 
 	///////////////////////////////////////////////////////
 	// Method - Delete
