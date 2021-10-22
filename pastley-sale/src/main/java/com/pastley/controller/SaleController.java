@@ -1,6 +1,7 @@
 package com.pastley.controller;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
 import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 
 /**
@@ -75,6 +77,39 @@ public class SaleController implements Serializable {
 		} else {
 			response.add("sales", list, HttpStatus.OK);
 			response.add("message", "Se han encontrado " + list.size() + " ventas.");
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
+	 * Method that allows you to filter the sales that are registered between a range of dates.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findByRangeDateRegisterAll/{start}/{end}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("start") String start, @PathVariable("end") String end) {
+		PastleyResponse response = new PastleyResponse();
+		PastleyDate date = new PastleyDate();
+		try {
+			String array_date[] = { 
+				date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+				date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) 
+			};
+			List<Sale> list = saleService.findByRangeDateRegister(array_date[0], array_date[1]);
+			if (list.isEmpty()) {
+				response.add("message", "No hay ninguna venta resgitrada en ese rango de fecha " + array_date[0]
+						+ " a " + array_date[1] + ".", HttpStatus.NO_CONTENT);
+			} else {
+				response.add("sales", list, HttpStatus.OK);
+				response.add("message", "Se han encontrado " + list.size() + " ventas en ese rango de fecha "
+						+ array_date[0] + " a " + array_date[1] + ".");
+			}
+			response.add("dates", array_date);
+		} catch (ParseException e) {
+			response.add("message",
+					"No se ha recibido la fecha inicio o la fecha fin, el formato permitido es: 'Año-Mes-Dia'.",
+					HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
