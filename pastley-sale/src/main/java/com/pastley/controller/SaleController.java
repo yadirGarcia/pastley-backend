@@ -22,6 +22,7 @@ import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
+import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-Sale.
@@ -82,6 +83,25 @@ public class SaleController implements Serializable {
 	}
 	
 	/**
+	 * Method that allows you to obtain all sales through your state.
+	 * 
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findByStatuAll/{statu}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") Boolean statu) {
+		PastleyResponse response = new PastleyResponse();
+		List<Sale> list = saleService.findByStatuAll(statu);
+		if (list.isEmpty()) {
+			response.add("message", "No hay ninguna venta resgitrada con el estado " + statu + ".",
+					HttpStatus.NO_CONTENT);
+		} else {
+			response.add("sales", list, HttpStatus.OK);
+			response.add("message", "Se han encontrado " + list.size() + " ventas con el estado " + statu + ".");
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
 	 * Method that allows you to filter the sales that are registered between a range of dates.
 	 * @param start, Represents the start date.
 	 * @param end, Represents the end date.
@@ -126,24 +146,49 @@ public class SaleController implements Serializable {
 	@PostMapping(value = "/create")
 	public ResponseEntity<?> create(@RequestBody Sale sale) {
 		PastleyResponse response = new PastleyResponse();
-		return ResponseEntity.ok(response.getMap());
-	}
-	
-	/**
-	 * Method that allows you to obtain all sales through your state.
-	 * 
-	 * @return The generated response.
-	 */
-	@GetMapping(value = "/findByStatuAll/{statu}")
-	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") Boolean statu) {
-		PastleyResponse response = new PastleyResponse();
-		List<Sale> list = saleService.findByStatuAll(statu);
-		if (list.isEmpty()) {
-			response.add("message", "No hay ninguna venta resgitrada con el estado " + statu + ".",
-					HttpStatus.NO_CONTENT);
-		} else {
-			response.add("sales", list, HttpStatus.OK);
-			response.add("message", "Se han encontrado " + list.size() + " ventas con el estado " + statu + ".");
+		if(sale != null) {
+			if(sale.getId() <= 0) {
+				if(sale.getIdMethodPay() > 0) {
+					if(sale.getIdCoustomer() > 0) {
+						if(PastleyValidate.isChain(sale.getIva())) {
+							if(PastleyValidate.bigIntegerHigherZero(sale.getTotalGross())) {
+								if(PastleyValidate.bigIntegerHigherZero(sale.getTotalNet())) {
+									PastleyDate date = new PastleyDate();
+									sale.setDateRegister(date.currentToDateTime(null));
+									sale.setDateUpdate(null);
+									Sale aux = saleService.save(sale);
+									if(aux != null) {
+										response.add("sale", aux, HttpStatus.OK);
+										response.add("message", "Se ha registrado la venta con id " + aux.getId() + ".");
+									}else {
+										response.add("message", "No se ha registrado la venta.", HttpStatus.NO_CONTENT);
+									}
+								}else {
+									response.add("message", "No se ha registrado la venta, el total neto debe ser mayor a 0.",
+											HttpStatus.NO_CONTENT);
+								}
+							}else {
+								response.add("message", "No se ha registrado la venta, el total bruto debe ser mayor a 0.",
+										HttpStatus.NO_CONTENT);
+							}
+						}else {
+							response.add("message", "No se ha registrado la venta, no se ha recibido el IVA a aplicar.",
+									HttpStatus.NO_CONTENT);
+						}
+					}else {
+						response.add("message", "No se ha registrado la venta, no se ha recibido el cliente.",
+								HttpStatus.NO_CONTENT);
+					}
+				}else {
+					response.add("message", "No se ha registrado la venta, no se ha recibido el metodo de pago.",
+							HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No se ha registrado la venta, el ID debe ser menor o igual a 0.",
+						HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "No se ha recibido la venta.", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

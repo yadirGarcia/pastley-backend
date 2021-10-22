@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -30,6 +28,12 @@ public class Sale implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="id_coustomer", nullable = false)
+	private Long idCoustomer;
+	
+	@Column(name = "id_method_pay", nullable = false)
+	private Long idMethodPay;
+	
 	@Column(name="iva", nullable = false, length = 3)
 	private String iva;
 	
@@ -47,13 +51,6 @@ public class Sale implements Serializable{
 	
 	@Column(name="date_update", nullable = true)
 	private String dateUpdate;
-	
-	///////////////////////////////////////////////////////
-	// Relations
-	///////////////////////////////////////////////////////
-	@ManyToOne
-	@JoinColumn(name="method_pay")
-	private MethodPay methodPay;
 	
 	///////////////////////////////////////////////////////
 	// Builder
@@ -96,6 +93,14 @@ public class Sale implements Serializable{
 		this.totalGross = totalGross;
 	}
 
+	public Long getIdCoustomer() {
+		return idCoustomer;
+	}
+
+	public void setIdCoustomer(Long idCoustomer) {
+		this.idCoustomer = idCoustomer;
+	}
+
 	public boolean isStatu() {
 		return statu;
 	}
@@ -104,12 +109,12 @@ public class Sale implements Serializable{
 		this.statu = statu;
 	}
 
-	public MethodPay getMethodPay() {
-		return methodPay;
+	public Long getIdMethodPay() {
+		return idMethodPay;
 	}
 
-	public void setMethodPay(MethodPay methodPay) {
-		this.methodPay = methodPay;
+	public void setIdMethodPay(Long idMethodPay) {
+		this.idMethodPay = idMethodPay;
 	}
 
 	public String getDateRegister() {

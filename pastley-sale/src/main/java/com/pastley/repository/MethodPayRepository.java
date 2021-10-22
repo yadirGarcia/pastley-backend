@@ -46,6 +46,6 @@ public interface MethodPayRepository extends JpaRepository<MethodPay, Long>{
 	 * Method that allows to know the amount of sales made by a payment method.
 	 * @return A list with the payment methods found.
 	 */
-	@Query(nativeQuery = false, value = "SELECT COUNT(s.methodPay) FROM Sale s WHERE s.methodPay.id = :id GROUP BY s.methodPay")
+	@Query(nativeQuery = false, value = "SELECT COUNT(s.idMethodPay) FROM Sale s WHERE s.idMethodPay = :id GROUP BY s.idMethodPay")
 	public Long countByMethodPaySale(Long id);
 }
