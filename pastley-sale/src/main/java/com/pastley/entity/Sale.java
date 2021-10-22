@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.pastley.util.PastleyValidate;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -56,6 +58,36 @@ public class Sale implements Serializable{
 	// Builder
 	///////////////////////////////////////////////////////
 	public Sale() {
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that validates the attributes of the class.
+	 * @param isId, Represents if you want to validate the id.
+	 * @return The error occurred.
+	 */
+	public String validate(boolean isId) {
+		String chain = null;
+		if(isId) {
+			if(id <= 0) {
+				chain = "El id de la venta debe ser mayor a cero.";
+			}
+		}
+		if(idCoustomer <= 0) {
+			chain = "No se ha recibido el cliente de la venta.";
+		}
+		if(idMethodPay <= 0) {
+			chain = "No se ha recibido el metodo de pago de la venta.";
+		}
+		if(!PastleyValidate.isChain(iva)) {
+			chain = "No se ha recibido el iva de la venta.";
+		}
+		if(!PastleyValidate.bigIntegerHigherZero(totalGross) || !PastleyValidate.bigIntegerHigherZero(totalNet)) {
+			chain = "El subtotal neto o bruto de la venta debe ser mayor a cero.";
+		}
+		return chain;
 	}
 	
 	///////////////////////////////////////////////////////
