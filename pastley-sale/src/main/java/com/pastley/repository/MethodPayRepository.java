@@ -3,6 +3,8 @@ package com.pastley.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.pastley.entity.MethodPay;
@@ -30,5 +32,13 @@ public interface MethodPayRepository extends JpaRepository<MethodPay, Long>{
 	 * @return A list with the payment methods found.
 	 */
 	public List<MethodPay> findByStatu(boolean statu);
-
+	
+	/**
+	 * Method that allows filtering the payment methods that are registered between a date range.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return A list with the payment methods found.
+	 */
+	@Query(nativeQuery = false, value = "SELECT mp FROM MethodPay mp WHERE mp.dateRegister BETWEEN :start AND :end ORDER BY mp.dateRegister")
+	public List<MethodPay> findByRangeDateRegister(@Param("start") String start, @Param("end") String end);
 }

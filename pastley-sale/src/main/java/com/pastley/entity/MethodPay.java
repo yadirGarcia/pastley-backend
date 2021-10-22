@@ -1,7 +1,6 @@
 package com.pastley.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.pastley.util.PastleyValidate;
 
@@ -38,12 +35,11 @@ public class MethodPay implements Serializable {
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_register", nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 
-	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
-	private Date dateUpdate;
+	@Column(name = "date_update", nullable = true)
+	private String dateUpdate;
 
 	///////////////////////////////////////////////////////
 	// Builder
@@ -107,19 +103,19 @@ public class MethodPay implements Serializable {
 		this.statu = statu;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
 	}
 
-	public Date getDateUpdate() {
+	public String getDateUpdate() {
 		return dateUpdate;
 	}
 
-	public void setDateUpdate(Date dateUpdate) {
+	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
 }
