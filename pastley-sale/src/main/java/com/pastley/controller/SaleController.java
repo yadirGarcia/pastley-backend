@@ -1,6 +1,7 @@
 package com.pastley.controller;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
 import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
+import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-Sale.
@@ -79,21 +82,6 @@ public class SaleController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Post
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows you to register a sale.
-	 * 
-	 * @param sale, Represents the sale to register.
-	 * @return The generated response.
-	 */
-	@PostMapping(value = "/create")
-	public ResponseEntity<?> create(@RequestBody Sale sale) {
-		PastleyResponse response = new PastleyResponse();
-		return ResponseEntity.ok(response.getMap());
-	}
-	
 	/**
 	 * Method that allows you to obtain all sales through your state.
 	 * 
@@ -109,6 +97,98 @@ public class SaleController implements Serializable {
 		} else {
 			response.add("sales", list, HttpStatus.OK);
 			response.add("message", "Se han encontrado " + list.size() + " ventas con el estado " + statu + ".");
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
+	 * Method that allows you to filter the sales that are registered between a range of dates.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findByRangeDateRegisterAll/{start}/{end}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("start") String start, @PathVariable("end") String end) {
+		PastleyResponse response = new PastleyResponse();
+		PastleyDate date = new PastleyDate();
+		try {
+			String array_date[] = { 
+				date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+				date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) 
+			};
+			List<Sale> list = saleService.findByRangeDateRegister(array_date[0], array_date[1]);
+			if (list.isEmpty()) {
+				response.add("message", "No hay ninguna venta resgitrada en ese rango de fecha " + array_date[0]
+						+ " a " + array_date[1] + ".", HttpStatus.NO_CONTENT);
+			} else {
+				response.add("sales", list, HttpStatus.OK);
+				response.add("message", "Se han encontrado " + list.size() + " ventas en ese rango de fecha "
+						+ array_date[0] + " a " + array_date[1] + ".");
+			}
+			response.add("dates", array_date);
+		} catch (ParseException e) {
+			response.add("message",
+					"No se ha recibido la fecha inicio o la fecha fin, el formato permitido es: 'Año-Mes-Dia'.",
+					HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Post
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to register a sale.
+	 * 
+	 * @param sale, Represents the sale to register.
+	 * @return The generated response.
+	 */
+	@PostMapping(value = "/create")
+	public ResponseEntity<?> create(@RequestBody Sale sale) {
+		PastleyResponse response = new PastleyResponse();
+		if(sale != null) {
+			if(sale.getId() <= 0) {
+				if(sale.getIdMethodPay() > 0) {
+					if(sale.getIdCoustomer() > 0) {
+						if(PastleyValidate.isChain(sale.getIva())) {
+							if(PastleyValidate.bigIntegerHigherZero(sale.getTotalGross())) {
+								if(PastleyValidate.bigIntegerHigherZero(sale.getTotalNet())) {
+									PastleyDate date = new PastleyDate();
+									sale.setDateRegister(date.currentToDateTime(null));
+									sale.setDateUpdate(null);
+									Sale aux = saleService.save(sale);
+									if(aux != null) {
+										response.add("sale", aux, HttpStatus.OK);
+										response.add("message", "Se ha registrado la venta con id " + aux.getId() + ".");
+									}else {
+										response.add("message", "No se ha registrado la venta.", HttpStatus.NO_CONTENT);
+									}
+								}else {
+									response.add("message", "No se ha registrado la venta, el total neto debe ser mayor a 0.",
+											HttpStatus.NO_CONTENT);
+								}
+							}else {
+								response.add("message", "No se ha registrado la venta, el total bruto debe ser mayor a 0.",
+										HttpStatus.NO_CONTENT);
+							}
+						}else {
+							response.add("message", "No se ha registrado la venta, no se ha recibido el IVA a aplicar.",
+									HttpStatus.NO_CONTENT);
+						}
+					}else {
+						response.add("message", "No se ha registrado la venta, no se ha recibido el cliente.",
+								HttpStatus.NO_CONTENT);
+					}
+				}else {
+					response.add("message", "No se ha registrado la venta, no se ha recibido el metodo de pago.",
+							HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No se ha registrado la venta, el ID debe ser menor o igual a 0.",
+						HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "No se ha recibido la venta.", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

@@ -2,18 +2,13 @@ package com.pastley.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * @project Pastley-Sale.
@@ -33,6 +28,12 @@ public class Sale implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="id_coustomer", nullable = false)
+	private Long idCoustomer;
+	
+	@Column(name = "id_method_pay", nullable = false)
+	private Long idMethodPay;
+	
 	@Column(name="iva", nullable = false, length = 3)
 	private String iva;
 	
@@ -45,19 +46,11 @@ public class Sale implements Serializable{
 	@Column(name="statu", nullable = false, columnDefinition="tinyint(1) default 1")
 	private boolean statu;
 	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_register", nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 	
-	@Column(name="date_update", nullable = true, columnDefinition="datetime default null")
-	private Date dateUpdate;
-	
-	///////////////////////////////////////////////////////
-	// Relations
-	///////////////////////////////////////////////////////
-	@ManyToOne
-	@JoinColumn(name="method_pay")
-	private MethodPay methodPay;
+	@Column(name="date_update", nullable = true)
+	private String dateUpdate;
 	
 	///////////////////////////////////////////////////////
 	// Builder
@@ -100,6 +93,14 @@ public class Sale implements Serializable{
 		this.totalGross = totalGross;
 	}
 
+	public Long getIdCoustomer() {
+		return idCoustomer;
+	}
+
+	public void setIdCoustomer(Long idCoustomer) {
+		this.idCoustomer = idCoustomer;
+	}
+
 	public boolean isStatu() {
 		return statu;
 	}
@@ -108,31 +109,31 @@ public class Sale implements Serializable{
 		this.statu = statu;
 	}
 
-	public MethodPay getMethodPay() {
-		return methodPay;
+	public Long getIdMethodPay() {
+		return idMethodPay;
 	}
 
-	public void setMethodPay(MethodPay methodPay) {
-		this.methodPay = methodPay;
+	public void setIdMethodPay(Long idMethodPay) {
+		this.idMethodPay = idMethodPay;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
+	}
+
+	public String getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(String dateUpdate) {
+		this.dateUpdate = dateUpdate;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public Date getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(Date dateUpdate) {
-		this.dateUpdate = dateUpdate;
 	}
 }
