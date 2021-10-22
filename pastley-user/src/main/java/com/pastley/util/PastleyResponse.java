@@ -7,30 +7,30 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 
 /**
- * @project Pastley-User.
+ * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
  * @Github https://github.com/SerBuitrago.
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
-public class Response implements Serializable {
+public class PastleyResponse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Map<String, Object> map;
 	private HttpStatus status;
-
+	
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	public Response() {
+	public PastleyResponse() {
 		this(null, null, null);
 	}
 	
-	public Response(String type, Object object) {
+	public PastleyResponse(String type, Object object) {
 		this(type, object, null);
 	}
 
-	public Response(String type, Object object, HttpStatus status) {
+	public PastleyResponse(String type, Object object, HttpStatus status) {
 		this.map = new HashMap<>();
 		this.status = status;
 		this.add(type, object, status);
@@ -51,7 +51,8 @@ public class Response implements Serializable {
 			this.add(type, object);
 		}
 		if(status != null) {
-			this.add("http", status);
+			this.status = status;
+			this.add("http", this.status.value());
 		}
 		return this.map;
 	}

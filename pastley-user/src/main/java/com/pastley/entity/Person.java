@@ -1,7 +1,6 @@
 package com.pastley.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * @project Pastley-User.
@@ -45,29 +42,25 @@ public class Person implements Serializable{
 	@Column(name="email", nullable = false, length = 50)
 	private String email;
 	
-	@Column(name="address", length = 50)
+	@Column(name="address", length = 50, nullable = true)
 	private String address;
 	
 	@Column(name="date_birthday",nullable = true)
-	private Date dateBirthday;
+	private String dateBirthday;
 	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_register",nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 	
-	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
-	private Date dateUpdate;
-	
+	@Column(name = "date_update", nullable = true)
+	private String dateUpdate;
 	
 	
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	
 	Person(){
 		
 	}
-	
 	
 	
 	///////////////////////////////////////////////////////
@@ -96,22 +89,6 @@ public class Person implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Date getDateBirthday() {
-		return dateBirthday;
-	}
-
-	public void setDateBirthday(Date dateBirthday) {
-		this.dateBirthday = dateBirthday;
-	}
-
-	public Date getDateRegister() {
-		return dateRegister;
-	}
-
-	public void setDateRegister(Date dateRegister) {
-		this.dateRegister = dateRegister;
 	}
 
 	public String getSubname() {
@@ -145,14 +122,35 @@ public class Person implements Serializable{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public String getDateBirthday() {
+		return dateBirthday;
+	}
 
-	public Date getDateUpdate() {
+	public void setDateBirthday(String dateBirthday) {
+		this.dateBirthday = dateBirthday;
+	}
+
+
+	public String getDateRegister() {
+		return dateRegister;
+	}
+
+
+	public void setDateRegister(String dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+
+	public String getDateUpdate() {
 		return dateUpdate;
 	}
 
-	public void setDateUpdate(Date dateUpdate) {
+
+	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
