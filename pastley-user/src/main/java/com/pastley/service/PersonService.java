@@ -22,7 +22,7 @@ public class PersonService implements PastleyInterface<Long, Person>{
 	private PersonDAO personDAO;
 	
 	///////////////////////////////////////////////////////
-	// Method
+	// Method - Find
 	///////////////////////////////////////////////////////
 	
 	@Override
@@ -42,7 +42,34 @@ public class PersonService implements PastleyInterface<Long, Person>{
 			return new ArrayList<>();
 		}
 	}
-
+	
+	public Person findByPhone(String phone) {
+		try {
+			return personDAO.findByPhone(phone);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Person findByEmail(String email) {
+		try {
+			return personDAO.findByPhone(email);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Person findByDocument(Long document) {
+		try {
+			return personDAO.findByDocument(document);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Save and Update
+	///////////////////////////////////////////////////////
 	@Override
 	public Person save(Person entity) {
 		try {
@@ -52,6 +79,9 @@ public class PersonService implements PastleyInterface<Long, Person>{
 		}
 	}
 
+	///////////////////////////////////////////////////////
+	// Method - Delete
+	///////////////////////////////////////////////////////
 	@Override
 	public boolean delete(Long id) {
 		try {
@@ -61,7 +91,4 @@ public class PersonService implements PastleyInterface<Long, Person>{
 			return false;
 		}
 	}
-
-	
-
 }

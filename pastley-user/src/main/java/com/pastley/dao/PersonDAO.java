@@ -15,4 +15,7 @@ import com.pastley.entity.Person;
 @Repository
 public interface PersonDAO extends JpaRepository<Person, Long> {
 
+	public Person findByPhone(String phone);
+	public Person findByEmail(String email);
+	public Person findByDocument(Long document);
 }
