@@ -6,9 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.dao.PersonDAO;
+import com.pastley.dao.TypeDocumentDAO;
+import com.pastley.entity.TypeDocument;
 import com.pastley.util.PastleyInterface;
-import com.pastley.entity.Person;
+
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -17,36 +18,37 @@ import com.pastley.entity.Person;
  * @version 1.0.0.
  */
 @Service
-public class PersonService implements PastleyInterface<Long, Person>{
+public class TypeDocumentService implements PastleyInterface<Long, TypeDocument>{
+
 	@Autowired
-	private PersonDAO personDAO;
+	private TypeDocumentDAO typeDocumentDAO;
 	
 	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////
 	
 	@Override
-	public Person findById(Long id) {
+	public TypeDocument findById(Long id) {
 		try {
-			return personDAO.findById(id).orElse(null);
+			return typeDocumentDAO.findById(id).orElse(null);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
-	public List<Person> findAll() {
+	public List<TypeDocument> findAll() {
 		try {
-			return personDAO.findAll();
+			return typeDocumentDAO.findAll();
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
 
 	@Override
-	public Person save(Person entity) {
+	public TypeDocument save(TypeDocument entity) {
 		try {
-			return personDAO.save(entity);
+			return typeDocumentDAO.save(entity);
 		} catch (Exception e) {
 			return null;
 		}
@@ -55,13 +57,11 @@ public class PersonService implements PastleyInterface<Long, Person>{
 	@Override
 	public boolean delete(Long id) {
 		try {
-			personDAO.deleteById(id);
+			typeDocumentDAO.deleteById(id);
 			return findById(id)==null;
 		} catch (Exception e) {
 			return false;
 		}
 	}
-
-	
 
 }

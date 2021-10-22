@@ -23,8 +23,6 @@ import javax.persistence.TemporalType;
 @Table(name="person")
 public class Person implements Serializable{
 	
-	
-	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -38,30 +36,40 @@ public class Person implements Serializable{
 	@Column(name="name",nullable = false,length = 50)
 	private String name;
 	
-	//agregar los que faltan
+	@Column(name="subname", nullable = false, length = 50)
+	private String subname;
+	
+	@Column(name="phone", nullable = false)
+	private String phone;
+	
+	@Column(name="email", nullable = false, length = 50)
+	private String email;
+	
+	@Column(name="address", length = 50)
+	private String address;
 	
 	@Column(name="date_birthday",nullable = true)
 	private Date dateBirthday;
 	
-	
-	// mas
-	
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_register",nullable = false)
 	private Date dateRegister;
-
+	
+	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
+	private Date dateUpdate;
+	
 	
 	
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
+	
 	Person(){
 		
 	}
-
-
-
+	
+	
+	
 	///////////////////////////////////////////////////////
 	// Getter and Setter
 	///////////////////////////////////////////////////////
@@ -73,7 +81,6 @@ public class Person implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public Long getDocument() {
 		return document;
@@ -95,26 +102,60 @@ public class Person implements Serializable{
 		return dateBirthday;
 	}
 
-
-
-
 	public void setDateBirthday(Date dateBirthday) {
 		this.dateBirthday = dateBirthday;
 	}
-
-
-
 
 	public Date getDateRegister() {
 		return dateRegister;
 	}
 
-
-
-
 	public void setDateRegister(Date dateRegister) {
 		this.dateRegister = dateRegister;
 	}
-	
-	
+
+	public String getSubname() {
+		return subname;
+	}
+
+	public void setSubname(String subname) {
+		this.subname = subname;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Date getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(Date dateUpdate) {
+		this.dateUpdate = dateUpdate;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+		
 }
