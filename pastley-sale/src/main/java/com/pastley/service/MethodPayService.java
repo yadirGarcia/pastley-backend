@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pastley.repository.MethodPayRepository;
 import com.pastley.entity.MethodPay;
+import com.pastley.model.StatisticModel;
 import com.pastley.util.PastleyInterface;
 
 /**
@@ -73,6 +74,33 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 	}
 
 	///////////////////////////////////////////////////////
+	// Method - Find - Statistic
+	///////////////////////////////////////////////////////
+	public Long findByStatisticSale(Long id){
+		try {
+			Long count = methodPayRepository.countByMethodPaySale(id);
+			return count == null ? 0L : count;
+		} catch (Exception e) {
+			return 0L;
+		}
+	}
+	///////////////////////////////////////////////////////
+	// Method - Find - Statistic - List
+	///////////////////////////////////////////////////////
+	public List<StatisticModel<MethodPay>> findByStatisticSaleAll() {
+		try {
+			List<MethodPay> methods = methodPayRepository.findByStatu(true);
+			List<StatisticModel<MethodPay>> list = new ArrayList<>();
+			for (MethodPay mp : methods) {
+				list.add(new StatisticModel<MethodPay>(mp, findByStatisticSale(mp.getId())));
+			}
+			return list;
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+
+	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
 	@Override
@@ -96,5 +124,4 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 			return false;
 		}
 	}
-
 }

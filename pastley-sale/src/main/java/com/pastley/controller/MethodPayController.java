@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.MethodPay;
+import com.pastley.model.StatisticModel;
 import com.pastley.service.MethodPayService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
@@ -120,6 +121,12 @@ public class MethodPayController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 
+	/**
+	 * Method that allows filtering the payment methods that are registered between a date range.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return The generated response.
+	 */
 	@GetMapping(value = "/findByRangeDateRegisterAll/{start}/{end}")
 	public ResponseEntity<?> findByStatuAll(@PathVariable("start") String start, @PathVariable("end") String end) {
 		PastleyResponse response = new PastleyResponse();
@@ -143,6 +150,50 @@ public class MethodPayController implements Serializable {
 			response.add("message",
 					"No se ha recibido la fecha inicio o la fecha fin, el formato permitido es: 'Año-Mes-Dia'.",
 					HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
+	 * Method that allows to know the amount of sale made by a payment method.
+	 * @param id, Represents the identifier of the payment method.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findByStatisticSale/{id}")
+	public ResponseEntity<?> findByStatisticSale(@PathVariable Long id){
+		PastleyResponse response = new PastleyResponse();
+		if(id > 0) {
+			MethodPay method = methodPayService.findById(id);
+			if(method != null) {
+				StatisticModel<MethodPay> sm = new StatisticModel<>(method, methodPayService.findByStatisticSale(id));
+				response.add("statistic", sm, HttpStatus.OK);
+				response.add("message",
+						"Se generado la estadistica del metodo de pago con id "+id+".");
+			}else {
+				response.add("message", "No existe ningun metodo de pago con el id " + id + ".",
+						HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "El id del metodo de pago no es valido.", HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	/**
+	 * Method that allows to know the amount of sales made by a payment method.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findByStatisticSaleAll")
+	public ResponseEntity<?> findByStatisticSaleAll(){
+		PastleyResponse response = new PastleyResponse();
+		List<StatisticModel<MethodPay>> list = methodPayService.findByStatisticSaleAll();
+		if(list.isEmpty()) {
+			response.add("message", "No se pudo generar la estadistica, no hay valores para mostrar.",
+					HttpStatus.NO_CONTENT);
+		}else {
+			response.add("statistics", list, HttpStatus.OK);
+			response.add("message",
+					"Se generado la estadistica con " + list.size() + " metodos de pago.");
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

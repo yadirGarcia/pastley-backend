@@ -18,5 +18,10 @@ import com.pastley.entity.Sale;
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Long>{
 	
+	/**
+	 * 
+	 * @param statu
+	 * @return
+	 */
 	public List<Sale> findByStatu(boolean statu);
 }
