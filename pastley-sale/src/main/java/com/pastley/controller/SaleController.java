@@ -22,7 +22,6 @@ import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
-import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-Sale.
@@ -148,45 +147,21 @@ public class SaleController implements Serializable {
 		PastleyResponse response = new PastleyResponse();
 		if(sale != null) {
 			if(sale.getId() <= 0) {
-				if(sale.getIdMethodPay() > 0) {
-					if(sale.getIdCoustomer() > 0) {
-						if(PastleyValidate.isChain(sale.getIva())) {
-							if(PastleyValidate.bigIntegerHigherZero(sale.getTotalGross())) {
-								if(PastleyValidate.bigIntegerHigherZero(sale.getTotalNet())) {
-									PastleyDate date = new PastleyDate();
-									sale.setDateRegister(date.currentToDateTime(null));
-									sale.setDateUpdate(null);
-									Sale aux = saleService.save(sale);
-									if(aux != null) {
-										response.add("sale", aux, HttpStatus.OK);
-										response.add("message", "Se ha registrado la venta con id " + aux.getId() + ".");
-									}else {
-										response.add("message", "No se ha registrado la venta.", HttpStatus.NO_CONTENT);
-									}
-								}else {
-									response.add("message", "No se ha registrado la venta, el total neto debe ser mayor a 0.",
-											HttpStatus.NO_CONTENT);
-								}
-							}else {
-								response.add("message", "No se ha registrado la venta, el total bruto debe ser mayor a 0.",
-										HttpStatus.NO_CONTENT);
-							}
-						}else {
-							response.add("message", "No se ha registrado la venta, no se ha recibido el IVA a aplicar.",
-									HttpStatus.NO_CONTENT);
-						}
+				String message = sale.validate(false);
+				if(message == null) {
+					PastleyDate date = new PastleyDate();
+					sale.setDateRegister(date.currentToDateTime(null));
+					sale.setDateUpdate(null);
+					Sale aux = saleService.save(sale);
+					if(aux != null) {
+						response.add("sale", aux, HttpStatus.OK);
+						response.add("message", "Se ha registrado la venta con id " + aux.getId() + ".");
 					}else {
-						response.add("message", "No se ha registrado la venta, no se ha recibido el cliente.",
-								HttpStatus.NO_CONTENT);
+						response.add("message", "No se ha registrado la venta.", HttpStatus.NO_CONTENT);
 					}
 				}else {
-					response.add("message", "No se ha registrado la venta, no se ha recibido el metodo de pago.",
-							HttpStatus.NO_CONTENT);
+					response.add("message", message, HttpStatus.NO_CONTENT);}
 				}
-			}else {
-				response.add("message", "No se ha registrado la venta, el ID debe ser menor o igual a 0.",
-						HttpStatus.NO_CONTENT);
-			}
 		}else {
 			response.add("message", "No se ha recibido la venta.", HttpStatus.NOT_FOUND);
 		}

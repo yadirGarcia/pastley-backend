@@ -51,9 +51,9 @@ public class MethodPay implements Serializable {
 	// Method
 	///////////////////////////////////////////////////////
 	/**
-	 * Metodo que valida los atributos de la clase.
-	 * @param isId, Representa si se desea validar el id.
-	 * @return el error ocurrido.
+	 * Method that validates the attributes of the class.
+	 * @param isId, Represents if you want to validate the id.
+	 * @return The error occurred.
 	 */
 	public String validate(boolean isId) {
 		String chain = null;
@@ -62,12 +62,15 @@ public class MethodPay implements Serializable {
 				chain = "El id del metodo de pago debe ser mayor a cero.";
 			}
 		}
-		if(chain == null && !PastleyValidate.isChain(name)) {
+		if(!PastleyValidate.isChain(name)) {
 			chain = "El nombre del metodo de pago no es valido.";
 		}
 		return chain;
 	}
 	
+	/**
+	 * Convert variables to uppercase.
+	 */
 	public void uppercase() {
 		this.name = PastleyValidate.uppercase(this.name);
 	}
