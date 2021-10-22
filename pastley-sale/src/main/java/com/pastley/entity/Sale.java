@@ -2,7 +2,6 @@ package com.pastley.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * @project Pastley-Sale.
@@ -45,12 +42,11 @@ public class Sale implements Serializable{
 	@Column(name="statu", nullable = false, columnDefinition="tinyint(1) default 1")
 	private boolean statu;
 	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_register", nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 	
-	@Column(name="date_update", nullable = true, columnDefinition="datetime default null")
-	private Date dateUpdate;
+	@Column(name="date_update", nullable = true)
+	private String dateUpdate;
 	
 	///////////////////////////////////////////////////////
 	// Relations
@@ -116,23 +112,23 @@ public class Sale implements Serializable{
 		this.methodPay = methodPay;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
+	}
+
+	public String getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(String dateUpdate) {
+		this.dateUpdate = dateUpdate;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public Date getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(Date dateUpdate) {
-		this.dateUpdate = dateUpdate;
 	}
 }
