@@ -63,7 +63,7 @@ public class SaleDetail implements Serializable {
 		}
 		if (cart == null || cart.getId() <= 0) {
 			chain = "El producto del carrito no es valido.";
-		}
+		} 
 		return chain;
 	}
 
