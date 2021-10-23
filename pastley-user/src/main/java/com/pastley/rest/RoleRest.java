@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +34,9 @@ public class RoleRest {
 	// Method - Get
 	///////////////////////////////////////////////////////
 
-	
-	
+	/**
+	 * Method that allows you to search for role by ID
+	 */
 	@GetMapping(value = { "/findById/{id}", "/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
@@ -63,16 +65,11 @@ public class RoleRest {
 		return ResponseEntity.ok(response.getMap());
 	}
 
-	
-	
 	///////////////////////////////////////////////////////
 	// Method - Post
 	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to register a role.
-	 * 
-	 * @param method, Represents the payment method to register.
-	 * @return The generated response.
 	 */
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody Role role) {
@@ -109,6 +106,46 @@ public class RoleRest {
 		} else {
 			response.add("message", "No se ha recibido los datos del rol a registrar.", HttpStatus.NOT_FOUND);
 		}
+		return ResponseEntity.ok(response.getMap());
+	}
+
+	///////////////////////////////////////////////////////
+	// Method - Put
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows updating a role.
+	 */
+	@PutMapping(value = "/update")
+	public ResponseEntity<?> update(@RequestBody Role role) {
+		PastleyResponse response = new PastleyResponse();
+
+		if (role != null) {
+			String message = role.validate(true);
+			if (message == null) {
+				role.uppercase();
+				Role aux = roleService.findById(role.getId());
+				if (aux != null) {
+					role.setName(role.getName().toLowerCase());
+					role.setDescription(role.getDescription().toLowerCase());
+					aux = roleService.save(role);
+					if (aux != null) {
+						response.add("role", aux, HttpStatus.OK);
+						response.add("message", "Se ha actualizado el rol con ID " + aux.getId() + ".");
+					} else {
+						response.add("message", "No se ha registrado el rol.", HttpStatus.NO_CONTENT);
+					}
+				} else {
+					response.add("message", "No existe ningun rol con el id " + role.getId() + ".",
+							HttpStatus.NO_CONTENT);
+				}
+			} else {
+				response.add("message", message, HttpStatus.NO_CONTENT);
+			}
+
+		} else {
+			response.add("message", "No se ha recibido el rol.", HttpStatus.NOT_FOUND);
+		}
+
 		return ResponseEntity.ok(response.getMap());
 	}
 
