@@ -40,6 +40,35 @@ public class PastleyValidate implements Serializable{
 	}
 	
 	///////////////////////////////////////////////////////
+	// Method - Number
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that validates if a string contains pure numbers.
+	 * 
+	 * @param str, Represents the string.
+	 * @return Boolean true if it meets false if not.
+	 */
+	public static boolean isNumber(String str) {
+		if (isChain(str)) {
+			char[] array = PastleyVariable.PASTLEY_ARRAY_NUMBER;
+			char[] aux = str.toCharArray();
+			for (char i : aux) {
+				boolean salir = true;
+				for (char j : array) {
+					if (i == j) {
+						salir = false;
+					}
+				}
+				if (salir) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	///////////////////////////////////////////////////////
 	// Method - BigInteger
 	///////////////////////////////////////////////////////
 	/**
