@@ -1,11 +1,9 @@
 package com.pastley.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.pastley.entity.SaleDetail;
+import com.pastley.entity.Cart;
 
 /**
  * @project Pastley-Sale.
@@ -15,12 +13,6 @@ import com.pastley.entity.SaleDetail;
  * @version 1.0.0.
  */
 @Repository
-public interface SaleDetailRepository extends JpaRepository<SaleDetail, Long>{
-	
-	/**
-	 * Method that allows knowing the sale details of a sale made.
-	 * @param sale, Represents the sale.
-	 * @return List with sale details.
-	 */
-	public List<SaleDetail> findByIdSale(Long sale);
+public interface CartRepository extends JpaRepository<Cart, Long>{
+
 }
