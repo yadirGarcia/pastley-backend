@@ -85,7 +85,7 @@ public class Sale implements Serializable{
 			chain = "No se ha recibido el iva de la venta.";
 		}
 		if(!PastleyValidate.bigIntegerHigherZero(totalGross) || !PastleyValidate.bigIntegerHigherZero(totalNet)) {
-			chain = "El subtotal neto o bruto de la venta debe ser mayor a cero.";
+			chain = "El total neto o bruto de la venta debe ser mayor a cero.";
 		}
 		return chain;
 	}
