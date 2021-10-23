@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Role;
 import com.pastley.service.RoleService;
+import com.pastley.service.UserService;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyValidate;
 
@@ -30,6 +32,8 @@ import com.pastley.util.PastleyValidate;
 public class RoleRest {
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private UserService userService;
 	///////////////////////////////////////////////////////
 	// Method - Get
 	///////////////////////////////////////////////////////
@@ -146,6 +150,26 @@ public class RoleRest {
 			response.add("message", "No se ha recibido el rol.", HttpStatus.NOT_FOUND);
 		}
 
+		return ResponseEntity.ok(response.getMap());
+	}
+
+	///////////////////////////////////////////////////////
+	// Method - Delete
+	///////////////////////////////////////////////////////
+	/**
+	 * Method to delete a role.
+	 */
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		PastleyResponse response = new PastleyResponse();
+		
+		if(id>0) {
+			Role role = roleService.findById(id);
+			if(role != null) {
+			//	List<User> list= userService.findById(id)
+			}
+		}
+		
 		return ResponseEntity.ok(response.getMap());
 	}
 

@@ -65,6 +65,8 @@ public class User implements Serializable{
 	@Column(name="date_session",nullable = false)
 	private Date dateSession;
 	
+	@Column(name="id_role", nullable = false)
+	private Long idRole;
 	
 	
 	///////////////////////////////////////////////////////
