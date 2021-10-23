@@ -2,25 +2,53 @@ package com.pastley.service;
 
 import com.pastley.util.PastleyInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pastley.dao.TypePQRDAO;
 import com.pastley.entity.*;
 
 @Service
 public class TypePQRService  implements PastleyInterface<Long, TypePQR> {
-
+	
+	@Autowired
+	TypePQRDAO typePQRDao;
+	
+	
+	
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////
+	
 	@Override
 	public TypePQR findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+
+			return typePQRDao.findById(id).orElse(null);
+
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
+	public TypePQR findByName(String name) {
+		try {
+			return typePQRDao.findByName(name);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	@Override
 	public List<TypePQR> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return typePQRDao.findAll();
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
@@ -31,14 +59,23 @@ public class TypePQRService  implements PastleyInterface<Long, TypePQR> {
 
 	@Override
 	public TypePQR save(TypePQR entity) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return typePQRDao.save(entity);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			typePQRDao.deleteById(id);
+			
+			return typePQRDao.findById(id)==null;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 }

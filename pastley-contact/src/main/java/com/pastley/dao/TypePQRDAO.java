@@ -13,6 +13,8 @@ import com.pastley.entity.TypePQR;
  */
 
 @Repository
-public interface TypePRQDAO  extends JpaRepository<TypePQR, Long>{
+public interface TypePQRDAO  extends JpaRepository<TypePQR, Long>{
+	
+	public TypePQR findByName(String name);
 
 }
