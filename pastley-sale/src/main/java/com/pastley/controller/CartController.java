@@ -70,7 +70,7 @@ public class CartController implements Serializable {
 		if (list.isEmpty()) {
 			response.add("message", "No hay ningun carrito resgitrado.", HttpStatus.NO_CONTENT);
 		} else {
-			response.add("methods", list, HttpStatus.OK);
+			response.add("carts", list, HttpStatus.OK);
 			response.add("message", "Se han encontrado " + list.size() + " carritos.");
 		}
 		return ResponseEntity.ok(response.getMap());
