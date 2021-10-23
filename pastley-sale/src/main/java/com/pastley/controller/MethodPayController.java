@@ -54,6 +54,7 @@ public class MethodPayController implements Serializable {
 		MethodPay methodPay = methodPayService.findById(id);
 		if (methodPay != null) {
 			response.add("method", methodPay, HttpStatus.OK);
+			response.add("message", "Se ha encontrado el metodo de pago con el id " + id + ".");
 		} else {
 			response.add("message", "No existe ningun metodo de pago con el id " + id + ".", HttpStatus.NO_CONTENT);
 		}
@@ -73,6 +74,7 @@ public class MethodPayController implements Serializable {
 			MethodPay methodPay = methodPayService.findByName(name);
 			if (methodPay != null) {
 				response.add("method", methodPay, HttpStatus.OK);
+				response.add("message", "Se ha encontrado el metodo de pago con el nombre " + name + ".");
 			} else {
 				response.add("message", "No existe ningun metodo de pago con el nombre " + name + ".",
 						HttpStatus.NO_CONTENT);
