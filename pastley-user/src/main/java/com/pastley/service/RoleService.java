@@ -23,7 +23,7 @@ public class RoleService implements PastleyInterface<Long, Role> {
 	private RoleDAO roleDAO;
 
 	///////////////////////////////////////////////////////
-	// Method
+	// Method - Find
 	///////////////////////////////////////////////////////
 
 	@Override
@@ -43,7 +43,21 @@ public class RoleService implements PastleyInterface<Long, Role> {
 			return new ArrayList<>();
 		}
 	}
+	
+	public Role findByName(String name) {
+		try {
+			return roleDAO.findByName(name);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
+	
+	
+	///////////////////////////////////////////////////////
+	// Method - Save and Update
+	///////////////////////////////////////////////////////
+	
 	@Override
 	public Role save(Role entity) {
 		try {
@@ -53,6 +67,12 @@ public class RoleService implements PastleyInterface<Long, Role> {
 		}
 	}
 
+	
+	
+	///////////////////////////////////////////////////////
+	// Method - Delete
+	///////////////////////////////////////////////////////
+	
 	@Override
 	public boolean delete(Long id) {
 		try {
