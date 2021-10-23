@@ -1,8 +1,12 @@
 package com.pastley.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +28,43 @@ import com.pastley.util.PastleyValidate;
 @RequestMapping("role")
 public class RoleRest {
 	@Autowired
-	RoleService roleService;
+	private RoleService roleService;
 	///////////////////////////////////////////////////////
 	// Method - Get
 	///////////////////////////////////////////////////////
 
+	
+	
+	@GetMapping(value = { "/findById/{id}", "/{id}" })
+	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+		PastleyResponse response = new PastleyResponse();
+
+		Role role = roleService.findById(id);
+		if (role != null) {
+			response.add("role", role, HttpStatus.OK);
+		} else {
+			response.add("message", "No hay ningun rol registratdo con ese ID " + id + ".", HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+
+	/**
+	 * Method that allows you to list all role
+	 */
+	@GetMapping("/findAll")
+	public ResponseEntity<?> findAll() {
+		PastleyResponse response = new PastleyResponse();
+		List<Role> list = roleService.findAll();
+		if (list.isEmpty()) {
+			response.add("message", "No hay ningun rol registrado.", HttpStatus.NOT_FOUND);
+		} else {
+			response.add("roles", list, HttpStatus.OK);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+
+	
+	
 	///////////////////////////////////////////////////////
 	// Method - Post
 	///////////////////////////////////////////////////////
@@ -75,8 +111,5 @@ public class RoleRest {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
-	
-	
 
 }
