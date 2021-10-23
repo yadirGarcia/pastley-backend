@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import com.pastley.entity.TypePQR;
 
 /**
- * @project Pastley-Sale.
+ * @project Pastley-Contact.
  * @author Soleimy Daniela Gomez Baron.
  * @Github https://github.com/Soleimygomez.
  * @contributors soleimygomez, leynerjoseoa, SerBuitragp jhonatanbeltran.
