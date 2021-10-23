@@ -1,0 +1,31 @@
+spring:
+  #APP
+  application:
+    name: pastley-contact
+  #EURKE
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8084
+  #JPA
+  jpa:
+    hibernate:
+      ddl-auto: update #create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lsy_contact?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: root
+    password: 
+#ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      
