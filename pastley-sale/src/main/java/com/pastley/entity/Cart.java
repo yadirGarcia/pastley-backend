@@ -40,8 +40,8 @@ public class Cart implements Serializable {
 	@Column(name = "discount", nullable = false, columnDefinition = "varchar(3) default 0")
 	private String discount;
 
-	@Column(name = "iva", nullable = false, length = 3)
-	private String iva;
+	@Column(name = "vat", nullable = false, length = 3)
+	private String vat;
 
 	@Column(name = "count", nullable = false)
 	private int count;
@@ -60,6 +60,12 @@ public class Cart implements Serializable {
 
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
+	
+	@Column(name="date_register", nullable = false)
+	private String dateRegister;
+	
+	@Column(name="date_update", nullable = true)
+	private String dateUpdate;
 	
 	///////////////////////////////////////////////////////
 	// Other
@@ -91,10 +97,10 @@ public class Cart implements Serializable {
 		this.count = count;
 	}
 
-	public Cart(Long id, String discount, String iva, BigInteger price) {
+	public Cart(Long id, String discount, String vat, BigInteger price) {
 		this.id = id;
 		this.discount = discount;
-		this.iva = iva;
+		this.vat = vat;
 		this.price = price;
 	}
 	
@@ -106,9 +112,9 @@ public class Cart implements Serializable {
 	 */
 	public void calculate() {
 		if(this.count <= 0) return;
-		ProductModel pm = new ProductModel(this.price, this.discount, this.iva);
+		ProductModel pm = new ProductModel(this.price, this.discount, this.vat);
 		pm.calculate();
-		this.otherPriceVat = pm.getPriceIva();
+		this.otherPriceVat = pm.getPriceVat();
 		this.otherPriceAddPriceVat = pm.calculatePriceAddPriceIva();
 		this.otherPriceDisount = pm.getPriceDiscount();
 		this.otherPriceSubPriceDisount = pm.calculatePriceSubDiscount();
@@ -122,7 +128,7 @@ public class Cart implements Serializable {
 	 * @return The value obtained.
 	 */
 	public BigInteger calculateSubtotalGross(ProductModel pm) {
-		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.iva);
+		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.vat);
 		this.subtotalGross = pm.calculateSubtotalGross().multiply(new BigInteger(String.valueOf(this.count)));
 		return this.subtotalGross;
 	}
@@ -132,7 +138,7 @@ public class Cart implements Serializable {
 	 * @return The value obtained.
 	 */
 	public BigInteger calculateSubtotalNet(ProductModel pm) {
-		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.iva);
+		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.vat);
 		this.subtotalNet = pm.calculateSubTotalNet().multiply(new BigInteger(String.valueOf(this.count)));
 		return this.subtotalNet;
 	}
@@ -142,7 +148,7 @@ public class Cart implements Serializable {
 	 * @return The value obtained.
 	 */
 	public BigInteger calculateSubtotalPriceDisount(ProductModel pm) {
-		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.iva);
+		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.vat);
 		pm.calculateDiscount();
 		this.otherSubtotalPriceDisount = pm.getPriceDiscount().multiply(new BigInteger(String.valueOf(this.count)));
 		return this.otherSubtotalPriceDisount;
@@ -183,12 +189,12 @@ public class Cart implements Serializable {
 		this.discount = discount;
 	}
 
-	public String getIva() {
-		return iva;
+	public String getVat() {
+		return vat;
 	}
 
-	public void setIva(String iva) {
-		this.iva = iva;
+	public void setVat(String vat) {
+		this.vat = vat;
 	}
 
 	public int getCount() {
@@ -217,6 +223,22 @@ public class Cart implements Serializable {
 
 	public BigInteger getOtherPriceDisount() {
 		return otherPriceDisount;
+	}
+
+	public String getDateRegister() {
+		return dateRegister;
+	}
+
+	public void setDateRegister(String dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+	public String getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(String dateUpdate) {
+		this.dateUpdate = dateUpdate;
 	}
 
 	public void setOtherPriceDisount(BigInteger otherPriceDisount) {

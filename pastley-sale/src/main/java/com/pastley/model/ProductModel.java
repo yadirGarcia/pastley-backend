@@ -25,9 +25,9 @@ public class ProductModel implements Serializable {
 	///////////////////////////////////////////////////////
 	// Other
 	///////////////////////////////////////////////////////
-	private String iva;
+	private String vat;
 	
-	private BigInteger priceIva;
+	private BigInteger priceVat;
 	private BigInteger priceDiscount;
 
 	///////////////////////////////////////////////////////
@@ -40,20 +40,20 @@ public class ProductModel implements Serializable {
 		this(id, name, price, discount, null);
 	}
 	
-	public ProductModel(BigInteger price, String discount, String iva) {
-		this(0L, null, price, discount, iva);
+	public ProductModel(BigInteger price, String discount, String vat) {
+		this(0L, null, price, discount, vat);
 	}
 	
-	public ProductModel(Long id, BigInteger price, String discount, String iva) {
-		this(id, null, price, discount, iva);
+	public ProductModel(Long id, BigInteger price, String discount, String vat) {
+		this(id, null, price, discount, vat);
 	}
 
-	public ProductModel(Long id, String name, BigInteger price, String discount, String iva) {
+	public ProductModel(Long id, String name, BigInteger price, String discount, String vat) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
-		this.iva = iva;
+		this.vat = vat;
 	}
 
 	///////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ public class ProductModel implements Serializable {
 	 * Method that allows calculating the price of vat.
 	 */
 	public void calculatePriceIva() {
-		this.priceIva = calculate(this.iva);
+		this.priceVat = calculate(this.vat);
 	}
 	
 	/**
@@ -95,10 +95,10 @@ public class ProductModel implements Serializable {
 	 * @return The value obtained.
 	 */
 	public BigInteger calculateSubtotalGross() {
-		if(!PastleyValidate.bigIntegerHigherZero(this.priceIva)) {
+		if(!PastleyValidate.bigIntegerHigherZero(this.priceVat)) {
 			calculatePriceIva();
 		} 
-		return calculateSubTotalNet().add(this.priceIva);
+		return calculateSubTotalNet().add(this.priceVat);
 	}
 	
 	/**
@@ -106,10 +106,10 @@ public class ProductModel implements Serializable {
 	 * @return The value obtained.
 	 */
 	public BigInteger calculatePriceAddPriceIva() {
-		if (!PastleyValidate.bigIntegerHigherZero(this.priceIva)) {
+		if (!PastleyValidate.bigIntegerHigherZero(this.priceVat)) {
 			calculatePriceIva();
 		}
-		BigInteger price = (PastleyValidate.bigIntegerHigherZero(this.price)) ? this.price.add(this.priceIva) : BigInteger.ZERO;
+		BigInteger price = (PastleyValidate.bigIntegerHigherZero(this.price)) ? this.price.add(this.priceVat) : BigInteger.ZERO;
 		return (PastleyValidate.bigIntegerLessZero(price)) ? BigInteger.ZERO : price;
 	}
 	
@@ -162,21 +162,20 @@ public class ProductModel implements Serializable {
 		this.name = name;
 	}
 
-	public String getIva() {
-		return iva;
+	public String getVat() {
+		return vat;
 	}
 
-	public void setIva(String iva) {
-		this.iva = iva;
+	public void setVat(String vat) {
+		this.vat = vat;
 	}
 
-
-	public BigInteger getPriceIva() {
-		return priceIva;
+	public BigInteger getPriceVat() {
+		return priceVat;
 	}
 
-	public void setPriceIva(BigInteger priceIva) {
-		this.priceIva = priceIva;
+	public void setPriceIva(BigInteger priceVat) {
+		this.priceVat = priceVat;
 	}
 
 	public BigInteger getPriceDiscount() {

@@ -50,6 +50,7 @@ public class CartController implements Serializable {
 		PastleyResponse response = new PastleyResponse();
 		Cart cart = cartService.findById(id);
 		if (cart != null) {
+			cart.calculate();
 			response.add("cart", cart, HttpStatus.OK);
 			response.add("message", "Se ha encontrado el carrito con el id " + id + ".");
 		} else {
