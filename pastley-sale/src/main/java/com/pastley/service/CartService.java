@@ -35,6 +35,14 @@ public class CartService implements PastleyInterface<Long, Cart>{
 		}
 	}
 	
+	public Cart findByProductAndStatus(Long id, boolean statu) {
+		try {
+			return cartRepository.findByProductAndStatus(id, statu);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////

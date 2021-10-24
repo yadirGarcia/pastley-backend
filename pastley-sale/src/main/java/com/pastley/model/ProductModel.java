@@ -77,9 +77,18 @@ public class ProductModel implements Serializable {
 		}
 		if (!PastleyValidate.isChain(discount)) {
 			chain = "El descuento del producto no es valido.";
+		}else {
+			if(!PastleyValidate.isNumber(discount)) {
+				chain = "El descuento del producto solo puede tener caracteres numericos.";
+			}
 		}
 		if (!PastleyValidate.bigIntegerHigherZero(price)) {
 			chain = "El precio del producto no es valido.";
+		}
+		if(vat != null) {
+			if(!PastleyValidate.isNumber(vat)) {
+				chain = "El iva del producto solo puede tener caracteres numericos.";
+			}
 		}
 		return chain;
 	}
