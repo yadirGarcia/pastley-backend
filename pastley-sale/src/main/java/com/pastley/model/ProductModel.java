@@ -25,9 +25,9 @@ public class ProductModel implements Serializable {
 	///////////////////////////////////////////////////////
 	// Other
 	///////////////////////////////////////////////////////
-	private String iva;
-	
-	private BigInteger priceIva;
+	private String vat;
+
+	private BigInteger priceVat;
 	private BigInteger priceDiscount;
 
 	///////////////////////////////////////////////////////
@@ -39,21 +39,62 @@ public class ProductModel implements Serializable {
 	public ProductModel(Long id, String name, BigInteger price, String discount) {
 		this(id, name, price, discount, null);
 	}
-	
-	public ProductModel(Long id, BigInteger price, String discount, String iva) {
-		this(id, null, price, discount, iva);
+
+	public ProductModel(BigInteger price, String discount, String vat) {
+		this(0L, null, price, discount, vat);
 	}
 
-	public ProductModel(Long id, String name, BigInteger price, String discount, String iva) {
+	public ProductModel(Long id, BigInteger price, String discount, String vat) {
+		this(id, null, price, discount, vat);
+	}
+
+	public ProductModel(Long id, String name, BigInteger price, String discount, String vat) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
-		this.iva = iva;
+		this.vat = vat;
 	}
 
 	///////////////////////////////////////////////////////
-	// Method
+	// Method - Validate
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that validates the attributes of the class.
+	 * 
+	 * @param isId, Represents if you want to validate the id.
+	 * @return The error occurred.
+	 */
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id del producto debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(name)) {
+			chain = "El nombre del producto no es valido.";
+		}
+		if (!PastleyValidate.isChain(discount)) {
+			chain = "El descuento del producto no es valido.";
+		}else {
+			if(!PastleyValidate.isNumber(discount)) {
+				chain = "El descuento del producto solo puede tener caracteres numericos.";
+			}
+		}
+		if (!PastleyValidate.bigIntegerHigherZero(price)) {
+			chain = "El precio del producto no es valido.";
+		}
+		if(vat != null) {
+			if(!PastleyValidate.isNumber(vat)) {
+				chain = "El iva del producto solo puede tener caracteres numericos.";
+			}
+		}
+		return chain;
+	}
+
+	///////////////////////////////////////////////////////
+	// Method - Calculate
 	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows all prices to be calculated.
@@ -63,69 +104,77 @@ public class ProductModel implements Serializable {
 		this.calculateDiscount();
 
 	}
-	
+
 	/**
 	 * Method that allows calculating the price of vat.
 	 */
 	public void calculatePriceIva() {
-		this.priceIva = calculate(this.iva);
+		this.priceVat = calculate(this.vat);
 	}
-	
+
 	/**
 	 * Method that allows the discount price to be calculated.
 	 */
 	public void calculateDiscount() {
 		this.priceDiscount = calculate(this.discount);
 	}
-	
+
 	/**
 	 * Method for calculating the net subtotal.
+	 * 
 	 * @return The value obtained.
 	 */
-	public BigInteger calculateSubTotalNeto() {
+	public BigInteger calculateSubTotalNet() {
 		return calculatePriceSubDiscount();
-	}	
+	}
 
 	/**
 	 * Method for calculating the gross subtotal.
+	 * 
 	 * @return The value obtained.
 	 */
 	public BigInteger calculateSubtotalGross() {
-		if(!PastleyValidate.bigIntegerHigherZero(this.priceIva)) {
+		if (!PastleyValidate.bigIntegerHigherZero(this.priceVat)) {
 			calculatePriceIva();
-		} 
-		return calculateSubTotalNeto().add(this.priceIva);
+		}
+		return calculateSubTotalNet().add(this.priceVat);
 	}
-	
+
 	/**
 	 * Method that allows adding the value of the VAT to the price of the product.
+	 * 
 	 * @return The value obtained.
 	 */
 	public BigInteger calculatePriceAddPriceIva() {
-		if (!PastleyValidate.bigIntegerHigherZero(this.priceIva)) {
+		if (!PastleyValidate.bigIntegerHigherZero(this.priceVat)) {
 			calculatePriceIva();
 		}
-		BigInteger price = (PastleyValidate.bigIntegerHigherZero(this.price)) ? this.price.add(this.priceIva) : BigInteger.ZERO;
+		BigInteger price = (PastleyValidate.bigIntegerHigherZero(this.price)) ? this.price.add(this.priceVat)
+				: BigInteger.ZERO;
 		return (PastleyValidate.bigIntegerLessZero(price)) ? BigInteger.ZERO : price;
 	}
-	
+
 	/**
-	 * Method that allows subtracting the value of the discount from the price of the product.
+	 * Method that allows subtracting the value of the discount from the price of
+	 * the product.
+	 * 
 	 * @return The value obtained.
 	 */
 	public BigInteger calculatePriceSubDiscount() {
-		if(!PastleyValidate.bigIntegerHigherZero(this.priceDiscount)) {
+		if (!PastleyValidate.bigIntegerHigherZero(this.priceDiscount)) {
 			calculateDiscount();
 		}
-		BigInteger price = (PastleyValidate.bigIntegerHigherZero(this.price)) ? this.price.subtract(this.priceDiscount) : BigInteger.ZERO;
+		BigInteger price = (PastleyValidate.bigIntegerHigherZero(this.price)) ? this.price.subtract(this.priceDiscount)
+				: BigInteger.ZERO;
 		return (PastleyValidate.bigIntegerLessZero(price)) ? BigInteger.ZERO : price;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Private
 	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to convert a percentage into a price.
+	 * 
 	 * @param chain, Represents the percentage.
 	 * @return The value obtained.
 	 */
@@ -137,18 +186,6 @@ public class ProductModel implements Serializable {
 			return price.toBigInteger();
 		}
 		return BigInteger.ZERO;
-	}
-	
-	public static void main(String... args) {
-		ProductModel cart = new ProductModel(1L, new BigInteger("2000"), "10", "50");
-		cart.calculate();
-		System.out.println("Price: " + cart.getPrice());
-		System.out.println("Price IVA: " + cart.getPriceIva());
-		System.out.println("Price + Price IVA: " + cart.calculatePriceAddPriceIva());
-		System.out.println("Discount: " + cart.getPriceDiscount());
-		System.out.println("Price - Discount: " + cart.calculatePriceSubDiscount());
-		System.out.println("Subtotal Bruto: " + cart.calculateSubtotalGross());
-		System.out.println("Subtotal Neto: " + cart.calculateSubTotalNeto());
 	}
 
 	///////////////////////////////////////////////////////
@@ -170,21 +207,20 @@ public class ProductModel implements Serializable {
 		this.name = name;
 	}
 
-	public String getIva() {
-		return iva;
+	public String getVat() {
+		return vat;
 	}
 
-	public void setIva(String iva) {
-		this.iva = iva;
+	public void setVat(String vat) {
+		this.vat = vat;
 	}
 
-
-	public BigInteger getPriceIva() {
-		return priceIva;
+	public BigInteger getPriceVat() {
+		return priceVat;
 	}
 
-	public void setPriceIva(BigInteger priceIva) {
-		this.priceIva = priceIva;
+	public void setPriceIva(BigInteger priceVat) {
+		this.priceVat = priceVat;
 	}
 
 	public BigInteger getPriceDiscount() {

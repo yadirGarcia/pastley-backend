@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.Cart;
 import com.pastley.model.ProductModel;
 import com.pastley.service.CartService;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 
 /**
@@ -50,6 +51,7 @@ public class CartController implements Serializable {
 		PastleyResponse response = new PastleyResponse();
 		Cart cart = cartService.findById(id);
 		if (cart != null) {
+			cart.calculate();
 			response.add("cart", cart, HttpStatus.OK);
 			response.add("message", "Se ha encontrado el carrito con el id " + id + ".");
 		} else {
@@ -85,9 +87,47 @@ public class CartController implements Serializable {
 	 * @param product, Represents the product register.
 	 * @return The generated response.
 	 */
-	@PostMapping(value = "/create")
-	public ResponseEntity<?> create(@RequestBody ProductModel product) {
+	@PostMapping(value = "/create/{id}")
+	public ResponseEntity<?> create(@RequestBody ProductModel product, @PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
+		if (product != null) {
+			if (id > 0) {
+				String message = product.validate(true);
+				if (message == null) {
+					Cart cart = cartService.findByProductAndStatus(product.getId(), true);
+					if (cart == null) {
+						cart = new Cart(product.getId(), product.getDiscount(), product.getVat(), product.getPrice());
+						PastleyDate date = new PastleyDate();
+						cart.setIdCustomer(id);
+						cart.setIdProduct(product.getId());
+						cart.setStatu(true);
+						cart.setCount(1);
+						cart.setDateRegister(date.currentToDateTime(null));
+						cart.setDateUpdate(null);
+						cart.calculate();
+						cart = cartService.save(cart);
+						if (cart != null) {
+							cart.calculate();
+							response.add("cart", cart, HttpStatus.OK);
+							response.add("message",
+									"Se ha agregado el producto al carrito con el id " + cart.getId() + ".");
+						} else {
+							response.add("message", "No se ha agregado el producto al carrito.", HttpStatus.NO_CONTENT);
+						}
+					} else {
+						response.add("message", "Ya se encuentra agregado el producto en el carrito.",
+								HttpStatus.NO_CONTENT);
+					}
+				} else {
+					response.add("message", "No se ha agregado el producto al carrito, " + message,
+							HttpStatus.NO_CONTENT);
+				}
+			} else {
+				response.add("message", "No se ha recibido el cliente.", HttpStatus.NOT_FOUND);
+			}
+		} else {
+			response.add("message", "No se ha recibido el producto.", HttpStatus.NOT_FOUND);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 
