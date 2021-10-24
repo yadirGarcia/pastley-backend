@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.pastley.model.ProductModel;
 
 /**
  * @project Pastley-Sale.
@@ -57,11 +60,35 @@ public class Cart implements Serializable {
 
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
+	
+	///////////////////////////////////////////////////////
+	// Other
+	///////////////////////////////////////////////////////
+	@Transient
+	private BigInteger otherPriceVat;
+	@Transient 
+	private BigInteger otherPriceAddPriceVat;
+	
+	@Transient 
+	private BigInteger otherPriceDisount;
+	@Transient 
+	private BigInteger otherPriceSubPriceDisount;
+	@Transient 
+	private BigInteger otherSubtotalPriceDisount;
 
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
 	public Cart() {
+	}
+	
+	public Cart(String discount, String iva, BigInteger price) {
+		this(0L, discount, iva, price);
+	}
+	
+	public Cart(String discount, String iva, BigInteger price, int count) {
+		this(0L, discount, iva, price);
+		this.count = count;
 	}
 
 	public Cart(Long id, String discount, String iva, BigInteger price) {
@@ -70,7 +97,56 @@ public class Cart implements Serializable {
 		this.iva = iva;
 		this.price = price;
 	}
-
+	
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////	
+	/**
+	 * Method that allows all prices to be calculated.
+	 */
+	public void calculate() {
+		if(this.count <= 0) return;
+		ProductModel pm = new ProductModel(this.price, this.discount, this.iva);
+		pm.calculate();
+		this.otherPriceVat = pm.getPriceIva();
+		this.otherPriceAddPriceVat = pm.calculatePriceAddPriceIva();
+		this.otherPriceDisount = pm.getPriceDiscount();
+		this.otherPriceSubPriceDisount = pm.calculatePriceSubDiscount();
+		calculateSubtotalPriceDisount(pm);
+		calculateSubtotalNet(pm);
+		calculateSubtotalGross(pm);
+	}
+	
+	/**
+	 * Method for calculating the gross subtotal.
+	 * @return The value obtained.
+	 */
+	public BigInteger calculateSubtotalGross(ProductModel pm) {
+		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.iva);
+		this.subtotalGross = pm.calculateSubtotalGross().multiply(new BigInteger(String.valueOf(this.count)));
+		return this.subtotalGross;
+	}
+	
+	/**
+	 * Method for calculating the net subtotal.
+	 * @return The value obtained.
+	 */
+	public BigInteger calculateSubtotalNet(ProductModel pm) {
+		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.iva);
+		this.subtotalNet = pm.calculateSubTotalNet().multiply(new BigInteger(String.valueOf(this.count)));
+		return this.subtotalNet;
+	}
+	
+	/**
+	 * Method that allows calculating the subtotal of discount applied.
+	 * @return The value obtained.
+	 */
+	public BigInteger calculateSubtotalPriceDisount(ProductModel pm) {
+		pm = (pm != null) ? pm : new ProductModel(this.price, this.discount, this.iva);
+		pm.calculateDiscount();
+		this.otherSubtotalPriceDisount = pm.getPriceDiscount().multiply(new BigInteger(String.valueOf(this.count)));
+		return this.otherSubtotalPriceDisount;
+	}
 
 	///////////////////////////////////////////////////////
 	// Getter and Setters
@@ -131,6 +207,38 @@ public class Cart implements Serializable {
 		this.description = description;
 	}
 
+	public BigInteger getOtherPriceVat() {
+		return otherPriceVat;
+	}
+
+	public void setOtherPriceVat(BigInteger otherPriceVat) {
+		this.otherPriceVat = otherPriceVat;
+	}
+
+	public BigInteger getOtherPriceDisount() {
+		return otherPriceDisount;
+	}
+
+	public void setOtherPriceDisount(BigInteger otherPriceDisount) {
+		this.otherPriceDisount = otherPriceDisount;
+	}
+
+	public BigInteger getOtherSubtotalPriceDisount() {
+		return otherSubtotalPriceDisount;
+	}
+
+	public void setOtherSubtotalPriceDisount(BigInteger otherSubtotalPriceDisount) {
+		this.otherSubtotalPriceDisount = otherSubtotalPriceDisount;
+	}
+
+	public BigInteger getOtherPriceAddPriceVat() {
+		return otherPriceAddPriceVat;
+	}
+
+	public void setOtherPriceAddPriceVat(BigInteger otherPriceAddPriceVat) {
+		this.otherPriceAddPriceVat = otherPriceAddPriceVat;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -165,5 +273,13 @@ public class Cart implements Serializable {
 
 	public void setStatu(boolean statu) {
 		this.statu = statu;
+	}
+
+	public BigInteger getOtherPriceSubPriceDisount() {
+		return otherPriceSubPriceDisount;
+	}
+
+	public void setOtherPriceSubPriceDisount(BigInteger otherPriceSubPriceDisount) {
+		this.otherPriceSubPriceDisount = otherPriceSubPriceDisount;
 	}
 }

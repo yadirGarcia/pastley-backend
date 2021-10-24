@@ -40,6 +40,10 @@ public class ProductModel implements Serializable {
 		this(id, name, price, discount, null);
 	}
 	
+	public ProductModel(BigInteger price, String discount, String iva) {
+		this(0L, null, price, discount, iva);
+	}
+	
 	public ProductModel(Long id, BigInteger price, String discount, String iva) {
 		this(id, null, price, discount, iva);
 	}
@@ -82,7 +86,7 @@ public class ProductModel implements Serializable {
 	 * Method for calculating the net subtotal.
 	 * @return The value obtained.
 	 */
-	public BigInteger calculateSubTotalNeto() {
+	public BigInteger calculateSubTotalNet() {
 		return calculatePriceSubDiscount();
 	}	
 
@@ -94,7 +98,7 @@ public class ProductModel implements Serializable {
 		if(!PastleyValidate.bigIntegerHigherZero(this.priceIva)) {
 			calculatePriceIva();
 		} 
-		return calculateSubTotalNeto().add(this.priceIva);
+		return calculateSubTotalNet().add(this.priceIva);
 	}
 	
 	/**
@@ -137,18 +141,6 @@ public class ProductModel implements Serializable {
 			return price.toBigInteger();
 		}
 		return BigInteger.ZERO;
-	}
-	
-	public static void main(String... args) {
-		ProductModel cart = new ProductModel(1L, new BigInteger("2000"), "10", "50");
-		cart.calculate();
-		System.out.println("Price: " + cart.getPrice());
-		System.out.println("Price IVA: " + cart.getPriceIva());
-		System.out.println("Price + Price IVA: " + cart.calculatePriceAddPriceIva());
-		System.out.println("Discount: " + cart.getPriceDiscount());
-		System.out.println("Price - Discount: " + cart.calculatePriceSubDiscount());
-		System.out.println("Subtotal Bruto: " + cart.calculateSubtotalGross());
-		System.out.println("Subtotal Neto: " + cart.calculateSubTotalNeto());
 	}
 
 	///////////////////////////////////////////////////////
