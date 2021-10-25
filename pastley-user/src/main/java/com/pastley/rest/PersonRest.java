@@ -37,6 +37,9 @@ public class PersonRest {
 	///////////////////////////////////////////////////////
 	// Method - Get
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to search for people by ID
+	 */
 	@GetMapping(value = { "/findById/{id}", "/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
@@ -49,7 +52,11 @@ public class PersonRest {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-
+	
+	
+	/**
+	 * Method that allows you to list all people
+	 */
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
 		PastleyResponse response = new PastleyResponse();
@@ -62,7 +69,9 @@ public class PersonRest {
 
 		return ResponseEntity.ok(response.getMap());
 	}
-
+	
+	
+	
 	///////////////////////////////////////////////////////
 	// Method - Post
 	///////////////////////////////////////////////////////

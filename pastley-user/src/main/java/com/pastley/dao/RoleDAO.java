@@ -1,5 +1,7 @@
 package com.pastley.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.pastley.entity.Role;
@@ -14,5 +16,7 @@ import com.pastley.entity.Role;
 
 @Repository
 public interface RoleDAO extends JpaRepository<Role,Long> {
-
+	
+	public Role findByName(String name);
+	public List<Role> findByUser(Long user);
 }

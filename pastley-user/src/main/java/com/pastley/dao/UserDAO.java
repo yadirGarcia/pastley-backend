@@ -14,5 +14,6 @@ import com.pastley.entity.User;
 
 @Repository
 public interface UserDAO extends JpaRepository<User,Long> {
-
+	
+	//public List<User> findBy
 }
