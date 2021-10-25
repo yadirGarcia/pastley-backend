@@ -58,7 +58,7 @@ public class CartController implements Serializable {
 			response.add("message", "No existe ningun carrito con el id " + id + ".", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
-	}
+	}	
 
 	/**
 	 * Method that allows you to get all the carts
@@ -117,6 +117,25 @@ public class CartController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
+	
+	@GetMapping(value = "/findByProduct/{product}/statu/{statu}")
+	public ResponseEntity<?> findByProductAndStatu(@PathVariable("product") Long product, @PathVariable("statu") boolean statu){
+		PastleyResponse response = new PastleyResponse();
+		if (product > 0) {
+			List<Cart> list = cartService.findByProductAndStatus(product, statu);
+			if (list.isEmpty()) {
+				response.add("message",  "No hay ningun carrito registrado con el producto id "+product+" y el estado "+statu+".", HttpStatus.NO_CONTENT);
+			} else {
+				for (Cart c : list)
+					c.calculate();
+				response.add("carts", list, HttpStatus.OK);
+				response.add("message", "Se han encontrado " + list.size() + " resultados con el estado "+statu+".");
+			}
+		}else {
+			response.add("message", "El id " + product + " del producto no es valido.", HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
 
 	///////////////////////////////////////////////////////
 	// Method - Post
@@ -134,7 +153,8 @@ public class CartController implements Serializable {
 			if (id > 0) {
 				String message = product.validate(true);
 				if (message == null) {
-					Cart cart = cartService.findByProductAndStatus(product.getId(), true);
+					List<Cart> list = cartService.findByProductAndStatus(product.getId(), true);
+					Cart cart = (list.isEmpty()) ? null : list.get(0);
 					PastleyDate date = new PastleyDate();
 					if (cart == null) {
 						cart = new Cart(product.getId(), product.getDiscount(), product.getVat(), product.getPrice());

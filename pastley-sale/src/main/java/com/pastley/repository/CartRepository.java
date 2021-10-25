@@ -25,7 +25,7 @@ public interface CartRepository extends JpaRepository<Cart, Long>{
 	 * @return
 	 */
 	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.statu = :statu AND c.idProduct = :id")
-	public Cart findByProductAndStatus(Long id, boolean statu);
+	public List<Cart> findByProductAndStatus(Long id, boolean statu);
 	
 	/**
 	 * 

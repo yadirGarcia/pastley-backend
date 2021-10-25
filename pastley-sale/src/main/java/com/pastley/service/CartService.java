@@ -34,15 +34,7 @@ public class CartService implements PastleyInterface<Long, Cart>{
 			return null;
 		}
 	}
-	
-	public Cart findByProductAndStatus(Long id, boolean statu) {
-		try {
-			return cartRepository.findByProductAndStatus(id, statu);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
@@ -68,6 +60,14 @@ public class CartService implements PastleyInterface<Long, Cart>{
 			return cartRepository.findByCustomerAndStatus(customer, statu);
 		} catch (Exception e) {
 			return new ArrayList<>();
+		}
+	}
+	
+	public List<Cart> findByProductAndStatus(Long id, boolean statu) {
+		try {
+			return cartRepository.findByProductAndStatus(id, statu);
+		} catch (Exception e) {
+			return null;
 		}
 	}
 
