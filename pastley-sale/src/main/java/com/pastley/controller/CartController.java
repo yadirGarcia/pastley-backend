@@ -75,45 +75,45 @@ public class CartController implements Serializable {
 			for (Cart c : list)
 				c.calculate();
 			response.add("carts", list, HttpStatus.OK);
-			response.add("message", "Se han encontrado " + list.size() + ".");
+			response.add("message", "Se han encontrado " + list.size() + " resultados.");
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
 
-	@GetMapping(value = "/findByCustomer/{id}")
-	public ResponseEntity<?> findByCustomer(@PathVariable("id") Long id) {
+	@GetMapping(value = "/findByCustomer/{customer}")
+	public ResponseEntity<?> findByCustomer(@PathVariable("customer") Long customer) {
 		PastleyResponse response = new PastleyResponse();
-		if (id > 0) {
-			List<Cart> list = cartService.findByCustomer(id);
+		if (customer > 0) {
+			List<Cart> list = cartService.findByCustomer(customer);
 			if (list.isEmpty()) {
-				response.add("message", "No hay ningun carrito resgitrado.", HttpStatus.NO_CONTENT);
+				response.add("message", "No hay ningun carrito resgitrado con el cliente id "+customer+".", HttpStatus.NO_CONTENT);
 			} else {
 				for (Cart c : list)
 					c.calculate();
 				response.add("carts", list, HttpStatus.OK);
-				response.add("message", "Se han encontrado " + list.size() + ".");
+				response.add("message", "Se han encontrado " + list.size() + " resultados.");
 			}
 		}else {
-			response.add("message", "El id " + id + " del cliente no es valido.", HttpStatus.NO_CONTENT);
+			response.add("message", "El id " + customer + " del cliente no es valido.", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
 	
-	@GetMapping(value = "/findByCustomer/{id}/statu/{statu}")
-	public ResponseEntity<?> findByCustomerAndStatus(@PathVariable("id") Long id, @PathVariable("statu") boolean statu){
+	@GetMapping(value = "/findByCustomer/{customer}/statu/{statu}")
+	public ResponseEntity<?> findByCustomerAndStatus(@PathVariable("customer") Long customer, @PathVariable("statu") boolean statu){
 		PastleyResponse response = new PastleyResponse();
-		if (id > 0) {
-			List<Cart> list = cartService.findByCustomerAndStatus(id, statu);
+		if (customer > 0) {
+			List<Cart> list = cartService.findByCustomerAndStatus(customer, statu);
 			if (list.isEmpty()) {
-				response.add("message", "No hay ningun carrito resgitrado.", HttpStatus.NO_CONTENT);
+				response.add("message",  "No hay ningun carrito resgitrado con el cliente id "+customer+" y el estado "+statu+".", HttpStatus.NO_CONTENT);
 			} else {
 				for (Cart c : list)
 					c.calculate();
 				response.add("carts", list, HttpStatus.OK);
-				response.add("message", "Se han encontrado " + list.size() + ".");
+				response.add("message", "Se han encontrado " + list.size() + " resultados con el estado "+statu+".");
 			}
 		}else {
-			response.add("message", "El id " + id + " del cliente no es valido.", HttpStatus.NO_CONTENT);
+			response.add("message", "El id " + customer + " del cliente no es valido.", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

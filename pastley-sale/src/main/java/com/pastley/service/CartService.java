@@ -55,17 +55,17 @@ public class CartService implements PastleyInterface<Long, Cart>{
 		}
 	}
 	
-	public List<Cart> findByCustomer(Long id){
+	public List<Cart> findByCustomer(Long customer){
 		try {
-			return cartRepository.findByIdCustomer(id);
+			return cartRepository.findByIdCustomer(customer);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
 	
-	public List<Cart> findByCustomerAndStatus(Long id, boolean statu) {
+	public List<Cart> findByCustomerAndStatus(Long customer, boolean statu) {
 		try {
-			return cartRepository.findByCustomerAndStatus(id, statu);
+			return cartRepository.findByCustomerAndStatus(customer, statu);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
