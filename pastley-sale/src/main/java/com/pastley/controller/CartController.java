@@ -80,11 +80,30 @@ public class CartController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 
-	@GetMapping(value = "/findByIdCustomer/{id}")
-	public ResponseEntity<?> findByIdCustomer(@PathVariable("id") Long id) {
+	@GetMapping(value = "/findByCustomer/{id}")
+	public ResponseEntity<?> findByCustomer(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
 		if (id > 0) {
 			List<Cart> list = cartService.findByCustomer(id);
+			if (list.isEmpty()) {
+				response.add("message", "No hay ningun carrito resgitrado.", HttpStatus.NO_CONTENT);
+			} else {
+				for (Cart c : list)
+					c.calculate();
+				response.add("carts", list, HttpStatus.OK);
+				response.add("message", "Se han encontrado " + list.size() + ".");
+			}
+		}else {
+			response.add("message", "El id " + id + " del cliente no es valido.", HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	@GetMapping(value = "/findByCustomer/{id}/statu/{statu}")
+	public ResponseEntity<?> findByCustomerAndStatus(@PathVariable("id") Long id, @PathVariable("statu") boolean statu){
+		PastleyResponse response = new PastleyResponse();
+		if (id > 0) {
+			List<Cart> list = cartService.findByCustomerAndStatus(id, statu);
 			if (list.isEmpty()) {
 				response.add("message", "No hay ningun carrito resgitrado.", HttpStatus.NO_CONTENT);
 			} else {

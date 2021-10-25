@@ -62,6 +62,14 @@ public class CartService implements PastleyInterface<Long, Cart>{
 			return new ArrayList<>();
 		}
 	}
+	
+	public List<Cart> findByCustomerAndStatus(Long id, boolean statu) {
+		try {
+			return cartRepository.findByCustomerAndStatus(id, statu);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
 
 	@Override
 	public List<Cart> findByStatuAll(boolean statu) {
@@ -92,5 +100,4 @@ public class CartService implements PastleyInterface<Long, Cart>{
 			return false;
 		}
 	}
-
 }
