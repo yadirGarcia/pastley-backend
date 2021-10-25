@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Role;
+import com.pastley.entity.User;
 import com.pastley.service.RoleService;
 import com.pastley.service.UserService;
 import com.pastley.util.PastleyResponse;
@@ -166,7 +167,8 @@ public class RoleRest {
 		if(id>0) {
 			Role role = roleService.findById(id);
 			if(role != null) {
-			//	List<User> list= userService.findById(id)
+				//List<User> list= userService.findById(id));
+				//List<Role> list = userService.findById(id);
 			}
 		}
 		
