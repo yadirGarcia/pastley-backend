@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.entity.SaleDetail;
-import com.pastley.repository.SaleDetailRepository;
 import com.pastley.util.PastleyInterface;
+import com.pastley.entity.Cart;
+import com.pastley.repository.CartRepository;
 
 /**
  * @project Pastley-Sale.
@@ -18,45 +18,73 @@ import com.pastley.util.PastleyInterface;
  * @version 1.0.0.
  */
 @Service
-public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
+public class CartService implements PastleyInterface<Long, Cart>{
 	
 	@Autowired
-	private SaleDetailRepository saleDetailRepository;
-	
+	private CartRepository cartRepository;
+
 	///////////////////////////////////////////////////////
 	// Method - Find
 	///////////////////////////////////////////////////////
 	@Override
-	public SaleDetail findById(Long id) {
+	public Cart findById(Long id) {
 		try {
-			return saleDetailRepository.findById(id).orElse(null);
+			return cartRepository.findById(id).orElse(null);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
 	@Override
-	public List<SaleDetail> findAll() {
+	public List<Cart> findAll() {
 		try {
-			return saleDetailRepository.findAll();
+			return cartRepository.findAll();
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
 	
+	public List<Cart> findByCustomer(Long customer){
+		try {
+			return cartRepository.findByIdCustomer(customer);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
+	public List<Cart> findByCustomerAndStatus(Long customer, boolean statu) {
+		try {
+			return cartRepository.findByCustomerAndStatus(customer, statu);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
+	public List<Cart> findByProductAndStatus(Long id, boolean statu) {
+		try {
+			return cartRepository.findByProductAndStatus(id, statu);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	@Override
-	public List<SaleDetail> findByStatuAll(boolean statu) {
+	public List<Cart> findByStatuAll(boolean statu) {
 		return new ArrayList<>();
 	}
 	
-	public List<SaleDetail> findBySale(Long sale){
+	///////////////////////////////////////////////////////
+	// Method - Save and Update
+	///////////////////////////////////////////////////////
+	@Override
+	public Cart save(Cart entity) {
 		try {
-			return saleDetailRepository.findByIdSale(sale);
+			return cartRepository.save(entity);
 		} catch (Exception e) {
-			return new ArrayList<>();
+			return null;
 		}
 	}
 	
@@ -64,21 +92,9 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
 	@Override
-	public SaleDetail save(SaleDetail entity) {
-		try {
-			return saleDetailRepository.save(entity);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
-	@Override
 	public boolean delete(Long id) {
 		try {
-			saleDetailRepository.deleteById(id);
+			cartRepository.deleteById(id);
 			return findById(id) == null;
 		} catch (Exception e) {
 			return false;

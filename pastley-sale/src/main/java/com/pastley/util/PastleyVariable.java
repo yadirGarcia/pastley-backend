@@ -5,6 +5,11 @@ import java.io.Serializable;
 public class PastleyVariable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	///////////////////////////////////////////////////////
+	// ARRAY
+	///////////////////////////////////////////////////////
+	public static final char[] PASTLEY_ARRAY_NUMBER = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
 	///////////////////////////////////////////////////////
 	// Date
