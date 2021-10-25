@@ -72,6 +72,8 @@ public class CartController implements Serializable {
 		if (list.isEmpty()) {
 			response.add("message", "No hay ningun carrito resgitrado.", HttpStatus.NO_CONTENT);
 		} else {
+			for (Cart c : list)
+				c.calculate();
 			response.add("carts", list, HttpStatus.OK);
 			response.add("message", "Se han encontrado " + list.size() + " carritos.");
 		}
@@ -95,9 +97,9 @@ public class CartController implements Serializable {
 				String message = product.validate(true);
 				if (message == null) {
 					Cart cart = cartService.findByProductAndStatus(product.getId(), true);
+					PastleyDate date = new PastleyDate();
 					if (cart == null) {
 						cart = new Cart(product.getId(), product.getDiscount(), product.getVat(), product.getPrice());
-						PastleyDate date = new PastleyDate();
 						cart.setIdCustomer(id);
 						cart.setIdProduct(product.getId());
 						cart.setStatu(true);
@@ -115,8 +117,22 @@ public class CartController implements Serializable {
 							response.add("message", "No se ha agregado el producto al carrito.", HttpStatus.NO_CONTENT);
 						}
 					} else {
-						response.add("message", "Ya se encuentra agregado el producto en el carrito.",
-								HttpStatus.NO_CONTENT);
+						cart.setDateUpdate(date.currentToDateTime(null));
+						cart.setCount(cart.getCount() + 1);
+						cart.setStatu(true);
+						cart.calculate();
+						cart = cartService.save(cart);
+						if (cart != null) {
+							cart.calculate();
+							response.add("cart", cart, HttpStatus.OK);
+							response.add("message",
+									"Ya se encuentra agregado el producto en el carrito, se le aumento la cantidad a "
+											+ cart.getCount() + ".");
+						} else {
+							response.add("message",
+									"Ya se encuentra agregado el producto en el carrito, no se le aumento la cantidad al producto.",
+									HttpStatus.NO_CONTENT);
+						}
 					}
 				} else {
 					response.add("message", "No se ha agregado el producto al carrito, " + message,
