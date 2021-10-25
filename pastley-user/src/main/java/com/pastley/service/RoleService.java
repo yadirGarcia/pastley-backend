@@ -34,14 +34,6 @@ public class RoleService implements PastleyInterface<Long, Role> {
 			return null;
 		}
 	}
-	
-	public List<Role> findByUser(Long user) {
-		try {
-			return roleDAO.findByUser(user);
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
-	}
 
 	@Override
 	public List<Role> findAll() {
@@ -60,7 +52,6 @@ public class RoleService implements PastleyInterface<Long, Role> {
 		}
 	}
 
-	
 	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
@@ -90,5 +81,4 @@ public class RoleService implements PastleyInterface<Long, Role> {
 			return false;
 		}
 	}
-
 }

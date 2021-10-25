@@ -41,16 +41,19 @@ public class Role implements Serializable {
 
 	@Column(name = "session", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean session;
+	
+	@Column(name="date_register", nullable = false)
+	private String dateRegister;
+	
+	@Column(name="date_update", nullable = true)
+	private String dateUpdate;
 
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
 
-	Role() {
-
+	public Role() {
 	}
-
-	
 	
 	///////////////////////////////////////////////////////
 	// Method
@@ -66,11 +69,11 @@ public class Role implements Serializable {
 		String chain = null;
 		if (isId) {
 			if (id <= 0) {
-				chain = "El id del metodo de pago debe ser mayor a cero.";
+				chain = "El id del rol debe ser mayor a cero.";
 			}
 		}
 		if (!PastleyValidate.isChain(name)) {
-			chain = "El nombre del metodo de pago no es valido.";
+			chain = "El nombre del rol no es valido.";
 		}
 		return chain;
 	}
@@ -108,6 +111,26 @@ public class Role implements Serializable {
 		return description;
 	}
 
+	public String getDateRegister() {
+		return dateRegister;
+	}
+
+	public void setDateRegister(String dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+	public String getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(String dateUpdate) {
+		this.dateUpdate = dateUpdate;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -127,5 +150,4 @@ public class Role implements Serializable {
 	public void setSession(boolean session) {
 		this.session = session;
 	}
-
 }

@@ -18,6 +18,7 @@ import com.pastley.entity.Role;
 import com.pastley.entity.User;
 import com.pastley.service.RoleService;
 import com.pastley.service.UserService;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyValidate;
 
@@ -50,7 +51,7 @@ public class RoleRest {
 		if (role != null) {
 			response.add("role", role, HttpStatus.OK);
 		} else {
-			response.add("message", "No hay ningun rol registratdo con ese ID " + id + ".", HttpStatus.NOT_FOUND);
+			response.add("message", "No hay ningun rol registratdo con ese ID " + id + ".", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
@@ -63,9 +64,21 @@ public class RoleRest {
 		PastleyResponse response = new PastleyResponse();
 		List<Role> list = roleService.findAll();
 		if (list.isEmpty()) {
-			response.add("message", "No hay ningun rol registrado.", HttpStatus.NOT_FOUND);
+			response.add("message", "No hay ningun rol registrado.", HttpStatus.NO_CONTENT);
 		} else {
 			response.add("roles", list, HttpStatus.OK);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	@GetMapping(value = { "/findByName/{name}"})
+	public ResponseEntity<?> findByName(@PathVariable("name") String name) {
+		PastleyResponse response = new PastleyResponse();
+		Role role = roleService.findByName(name);
+		if (role == null) {
+			response.add("message", "No hay ningun rol registrado con ese nombre "+name+".", HttpStatus.NO_CONTENT);
+		} else {
+			response.add("role", role, HttpStatus.OK);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
@@ -78,17 +91,18 @@ public class RoleRest {
 	 */
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody Role role) {
-
 		PastleyResponse response = new PastleyResponse();
 		if (role != null) {
 			if (role.getId() <= 0) {
 				if (PastleyValidate.isChain(role.getName())) {
 					Role aux = roleService.findByName(role.getName());
 					if (aux == null) {
-						role.setName(role.getName().toLowerCase());
-						role.setDescription(role.getDescription().toLowerCase());
+						PastleyDate date = new PastleyDate();
+						role.setDateUpdate(null);
+						role.setDateRegister(date.currentToDateTime(null));
+						role.setStatu(true);
+						role.setName(role.getName().toUpperCase());
 						aux = roleService.save(role);
-
 						if (aux != null) {
 							response.add("role", aux, HttpStatus.OK);
 							response.add("message", "Se ha registrado el rol con el id " + aux.getId() + ".");
@@ -123,21 +137,22 @@ public class RoleRest {
 	@PutMapping(value = "/update")
 	public ResponseEntity<?> update(@RequestBody Role role) {
 		PastleyResponse response = new PastleyResponse();
-
 		if (role != null) {
 			String message = role.validate(true);
 			if (message == null) {
 				role.uppercase();
 				Role aux = roleService.findById(role.getId());
 				if (aux != null) {
-					role.setName(role.getName().toLowerCase());
-					role.setDescription(role.getDescription().toLowerCase());
+					PastleyDate date = new PastleyDate();
+					role.setDateRegister(aux.getDateRegister());
+					role.setDateUpdate(date.currentToDateTime(null));
+					role.setName(role.getName().toUpperCase());
 					aux = roleService.save(role);
 					if (aux != null) {
 						response.add("role", aux, HttpStatus.OK);
 						response.add("message", "Se ha actualizado el rol con ID " + aux.getId() + ".");
 					} else {
-						response.add("message", "No se ha registrado el rol.", HttpStatus.NO_CONTENT);
+						response.add("message", "No se ha actualizado el rol.", HttpStatus.NO_CONTENT);
 					}
 				} else {
 					response.add("message", "No existe ningun rol con el id " + role.getId() + ".",
@@ -150,7 +165,33 @@ public class RoleRest {
 		} else {
 			response.add("message", "No se ha recibido el rol.", HttpStatus.NOT_FOUND);
 		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
 
+	@PutMapping(value = "/update/{id}/statu")
+	public ResponseEntity<?> update(@PathVariable("id") Long id) {
+		PastleyResponse response = new PastleyResponse();
+		if(id > 0) {
+			Role role = roleService.findById(id); 
+			if(role != null) {
+				PastleyDate date = new PastleyDate();
+				role.setDateUpdate(date.currentToDateTime(null));
+				role.setStatu(!role.isStatu());
+				role = roleService.save(role);
+				if(role != null) {
+					response.add("role", role, HttpStatus.OK);
+					response.add("message", "Se ha actualizado el estado a "+role.isStatu()+" del rol con id "+id+".");
+				}else {
+					response.add("message", "No se ha actualizado el estado del rol con id "+id+".", HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No existe ningun rol con el id " + id + ".",
+						HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "El id rol no es valido.", HttpStatus.NO_CONTENT);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 
@@ -163,16 +204,28 @@ public class RoleRest {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		PastleyResponse response = new PastleyResponse();
-		
-		if(id>0) {
+		if(id > 0) {
 			Role role = roleService.findById(id);
 			if(role != null) {
-				//List<User> list= userService.findById(id));
-				//List<Role> list = userService.findById(id);
+				List<User> list= userService.findByIdRole(id);
+				if(list.isEmpty()) {
+					if(roleService.delete(id)) {
+						response.add("role", role);
+						response.add("message", "Se ha eliminado el rol con id " + id + ".", HttpStatus.OK);
+					}else {
+						response.add("message", "No se ha eliminado el rol con id " + id + ".",
+								HttpStatus.NO_CONTENT);
+					}
+				}else {
+					response.add("message", "No se ha eliminado el rol con id " + id + ",porque existen "+list.size()+" usuarios registrados con ese rol.",
+							HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No existe ningun rol con el id " + id + ".", HttpStatus.NO_CONTENT);
 			}
+		}else {
+			response.add("message", "El id del rol no es valido.", HttpStatus.NO_CONTENT);
 		}
-		
 		return ResponseEntity.ok(response.getMap());
 	}
-
 }

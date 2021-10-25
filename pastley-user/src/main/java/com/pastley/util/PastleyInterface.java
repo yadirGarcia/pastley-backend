@@ -2,8 +2,6 @@ package com.pastley.util;
 
 import java.util.List;
 
-import com.pastley.entity.Role;
-
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.

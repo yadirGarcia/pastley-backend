@@ -42,6 +42,14 @@ public class UserService implements PastleyInterface<Long, User>{
 			return new ArrayList<>();
 		}
 	}
+	
+	public List<User> findByIdRole(Long idRole){
+		try {
+			return userDAO.findByIdRole(idRole);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
 
 	@Override
 	public User save(User entity) {

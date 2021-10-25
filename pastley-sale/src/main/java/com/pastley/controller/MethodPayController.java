@@ -295,7 +295,7 @@ public class MethodPayController implements Serializable {
 	 * @param id, Represents the identifier of the payment method.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "/update/statu/{id}")
+	@PutMapping(value = "/update/{id}/statu")
 	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
 		if (id > 0) {
