@@ -1,5 +1,7 @@
 package com.pastley.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.pastley.entity.Person;
@@ -18,4 +20,5 @@ public interface PersonDAO extends JpaRepository<Person, Long> {
 	public Person findByPhone(String phone);
 	public Person findByEmail(String email);
 	public Person findByDocument(Long document);
+	public List<Person> findByIdTypeDocument(Long idTypeDocument);	
 }

@@ -35,6 +35,14 @@ public class TypeDocumentService implements PastleyInterface<Long, TypeDocument>
 			return null;
 		}
 	}
+	
+	public TypeDocument findByName(String name) {
+		try {
+			return typeDocumentDAO.findByName(name);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	@Override
 	public List<TypeDocument> findAll() {
@@ -44,7 +52,7 @@ public class TypeDocumentService implements PastleyInterface<Long, TypeDocument>
 			return new ArrayList<>();
 		}
 	}
-
+	
 	@Override
 	public TypeDocument save(TypeDocument entity) {
 		try {

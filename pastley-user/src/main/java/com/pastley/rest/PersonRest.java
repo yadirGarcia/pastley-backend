@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Person;
+import com.pastley.entity.User;
 import com.pastley.service.PersonService;
+import com.pastley.service.UserService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyValidate;
@@ -33,6 +35,8 @@ public class PersonRest {
 
 	@Autowired
 	private PersonService personService;
+	@Autowired
+	private UserService userService;
 
 	///////////////////////////////////////////////////////
 	// Method - Get
@@ -149,18 +153,74 @@ public class PersonRest {
 	///////////////////////////////////////////////////////
 	// Method - Put
 	///////////////////////////////////////////////////////
-	@PutMapping("/update")
+	/**
+	 * Method that allows updating a person.
+	 */
+	@PutMapping(value = "/update")
 	public ResponseEntity<?> update(@RequestBody Person person) {
 		PastleyResponse response = new PastleyResponse();
+		if (person != null) {
+			String message = person.validate(true);
+			if (message == null) {
+				person.uppercase();
+				Person aux = personService.findById(person.getId());
+				if (aux != null) {
+					PastleyDate date = new PastleyDate();
+					person.setDateRegister(aux.getDateRegister());
+					person.setDateUpdate(date.currentToDateTime(null));
+					person.setName(person.getName().toUpperCase());
+					aux = personService.save(person);
+					if (aux != null) {
+						response.add("person", aux, HttpStatus.OK);
+						response.add("message", "Se ha actualizado la persona con ID " + aux.getId() + ".");
+					} else {
+						response.add("message", "No se ha actualizado la persona.", HttpStatus.NO_CONTENT);
+					}
+				} else {
+					response.add("message", "No existe ninguna persona con el id " + person.getId() + ".",
+							HttpStatus.NO_CONTENT);
+				}
+			} else {
+				response.add("message", message, HttpStatus.NO_CONTENT);
+			}
+
+		} else {
+			response.add("message", "No se ha recibido el rol.", HttpStatus.NOT_FOUND);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 
 	///////////////////////////////////////////////////////
 	// Method - Delete
 	///////////////////////////////////////////////////////
+	/**
+	 * Method to delete a person.
+	 */
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		PastleyResponse response = new PastleyResponse();
+		if(id > 0) {
+			Person person = personService.findById(id);
+			if(person != null) {
+				List<User> list= userService.findByIdPerson(id);
+				if(list.isEmpty()) {
+					if(personService.delete(id)) {
+						response.add("person", person);
+						response.add("message", "Se ha eliminado la persona con id " + id + ".", HttpStatus.OK);
+					}else {
+						response.add("message", "No se ha eliminado la persona con id " + id + ".",
+								HttpStatus.NO_CONTENT);
+					}
+				}else {
+					response.add("message", "No se ha eliminado la persona con id " + id + ",porque existen "+list.size()+" usuarios asociados a esta persona.",
+							HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No existe ninguna persona con el id " + id + ".", HttpStatus.NO_CONTENT);
+			}
+		}else {
+			response.add("message", "El id de la perosna no es valido.", HttpStatus.NO_CONTENT);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 

@@ -67,6 +67,14 @@ public class PersonService implements PastleyInterface<Long, Person>{
 		}
 	}
 	
+	public List<Person> findByIdTypeDocument(Long idTypeDocument){
+		try {
+			return personDAO.findByIdTypeDocument(idTypeDocument);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
