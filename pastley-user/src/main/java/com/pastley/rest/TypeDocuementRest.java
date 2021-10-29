@@ -22,7 +22,7 @@ import com.pastley.util.PastleyValidate;
 import java.util.List;
 
 @RestController
-@RequestMapping("type_document")
+@RequestMapping("typeDocument")
 public class TypeDocuementRest {
 	@Autowired
 	TypeDocumentService typeDocumentService;

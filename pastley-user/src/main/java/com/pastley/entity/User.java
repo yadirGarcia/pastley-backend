@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.pastley.util.PastleyValidate;
 
@@ -52,17 +50,15 @@ public class User implements Serializable {
 	@Column(name = "session", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean session;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_register", nullable = false)
 	private String dateRegister;
 
-	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
+	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
 
 	@Column(name = "date_last_date", nullable = false)
 	private String dateLastDate;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_session", nullable = false)
 	private String dateSession;
 
@@ -75,10 +71,9 @@ public class User implements Serializable {
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-
-	User() {
-
+	public User() {
 	}
+	
 	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////
@@ -227,5 +222,4 @@ public class User implements Serializable {
 	public void setIdPerson(Long idPerson) {
 		this.idPerson = idPerson;
 	}
-
 }
