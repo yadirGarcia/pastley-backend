@@ -1,7 +1,6 @@
 package com.pastley.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.pastley.util.PastleyValidate;
+
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -21,64 +22,92 @@ import javax.persistence.TemporalType;
  */
 
 @Entity
-@Table(name="user")
-public class User implements Serializable{
+@Table(name = "user")
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="mail", nullable = false, length = 50)
+
+	@Column(name = "mail", nullable = false, length = 50)
 	private String mail;
-	
-	@Column(name="points")
+
+	@Column(name = "points")
 	private Long points;
-	
-	@Column(name="password", nullable = false,length = 50)
+
+	@Column(name = "password", nullable = false, length = 50)
 	private String password;
-	
-	@Column(name="ip")
+
+	@Column(name = "ip")
 	private String ip;
-	
-	@Column(name="last_password", length = 50)
+
+	@Column(name = "last_password", length = 50)
 	private String lastPassword;
-	
+
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
-	
+
 	@Column(name = "session", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean session;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_register",nullable = false)
-	private Date dateRegister;
-	
+	@Column(name = "date_register", nullable = false)
+	private String dateRegister;
+
 	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
-	private Date dateUpdate;
-	
-	@Column(name="date_last_date",nullable = false)
-	private Date dateLastDate;
-	
+	private String dateUpdate;
+
+	@Column(name = "date_last_date", nullable = false)
+	private String dateLastDate;
+
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_session",nullable = false)
-	private Date dateSession;
-	
-	@Column(name="id_role", nullable = false)
+	@Column(name = "date_session", nullable = false)
+	private String dateSession;
+
+	@Column(name = "id_role", nullable = false)
 	private Long idRole;
-	
-	
+
+	@Column(name = "id_person", nullable = false)
+	private Long idPerson;
+
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	
-	User(){
-			
+
+	User() {
+
+	}
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////
+
+	/**
+	 * Method that validates the attributes of the class.
+	 * 
+	 * @param isId, Represents if you want to validate the id.
+	 * @return The error occurred.
+	 */
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id del rol debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(mail)) {
+			chain = "El nombre del rol no es valido.";
+		}
+		return chain;
+	}
+	/**
+	 * Convert variables to uppercase.
+	 */
+	public void uppercase() {
+		this.mail = PastleyValidate.uppercase(this.mail);
 	}
 
-	
-	
 	///////////////////////////////////////////////////////
 	// Getter and Setter
 	///////////////////////////////////////////////////////
@@ -147,41 +176,56 @@ public class User implements Serializable{
 		this.session = session;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
 	}
 
-	public Date getDateUpdate() {
+	public String getDateUpdate() {
 		return dateUpdate;
 	}
 
-	public void setDateUpdate(Date dateUpdate) {
+	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
 
-	public Date getDateLastDate() {
+	public String getDateLastDate() {
 		return dateLastDate;
 	}
 
-	public void setDateLastDate(Date dateLastDate) {
+	public void setDateLastDate(String dateLastDate) {
 		this.dateLastDate = dateLastDate;
 	}
 
-	public Date getDateSession() {
+	public String getDateSession() {
 		return dateSession;
 	}
 
-	public void setDateSession(Date dateSession) {
+	public void setDateSession(String dateSession) {
 		this.dateSession = dateSession;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
+
+	public Long getIdRole() {
+		return idRole;
+	}
+
+	public void setIdRole(Long idRole) {
+		this.idRole = idRole;
+	}
+
+	public Long getIdPerson() {
+		return idPerson;
+	}
+
+	public void setIdPerson(Long idPerson) {
+		this.idPerson = idPerson;
+	}
+
 }

@@ -1,4 +1,4 @@
-package com.pastley.rest;
+	package com.pastley.rest;
 
 import java.util.List;
 
@@ -71,6 +71,9 @@ public class RoleRest {
 		return ResponseEntity.ok(response.getMap());
 	}
 	
+	/**
+	 * Method that allows you to search for role by Name
+	 */
 	@GetMapping(value = { "/findByName/{name}"})
 	public ResponseEntity<?> findByName(@PathVariable("name") String name) {
 		PastleyResponse response = new PastleyResponse();
@@ -168,7 +171,9 @@ public class RoleRest {
 		return ResponseEntity.ok(response.getMap());
 	}
 	
-
+	/**
+	 * Method that allows updating a role statu.
+	 */
 	@PutMapping(value = "/update/{id}/statu")
 	public ResponseEntity<?> update(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();

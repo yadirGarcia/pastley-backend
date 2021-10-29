@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.pastley.util.PastleyValidate;
+
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -17,34 +19,66 @@ import javax.persistence.Table;
  * @version 1.0.0.
  */
 @Entity
-@Table(name="type_document")
-public class TypeDocument implements Serializable{
+@Table(name = "type_document")
+public class TypeDocument implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="name", nullable = false)
+
+	@Column(name = "name", nullable = false)
 	private String name;
-	
+
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
-	
-	
+	@Column(name = "date_register", nullable = false)
+	private String dateRegister;
+
+	@Column(name = "date_update", nullable = true)
+	private String dateUpdate;
+
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-		
+
 	public TypeDocument() {
-			
+
 	}
-	
-	
-	
+
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////
+
+	/**
+	 * Method that validates the attributes of the class.
+	 * 
+	 * @param isId, Represents if you want to validate the id.
+	 * @return The error occurred.
+	 */
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id del tipo de docuemto debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(name)) {
+			chain = "El nombre del tipo de docuemto no es valido.";
+		}
+		return chain;
+	}
+
+	/**
+	 * Convert variables to uppercase.
+	 */
+	public void uppercase() {
+		this.name = PastleyValidate.uppercase(this.name);
+	}
+
 	///////////////////////////////////////////////////////
 	// Getter and Setter
 	///////////////////////////////////////////////////////
@@ -77,6 +111,20 @@ public class TypeDocument implements Serializable{
 		return serialVersionUID;
 	}
 
-	
-	
+	public String getDateRegister() {
+		return dateRegister;
+	}
+
+	public void setDateRegister(String dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+	public String getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(String dateUpdate) {
+		this.dateUpdate = dateUpdate;
+	}
+
 }

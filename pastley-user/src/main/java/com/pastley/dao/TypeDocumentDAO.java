@@ -2,6 +2,7 @@ package com.pastley.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import com.pastley.entity.TypeDocument;
 
 /**
@@ -14,5 +15,5 @@ import com.pastley.entity.TypeDocument;
 
 @Repository
 public interface TypeDocumentDAO extends JpaRepository<TypeDocument,Long> {
-
+	public TypeDocument findByName(String name);
 }

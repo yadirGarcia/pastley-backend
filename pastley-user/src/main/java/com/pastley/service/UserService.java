@@ -33,6 +33,14 @@ public class UserService implements PastleyInterface<Long, User>{
 			return null;
 		}
 	}
+	
+	public User findByMail(String mail) {
+		try {
+			return userDAO.findByMail(mail);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	@Override
 	public List<User> findAll() {
@@ -51,6 +59,14 @@ public class UserService implements PastleyInterface<Long, User>{
 		}
 	}
 
+	public List<User> findByIdPerson(Long idPerson){
+		try {
+			return userDAO.findByIdPerson(idPerson);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
 	@Override
 	public User save(User entity) {
 		try {
