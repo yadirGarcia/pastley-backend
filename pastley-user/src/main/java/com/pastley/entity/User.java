@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.pastley.util.PastleyValidate;
 
@@ -67,6 +68,15 @@ public class User implements Serializable {
 
 	@Column(name = "id_person", nullable = false)
 	private Long idPerson;
+	
+	///////////////////////////////////////////////////////
+	// Other
+	///////////////////////////////////////////////////////
+	@Transient
+	private Person person;
+	
+	@Transient
+	private Role role;
 
 	///////////////////////////////////////////////////////
 	// Builder
@@ -221,5 +231,21 @@ public class User implements Serializable {
 
 	public void setIdPerson(Long idPerson) {
 		this.idPerson = idPerson;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 }

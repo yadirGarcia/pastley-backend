@@ -13,4 +13,7 @@ public class PastleyVariable implements Serializable {
 	public static final String PASTLEY_DATE_FORMAT_DATE = "yyyy/MM/dd";
 	public static final String PASTLEY_DATE_FORMAT_HOUR = "HH:mm:ss";
 	public static final String PASTLEY_DATE_TIME_FORMAT = PASTLEY_DATE_FORMAT_DATE + " " + PASTLEY_DATE_FORMAT_HOUR;
+	
+	
+	public static final Long PASTLEY_USER_CUSTOMER_ID = 1L;
 }
