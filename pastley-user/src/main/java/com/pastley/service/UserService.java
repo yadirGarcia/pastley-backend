@@ -18,10 +18,11 @@ import com.pastley.util.PastleyInterface;
  * @version 1.0.0.
  */
 @Service
-public class UserService implements PastleyInterface<Long, User>{
+public class UserService implements PastleyInterface<Long, User> {
+	
 	@Autowired
 	private UserDAO userDAO;
-	
+
 	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////
@@ -33,7 +34,15 @@ public class UserService implements PastleyInterface<Long, User>{
 			return null;
 		}
 	}
-	
+
+	public User findByIdAndIdRol(Long id, Long idRol) {
+		try {
+			return userDAO.findByIdAndIdRol(id, idRol);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public User findByMail(String mail) {
 		try {
 			return userDAO.findByMail(mail);
@@ -50,8 +59,8 @@ public class UserService implements PastleyInterface<Long, User>{
 			return new ArrayList<>();
 		}
 	}
-	
-	public List<User> findByIdRole(Long idRole){
+
+	public List<User> findByIdRole(Long idRole) {
 		try {
 			return userDAO.findByIdRole(idRole);
 		} catch (Exception e) {
@@ -59,14 +68,14 @@ public class UserService implements PastleyInterface<Long, User>{
 		}
 	}
 
-	public List<User> findByIdPerson(Long idPerson){
+	public List<User> findByIdPerson(Long idPerson) {
 		try {
 			return userDAO.findByIdPerson(idPerson);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	@Override
 	public User save(User entity) {
 		try {
@@ -80,7 +89,7 @@ public class UserService implements PastleyInterface<Long, User>{
 	public boolean delete(Long id) {
 		try {
 			userDAO.deleteById(id);
-			return findById(id)==null;
+			return findById(id) == null;
 		} catch (Exception e) {
 			return false;
 		}

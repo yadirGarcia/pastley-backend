@@ -1,5 +1,6 @@
 package com.pastley.rest;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.User;
+import com.pastley.service.PersonService;
+import com.pastley.service.RoleService;
 import com.pastley.service.UserService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyValidate;
-
+import com.pastley.util.PastleyVariable;
 
 @RestController
 @RequestMapping("user")
-public class UserRest {
+public class UserRest implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
 	@Autowired
-	UserService userService;
+	private UserService userService;
+	
+	@Autowired
+	private PersonService personService;
+	
+	@Autowired
+	private RoleService roleService;
+	
+	///////////////////////////////////////////////////////
+	// Method 
+	///////////////////////////////////////////////////////
+	public PastleyResponse findByIdCustomer(Long id, Long idRole) {
+		PastleyResponse response = new PastleyResponse();
+		User user = userService.findByIdAndIdRol(id, idRole);
+		if(user != null) {
+			user.setPerson(personService.findById(user.getIdPerson()));
+			user.setRole(roleService.findById(user.getIdRole()));
+			response.add("user", user, HttpStatus.OK);
+			response.add("message", "Se encontro el cliente con el ID " + id + ".");
+		}else {
+			response.add("message", "No hay ningun cliente registratdo con ese ID " + id + ".", HttpStatus.NO_CONTENT);
+		}
+		return response;
+	}
 
 	///////////////////////////////////////////////////////
 	// Method - Get
@@ -35,40 +64,39 @@ public class UserRest {
 	@GetMapping(value = { "/findById/{id}", "/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
-
-		// if(roleService.findById(user.getIdRole()) != null) {
-		// if( == "Cajero") {
 		User user = userService.findById(id);
 		if (user != null) {
+			user.setPerson(personService.findById(user.getIdPerson()));
+			user.setRole(roleService.findById(user.getIdRole()));
 			response.add("user", user, HttpStatus.OK);
 		} else {
-			response.add("message", "No hay ningun cajero registratdo con ese ID " + id + ".", HttpStatus.NO_CONTENT);
+			response.add("message", "No hay ningun usuario registratdo con ese ID " + id + ".", HttpStatus.NO_CONTENT);
 		}
-		// }
-		// }
-		
 		return ResponseEntity.ok(response.getMap());
 	}
+
 	/**
 	 * Method that allows you to search for "CUSTOMER" by ID
 	 */
-	
+	@GetMapping(value = { "/findById/customer/{id}"})
+	public ResponseEntity<?> findByIdCustomer(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(findByIdCustomer(id, PastleyVariable.PASTLEY_USER_CUSTOMER_ID));
+	}
+
 	/**
 	 * Method that allows you to search for "CUSTOMER LOGIN" by ID
 	 */
-	
-	
-	
+
 	/**
 	 * Method that allows you to list all "CASHIER"
 	 */
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
 		PastleyResponse response = new PastleyResponse();
-		
+
 		// if(roleService.findById(user.getIdRole()) != null) {
 		// if( == "Cajero") {
-		//Hacer listas diferentes para los diferentes roles
+		// Hacer listas diferentes para los diferentes roles
 		List<User> list = userService.findAll();
 		if (list.isEmpty()) {
 			response.add("message", "No hay ningun cajero registrado.", HttpStatus.NO_CONTENT);
@@ -82,12 +110,10 @@ public class UserRest {
 	/**
 	 * Method that allows you to search for "CUSTOMER" by ID
 	 */
-	
+
 	/**
 	 * Method that allows you to search for "CUSTOMER LOGIN" by ID
 	 */
-	
-	
 
 	///////////////////////////////////////////////////////
 	// Method - Post
@@ -246,4 +272,31 @@ public class UserRest {
 		return ResponseEntity.ok(response.getMap());
 	}
 
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public RoleService getRoleService() {
+		return roleService;
+	}
+
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	public PersonService getPersonService() {
+		return personService;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 }
