@@ -34,7 +34,7 @@ public class Contact implements Serializable {
 	@Column(name = "message", nullable = false)
 	private String message;
 
-	@Column(name = "statu", nullable = false)
+	@Column(name = "statu",  nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -42,7 +42,7 @@ public class Contact implements Serializable {
 	private Date dateRegister;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_update", nullable = false)
+	@Column(name = "date_update",nullable = true, columnDefinition = "datetime default null")
 	private Date dateUpdate;
 
 	///////////////////////////////////////////////////////

@@ -56,7 +56,7 @@ public class Company implements Serializable {
 	@Column(name = "size",nullable = false, length = 10)
 	private Integer size;
 	
-	@Column(name = "statu",nullable = false)
+	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 	
 	@Column(name = "butdget",nullable = false)

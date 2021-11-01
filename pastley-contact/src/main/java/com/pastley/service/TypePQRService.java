@@ -53,8 +53,11 @@ public class TypePQRService  implements PastleyInterface<Long, TypePQR> {
 
 	@Override
 	public List<TypePQR> findByStatuAll(boolean statu) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return typePQRDao.findByStatu(statu);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

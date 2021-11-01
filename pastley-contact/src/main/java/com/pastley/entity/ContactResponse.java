@@ -32,7 +32,7 @@ public class ContactResponse implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "responser", nullable = false)
+	@Column(name = "responser", nullable = false, length = 250)
 	private String response;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -40,7 +40,7 @@ public class ContactResponse implements Serializable {
 	private Date dateRegister;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_update", nullable = false)
+	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
 	private Date dateUpdate;
 	
 	///////////////////////////////////////////////////////
