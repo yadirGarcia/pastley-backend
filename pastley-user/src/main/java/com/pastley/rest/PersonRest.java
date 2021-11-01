@@ -37,6 +37,83 @@ public class PersonRest {
 	private PersonService personService;
 	@Autowired
 	private UserService userService;
+	
+	///////////////////////////////////////////////////////
+	// Method
+	///////////////////////////////////////////////////////
+	public PastleyResponse createPerson(Person person) {
+		PastleyResponse response = new PastleyResponse();
+		if (person != null) {
+			if (person.getId() <= 0) {
+				if (PastleyValidate.isChain(person.getName()) && PastleyValidate.isChain(person.getSubname())) {
+					if (PastleyValidate.isChain(person.getPhone())) {
+						if (PastleyValidate.isChain(person.getEmail())) {
+							if(PastleyValidate.isEmail(person.getEmail())) {
+								if (person.getDocument() > 0) {
+									Person aux = personService.findByDocument(person.getDocument());
+									if (aux == null) {
+										aux = personService.findByEmail(person.getEmail());
+										if (aux == null) {
+											aux = personService.findByPhone(person.getPhone());
+											if (aux == null) {
+												PastleyDate date = new PastleyDate();
+												person.setDateRegister(date.currentToDateTime(null));
+												person.setDateUpdate(null);
+												person.setName(person.getName().toUpperCase());
+												person.setSubname(person.getSubname().toUpperCase());
+												aux = personService.save(person);
+												if (aux != null) {
+													response.add("person", aux, HttpStatus.OK);
+													response.add("message",
+															"Se ha registrado la persona con el id " + aux.getId() + ".");
+												} else {
+													response.add("message", "No se ha registrado la persona.",
+															HttpStatus.NO_CONTENT);
+												}
+											} else {
+												response.add("message", "Ya existe una persona con ese telefono '"
+														+ person.getPhone() + "'.", HttpStatus.NO_CONTENT);
+											}
+										} else {
+											response.add("message",
+													"Ya existe una persona con ese email '" + person.getEmail() + "'.",
+													HttpStatus.NO_CONTENT);
+										}
+									} else {
+										response.add("message",
+												"Ya existe una persona con ese documento '" + person.getDocument() + "'.",
+												HttpStatus.NO_CONTENT);
+									}
+								} else {
+									response.add("message",
+											"No se ha registrado la persona, el documento debe ser mayor a 0.",
+											HttpStatus.NO_CONTENT);
+								}
+							}else {
+								response.add("message", "No se ha resgitrado la persona, el email no es valido.", HttpStatus.NO_CONTENT);
+							}
+						} else {
+							response.add("message", "No se ha registrado la persona, el email no pueden estar vacios.",
+									HttpStatus.NO_CONTENT);
+						}
+					} else {
+						response.add("message", "No se ha registrado la persona, el telefono no pueden estar vacios.",
+								HttpStatus.NO_CONTENT);
+					}
+				} else {
+					response.add("message",
+							"No se ha registrado la persona, el nombre o apellido no pueden estar vacios.",
+							HttpStatus.NO_CONTENT);
+				}
+			} else {
+				response.add("message", "No se ha registrado la persona, el ID debe ser menor o igual a 0.",
+						HttpStatus.NO_CONTENT);
+			}
+		} else {
+			response.add("message", "No se ha recibido la información de persona a registrar.", HttpStatus.NOT_FOUND);
+		}
+		return response;	
+	}
 
 	///////////////////////////////////////////////////////
 	// Method - Get
@@ -81,73 +158,7 @@ public class PersonRest {
 	///////////////////////////////////////////////////////
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody Person person) {
-		PastleyResponse response = new PastleyResponse();
-		if (person != null) {
-			if (person.getId() <= 0) {
-				if (PastleyValidate.isChain(person.getName()) && PastleyValidate.isChain(person.getSubname())) {
-					if (PastleyValidate.isChain(person.getPhone())) {
-						if (PastleyValidate.isChain(person.getEmail())) {
-							if (person.getDocument() > 0) {
-								Person aux = personService.findByDocument(person.getDocument());
-								if (aux == null) {
-									aux = personService.findByEmail(person.getEmail());
-									if (aux == null) {
-										aux = personService.findByPhone(person.getPhone());
-										if (aux == null) {
-											PastleyDate date = new PastleyDate();
-											person.setDateRegister(date.currentToDateTime(null));
-											person.setDateUpdate(null);
-											person.setName(person.getName().toUpperCase());
-											person.setSubname(person.getSubname().toUpperCase());
-											aux = personService.save(person);
-											if (aux != null) {
-												response.add("person", aux, HttpStatus.OK);
-												response.add("message",
-														"Se ha registrado la persona con el id " + aux.getId() + ".");
-											} else {
-												response.add("message", "No se ha registrado la persona.",
-														HttpStatus.NO_CONTENT);
-											}
-										} else {
-											response.add("message", "Ya existe una persona con ese telefono '"
-													+ person.getPhone() + "'.", HttpStatus.NO_CONTENT);
-										}
-									} else {
-										response.add("message",
-												"Ya existe una persona con ese email '" + person.getEmail() + "'.",
-												HttpStatus.NO_CONTENT);
-									}
-								} else {
-									response.add("message",
-											"Ya existe una persona con ese documento '" + person.getDocument() + "'.",
-											HttpStatus.NO_CONTENT);
-								}
-							} else {
-								response.add("message",
-										"No se ha registrado la persona, el documento debe ser mayor a 0.",
-										HttpStatus.NO_CONTENT);
-							}
-						} else {
-							response.add("message", "No se ha registrado la persona, el email no pueden estar vacios.",
-									HttpStatus.NO_CONTENT);
-						}
-					} else {
-						response.add("message", "No se ha registrado la persona, el telefono no pueden estar vacios.",
-								HttpStatus.NO_CONTENT);
-					}
-				} else {
-					response.add("message",
-							"No se ha registrado la persona, el nombre o apellido no pueden estar vacios.",
-							HttpStatus.NO_CONTENT);
-				}
-			} else {
-				response.add("message", "No se ha registrado la persona, el ID debe ser menor o igual a 0.",
-						HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "No se ha recibido la información de persona a registrar.", HttpStatus.NOT_FOUND);
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.ok(createPerson(person));
 	}
 
 	///////////////////////////////////////////////////////

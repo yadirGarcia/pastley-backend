@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pastley.entity.Person;
 import com.pastley.entity.User;
 import com.pastley.service.PersonService;
 import com.pastley.service.RoleService;
@@ -37,8 +38,11 @@ public class UserRest implements Serializable {
 	private PersonService personService;
 
 	@Autowired
+	private PersonRest personRest;
+
+	@Autowired
 	private RoleService roleService;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -52,9 +56,52 @@ public class UserRest implements Serializable {
 			user.setPerson(personService.findById(user.getIdPerson()));
 			user.setRole(roleService.findById(user.getIdRole()));
 			response.add("user", user, HttpStatus.OK);
-			response.add("message", "Se encontro el "+ name +" con el ID " + id + ".");
+			response.add("message", "Se encontro el " + name + " con el ID " + id + ".");
 		} else {
-			response.add("message", "No hay ningun "+ name +" registratdo con ese ID " + id + ".", HttpStatus.NO_CONTENT);
+			response.add("message", "No hay ningun " + name + " registratdo con ese ID " + id + ".",
+					HttpStatus.NO_CONTENT);
+		}
+		return response;
+	}
+
+	public PastleyResponse createUser(User user, Person person, Long idRole, String name) {
+		PastleyResponse response = new PastleyResponse();
+		if (user != null) {
+			if (user.getId() <= 0) {
+				String message = user.validate(false);
+				if (message == null) {
+					user.setRole(roleService.findById(idRole));
+					if (user.getRole() != null) {
+						PastleyResponse res =  personRest.createPerson(person);
+						user.setPerson((Person)res.getMap().get("person"));
+						if(user.getPerson() != null) {
+							PastleyDate date = new PastleyDate();
+							user.setPassword(passwordEncoder.encode(user.getPassword()));
+							user.setDateRegister(date.currentToDateTime(null));
+							user.setIp(null);
+							user.setStatu(true);
+							user.setSession(false);
+							user.setPoints(0L);
+							user.setLastPassword(null);
+							user.setDateSession(null);
+							user.setDateSession(null);
+							user.setDateUpdate(null);
+							user.setDateRegister(message);
+							user = userService.save(user);
+							if(user != null) {
+								
+							}
+						}	
+					}
+				} else {
+						
+				}
+			} else {
+				response.add("message", "No se ha registrado el cajero, el ID debe ser menor o igual a 0.",
+						HttpStatus.NO_CONTENT);
+			}
+		} else {
+			response.add("message", "No se ha recibido los datos del cajero a registrar.", HttpStatus.NOT_FOUND);
 		}
 		return response;
 	}
@@ -85,7 +132,7 @@ public class UserRest implements Serializable {
 	 */
 	@GetMapping(value = { "/findById/customer/{id}" })
 	public ResponseEntity<?> findByIdCustomer(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(findByIdUser(id, PastleyVariable.PASTLEY_USER_CUSTOMER_ID,"cliente"));
+		return ResponseEntity.ok(findByIdUser(id, PastleyVariable.PASTLEY_USER_CUSTOMER_ID, "cliente"));
 	}
 
 	/**
@@ -93,7 +140,7 @@ public class UserRest implements Serializable {
 	 */
 	@GetMapping(value = { "/findById/cashier/{id}" })
 	public ResponseEntity<?> findByIdCashier(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(findByIdUser(id, PastleyVariable.PASTLEY_USER_CASHIER_ID,"cajero"));
+		return ResponseEntity.ok(findByIdUser(id, PastleyVariable.PASTLEY_USER_CASHIER_ID, "cajero"));
 	}
 
 	/**
@@ -101,7 +148,7 @@ public class UserRest implements Serializable {
 	 */
 	@GetMapping(value = { "/findById/administrator/{id}" })
 	public ResponseEntity<?> findByIdAdministrator(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(findByIdUser(id, PastleyVariable.PASTLEY_USER_ADMINISTRATOR_ID,"administrador"));
+		return ResponseEntity.ok(findByIdUser(id, PastleyVariable.PASTLEY_USER_ADMINISTRATOR_ID, "administrador"));
 	}
 
 	/**
@@ -157,110 +204,15 @@ public class UserRest implements Serializable {
 	@PutMapping(value = "/update")
 	public ResponseEntity<?> update(@RequestBody User user) {
 		PastleyResponse response = new PastleyResponse();
-
-		if (user != null) {
-			// if(roleService.findById(user.getIdRole()) != null) {
-			// if( == "Cajero") {
-			String message = user.validate(true);
-			if (message == null) {
-				user.uppercase();
-				User aux = userService.findById(user.getId());
-				if (aux != null) {
-					PastleyDate date = new PastleyDate();
-					user.setDateUpdate(date.currentToDateTime(null));
-					user.setDateRegister(aux.getDateRegister());
-					user.setMail(user.getMail().toUpperCase());
-					aux = userService.save(user);
-					if (aux != null) {
-						response.add("user", aux, HttpStatus.OK);
-						response.add("message", "Se ha actualizado el cajero con ID " + aux.getId() + ".");
-					} else {
-						response.add("message", "No se ha actualizado el cajero.", HttpStatus.NO_CONTENT);
-					}
-				} else {
-					response.add("message", "No existe ningun cajero con el id " + user.getId() + ".",
-							HttpStatus.NO_CONTENT);
-				}
-			} else {
-				response.add("message", message, HttpStatus.NO_CONTENT);
-			}
-			// }
-			// }
-		} else {
-			response.add("message", "No se ha recibido el cajero.", HttpStatus.NOT_FOUND);
-		}
 		return ResponseEntity.ok(response.getMap());
 	}
 
 	/**
 	 * Method that allows you to register a "CASHIER".
 	 */
-	@PostMapping("/create")
-	public ResponseEntity<?> create(@RequestBody User user) {
-		PastleyResponse response = new PastleyResponse();
-		if (user != null) {
-			if (user.getId() <= 0) {
-				
-				if (true) {
-					
-					if (true) {
-						
-						if (PastleyValidate.isChain(user.getMail())) {
-							User aux = userService.findByMail(user.getMail());
-							if (aux == null) {
-								if (user.getPassword() != null) {
-									PastleyDate date = new PastleyDate();
-									user.setDateUpdate(null);
-									user.setDateSession(null);
-									user.setDateRegister(date.currentToDateTime(null));
-									user.setStatu(true);
-									user.setMail(user.getMail().toUpperCase());
-									user.setPassword(passwordEncoder.encode(user.getPassword()));
-									// falta id cajero y perosona
-									aux = userService.save(user);
-									if (aux != null) {
-										response.add("user", aux, HttpStatus.OK);
-										response.add("message",
-												"Se ha registrado el usuario con el id " + aux.getId() + ".");
-										
-									}else {
-										response.add("message", "No se ha registrado el usuario.", HttpStatus.NO_CONTENT);
-									}
-									
-								}else {
-									response.add("message",
-											"Para realizar el registro del cajero debe asignarle una contraseña.",
-											HttpStatus.NO_CONTENT);
-								}
-								
-							}else {
-								response.add("message",
-										"Ya existe una un usuario registrado con ese email '" + user.getMail() + "'.",
-										HttpStatus.NO_CONTENT);
-							}
-
-						} else {
-							response.add("message", "No se ha registrado el cajero, debe asignarle un email al cajero.",
-									HttpStatus.NO_CONTENT);
-						}
-
-					} else {
-						
-					}
-
-				} else {
-					
-				}
-
-			} else {
-				response.add("message", "No se ha registrado el cajero, el ID debe ser menor o igual a 0.",
-						HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "No se ha recibido los datos del cajero a registrar.", HttpStatus.NOT_FOUND);
-		}
-
-		return ResponseEntity.ok(response.getMap());
+	@PostMapping("/create/customer")
+	public ResponseEntity<?> createCustore(@RequestBody User user, @RequestBody Person person){
+		return ResponseEntity.ok(createUser(user, person, PastleyVariable.PASTLEY_USER_CUSTOMER_ID, "cliente"));
 	}
 
 	/**

@@ -30,9 +30,6 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "mail", nullable = false, length = 50)
-	private String mail;
-
 	@Column(name = "points")
 	private Long points;
 
@@ -101,16 +98,13 @@ public class User implements Serializable {
 				chain = "El id del rol debe ser mayor a cero.";
 			}
 		}
-		if (!PastleyValidate.isChain(mail)) {
-			chain = "El nombre del rol no es valido.";
+		if (!PastleyValidate.isChain(password)) {
+			chain = "La clave no es valida.";
+		}
+		if(idRole <= 0) {
+			chain = "El rol no es valido.";
 		}
 		return chain;
-	}
-	/**
-	 * Convert variables to uppercase.
-	 */
-	public void uppercase() {
-		this.mail = PastleyValidate.uppercase(this.mail);
 	}
 
 	///////////////////////////////////////////////////////
@@ -123,14 +117,6 @@ public class User implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
 	}
 
 	public Long getPoints() {
