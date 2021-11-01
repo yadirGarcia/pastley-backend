@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Company;
 import com.pastley.entity.Contact;
+import com.pastley.entity.TypePQR;
 import com.pastley.service.CompanyService;
 import com.pastley.service.ContactService;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 
 @RestController
@@ -78,8 +80,86 @@ public class CompanyRes {
 	 * @return The generated response.
 	 */
 	@PostMapping(value = "/create")
-	public ResponseEntity<?> create(@RequestBody Company company) {
+	public ResponseEntity<?> create(@RequestBody Company method) {
 		PastleyResponse response = new PastleyResponse();
+		if (method != null) {
+			Company aux = companyService.findById(method.getId());
+
+			if (aux != null) {
+				if (method.getMision() == null) {
+					if (method.getName() == null) {
+						if (method.getPassword() == null) {
+							if (method.getVision() == null) {
+								if (method.getAlertMinStock() == null) {
+									if (method.getAddress() == null) {
+										if (method.getAlertStock() == null) {
+											if (method.getButdget() == null) {
+												if (method.getEmail() == null) {
+													if (method.getWho() == null) {
+														if (method.getSendSale() == null) {
+															if (method.getSize() == null) {
+
+																if (aux == null) {
+																	aux = companyService.save(method);
+
+																} else {
+																	response.add("message",
+																			"Ya existe una compañia con ese id '"
+																					+ method.getId() + "'.",
+																			HttpStatus.NO_CONTENT);
+																}
+
+															} else {
+																response.add("message", "Se Requiere ese campo",
+																		HttpStatus.NO_CONTENT);
+															}
+
+														} else {
+															response.add("message", "Se Requiere ese campo",
+																	HttpStatus.NO_CONTENT);
+														}
+													} else {
+														response.add("message", "Se Requiere ese campo",
+																HttpStatus.NO_CONTENT);
+													}
+												} else {
+													response.add("message", "Se Requiere ese campo",
+															HttpStatus.NO_CONTENT);
+
+												}
+											} else {
+												response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+											}
+										} else {
+											response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+										}
+									} else {
+										response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+									}
+								} else {
+									response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+								}
+							} else {
+								response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+							}
+						} else {
+							response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+						}
+					} else {
+						response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+
+					}
+				} else {
+					response.add("message", "Se Requiere ese campo'", HttpStatus.NO_CONTENT);
+				}
+			}
+
+			else {
+				response.add("message", "La comapñia no Existe'", HttpStatus.NO_CONTENT);
+			}
+		} else {
+			response.add("message", "No se ha recibido la Comañia.", HttpStatus.NOT_FOUND);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 
@@ -93,9 +173,31 @@ public class CompanyRes {
 	 * @return The generated response.
 	 */
 	@PutMapping(value = "/update")
-	public ResponseEntity<?> update(@RequestBody Company company) {
+	public ResponseEntity<?> update(@RequestBody Company method) {
 		PastleyResponse response = new PastleyResponse();
+		if (method != null) {
+			Company aux = companyService.findById(method.getId());
+
+			if (aux != null) {
+
+				aux = companyService.save(method);
+				if (aux != null) {
+					response.add("method", aux, HttpStatus.OK);
+
+					response.add("message", "Se ha actualizado la Compañia con id " + aux.getId() + ".");
+				} else {
+					response.add("message", "No se ha actualizado la compañia con id " + method.getId() + ".",
+							HttpStatus.NO_CONTENT);
+				}
+			} else {
+				response.add("message", "Ya existe una compañia con ese id '" + method.getId() + "'.",
+						HttpStatus.NO_CONTENT);
+			}
+
+		} else{response.add("message","No se ha recibido la Compañia.",HttpStatus.NOT_FOUND);}
+		
 		return ResponseEntity.ok(response.getMap());
+		
 	}
 
 	///////////////////////////////////////////////////////
@@ -110,6 +212,17 @@ public class CompanyRes {
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
+		Company method = companyService.findById(id);
+		if (method != null) {
+			if (companyService.delete(id)) {
+				response.add("message", "Se ha eliminado la compañia con id " + id + ".", HttpStatus.OK);
+			} else {
+				response.add("message", "No se ha eliminado la compañia con id " + id + ".",
+						HttpStatus.NO_CONTENT);
+			}
+		} else {
+			response.add("message", "No existe ninguna compañia con el id " + id + ".", HttpStatus.NO_CONTENT);
+		}
 		return ResponseEntity.ok(response.getMap());
 	}
 

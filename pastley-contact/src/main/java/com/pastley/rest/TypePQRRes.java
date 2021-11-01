@@ -19,7 +19,7 @@ import com.pastley.util.PastleyValidate;
 import com.pastley.entity.*;
 
 @RestController
-@RequestMapping("/method")
+@RequestMapping("typePqr")
 public class TypePQRRes {
 	@Autowired
 	private TypePQRService typePQRService;
