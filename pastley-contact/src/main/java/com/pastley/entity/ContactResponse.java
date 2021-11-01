@@ -13,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * @project Pastley-Sale.
+ * @project Pastley-Contact.
  * @author Soleimy Daniela Gomez Baron.
  * @Github https://github.com/Soleimygomez.
  * @contributors soleimygomez, leynerjoseoa, SerBuitragp jhonatanbeltran.
@@ -35,13 +35,16 @@ public class ContactResponse implements Serializable {
 	@Column(name = "responser", nullable = false, length = 250)
 	private String response;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	@Column(name = "date_register", nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
-	private Date dateUpdate;
+	
+	@Column(name = "date_update", nullable = true)
+	private String dateUpdate;
+	
+	@Column(name = "id_usuario", nullable = false)
+	private long idUsuario;
 	
 	///////////////////////////////////////////////////////
 	// Builder
@@ -63,11 +66,11 @@ public class ContactResponse implements Serializable {
 		return response;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public Date getDateUpdate() {
+	public String getDateUpdate() {
 		return dateUpdate;
 	}
 
@@ -79,13 +82,23 @@ public class ContactResponse implements Serializable {
 		this.response = response;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
 	}
 
-	public void setDateUpdate(Date dateUpdate) {
+	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
+
+	public long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	
+	
 	
 	
 

@@ -29,7 +29,7 @@ public class SwaggerConfig {
 	public Docket document() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.pastley.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.pastley.rest"))
 				.paths(PathSelectors.any())
 				.build();
 	}

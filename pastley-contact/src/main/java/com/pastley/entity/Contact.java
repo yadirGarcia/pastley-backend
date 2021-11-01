@@ -34,16 +34,22 @@ public class Contact implements Serializable {
 	@Column(name = "message", nullable = false)
 	private String message;
 
-	@Column(name = "statu",  nullable = false, columnDefinition = "tinyint(1) default 1")
+	@Column(name = "statu",  nullable = false)
 	private boolean statu;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	@Column(name = "date_register", nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_update",nullable = true, columnDefinition = "datetime default null")
-	private Date dateUpdate;
+	
+	@Column(name = "date_update",nullable = true)
+	private String dateUpdate;
+	
+	@Column(name = "id_usuario",nullable = false)
+	private Long idUsuario;
+	
+	@Column(name = "id_pqr",nullable = false)
+	private Long idTypePQR;
 
 	///////////////////////////////////////////////////////
 	// Builder
@@ -69,11 +75,11 @@ public class Contact implements Serializable {
 		return statu;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public Date getDateUpdate() {
+	public String getDateUpdate() {
 		return dateUpdate;
 	}
 
@@ -89,12 +95,30 @@ public class Contact implements Serializable {
 		this.statu = statu;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
 	}
 
-	public void setDateUpdate(Date dateUpdate) {
+	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
+
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public Long getIdTypePQR() {
+		return idTypePQR;
+	}
+
+	public void setIdTypePQR(Long idTypePQR) {
+		this.idTypePQR = idTypePQR;
+	}
+	
+	
 
 }

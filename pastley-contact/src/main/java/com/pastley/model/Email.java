@@ -13,13 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @project Pastley-Sale.
+ * @project Pastley-Contact.
  * @author Soleimy Daniela Gomez Baron.
  * @Github https://github.com/Soleimygomez.
  * @contributors soleimygomez, leynerjoseoa, SerBuitragp jhonatanbeltran.
  * @version 1.0.0.
  */
-@Entity
+
 public class Email implements Serializable {
 
 	private static final long serialVersionUID = 1L;
