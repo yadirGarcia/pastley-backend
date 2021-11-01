@@ -7,8 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.pastley.util.PastleyValidate;
 
@@ -30,19 +31,16 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "mail", nullable = false, length = 50)
-	private String mail;
-
 	@Column(name = "points")
 	private Long points;
 
 	@Column(name = "password", nullable = false, length = 50)
 	private String password;
 
-	@Column(name = "ip")
+	@Column(name = "ip", nullable = true)
 	private String ip;
 
-	@Column(name = "last_password", length = 50)
+	@Column(name = "last_password", nullable = true, length = 50)
 	private String lastPassword;
 
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
@@ -57,25 +55,18 @@ public class User implements Serializable {
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
 
-	@Column(name = "date_last_date", nullable = false)
+	@Column(name = "date_last_date", nullable = true)
 	private String dateLastDate;
 
-	@Column(name = "date_session", nullable = false)
+	@Column(name = "date_session", nullable = true)
 	private String dateSession;
 
-	@Column(name = "id_role", nullable = false)
-	private Long idRole;
-
-	@Column(name = "id_person", nullable = false)
-	private Long idPerson;
-	
-	///////////////////////////////////////////////////////
-	// Other
-	///////////////////////////////////////////////////////
-	@Transient
+	@ManyToOne()
+	@JoinColumn(name = "id_person", nullable = false)
 	private Person person;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "id_role", nullable = false)
 	private Role role;
 
 	///////////////////////////////////////////////////////
@@ -101,16 +92,13 @@ public class User implements Serializable {
 				chain = "El id del rol debe ser mayor a cero.";
 			}
 		}
-		if (!PastleyValidate.isChain(mail)) {
-			chain = "El nombre del rol no es valido.";
+		if (!PastleyValidate.isChain(password)) {
+			chain = "La clave no es valida.";
+		}
+		if(person == null) {
+			chain = "No se ha recibido la persona.";
 		}
 		return chain;
-	}
-	/**
-	 * Convert variables to uppercase.
-	 */
-	public void uppercase() {
-		this.mail = PastleyValidate.uppercase(this.mail);
 	}
 
 	///////////////////////////////////////////////////////
@@ -123,14 +111,6 @@ public class User implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
 	}
 
 	public Long getPoints() {
@@ -215,22 +195,6 @@ public class User implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public Long getIdRole() {
-		return idRole;
-	}
-
-	public void setIdRole(Long idRole) {
-		this.idRole = idRole;
-	}
-
-	public Long getIdPerson() {
-		return idPerson;
-	}
-
-	public void setIdPerson(Long idPerson) {
-		this.idPerson = idPerson;
 	}
 
 	public Person getPerson() {

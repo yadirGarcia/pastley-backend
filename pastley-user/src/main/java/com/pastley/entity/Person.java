@@ -62,8 +62,7 @@ public class Person implements Serializable {
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	Person() {
-
+	public Person() {
 	}
 
 	///////////////////////////////////////////////////////
@@ -86,7 +85,43 @@ public class Person implements Serializable {
 		if (!PastleyValidate.isChain(name)) {
 			chain = "El nombre de la persona no es valido.";
 		}
+		if (!PastleyValidate.isChain(subname)) {
+			chain = "El apellido de la persona no es valido.";
+		}
+		if (!PastleyValidate.isChain(phone)) {
+			chain = "El telefono de la persona no es valido.";
+		}
+		if (!PastleyValidate.isChain(email)) {
+			chain = "El email de la persona no es valido.";
+		}
+		if (!PastleyValidate.isEmail(email)) {
+			chain = "El email de la persona no cumple el formato de un email.";
+		}
+		if (document <= 0) {
+			chain = "El documento de la persona no es valido.";
+		}
+		if (idTypeDocument <= 0) {
+			chain = "El tipo de documento de la persona no es valido.";
+		}
 		return chain;
+	}
+	
+
+	public Person update(Person person) {
+		if(person != null) {
+			this.id =  person.getId();
+			this.document = person.getDocument();
+			this.name = person.getName();
+			this.subname = person.getSubname();
+			this.phone = person.getPhone();
+			this.email = person.getEmail();
+			this.address = person.getAddress();
+			this.dateBirthday = person.getDateBirthday();
+			this.dateRegister = person.getDateRegister();
+			this.dateUpdate = person.getDateUpdate();
+			this.idTypeDocument = person.getIdTypeDocument();
+		}
+		return this;
 	}
 
 	/**
@@ -94,10 +129,9 @@ public class Person implements Serializable {
 	 */
 	public void uppercase() {
 		this.name = PastleyValidate.uppercase(this.name);
+		this.subname = PastleyValidate.uppercase(this.subname);
 	}
 
-	
-	
 	///////////////////////////////////////////////////////
 	// Getter and Setter
 	///////////////////////////////////////////////////////

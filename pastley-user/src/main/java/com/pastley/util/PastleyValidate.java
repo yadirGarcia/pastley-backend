@@ -2,6 +2,8 @@ package com.pastley.util;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @project Pastley-Sale.
@@ -25,6 +27,17 @@ public class PastleyValidate implements Serializable{
 	 */
 	public static boolean isChain(String chain) {
 		return chain != null && chain.trim().length() > 0;
+	}
+	
+	public static boolean isEmail(String chain) {
+		if(isChain(chain)) {
+			Pattern pattern = Pattern
+					.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+							+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+			Matcher mather = pattern.matcher(chain);
+			return mather.find();
+		}
+		return false;
 	}
 	
 	/**

@@ -15,14 +15,18 @@ import com.pastley.entity.User;
  * @contributors soleimygomez, serbuitrago, jhonatanbeltran.
  * @version 1.0.0.
  */
-
 @Repository
 public interface UserDAO extends JpaRepository<User,Long> {
 	
-	public User findByMail(String mail);
+	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.role.id = :idRole")
 	public List<User> findByIdRole(Long idRole);	
+	
+	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.person.id = :idPerson")
 	public List<User> findByIdPerson(Long idPerson);	
 	
-	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.id = :id AND u.idRole = :idRole")
+	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.id = :id AND u.role.id = :idRole")
 	public User findByIdAndIdRol(Long id, Long idRole);
+	
+	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.person.id = :idPerson AND u.role.id = :idRole")
+	public User findByPersonAndIdRol(Long idPerson, Long idRole);
 }

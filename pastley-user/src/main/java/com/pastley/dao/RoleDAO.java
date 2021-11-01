@@ -15,8 +15,5 @@ import com.pastley.entity.Role;
 @Repository
 public interface RoleDAO extends JpaRepository<Role, Long> {
 	
-	//public Role findById(Long id);
 	public Role findByName(String name);
-
-	
 }
