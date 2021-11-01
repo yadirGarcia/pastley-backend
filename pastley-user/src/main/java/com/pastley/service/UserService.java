@@ -42,10 +42,10 @@ public class UserService implements PastleyInterface<Long, User> {
 			return null;
 		}
 	}
-
-	public User findByMail(String mail) {
+	
+	public User findByPersonAndIdRol(Long idPerson, Long idRol) {
 		try {
-			return userDAO.findByMail(mail);
+			return userDAO.findByPersonAndIdRol(idPerson, idRol);
 		} catch (Exception e) {
 			return null;
 		}

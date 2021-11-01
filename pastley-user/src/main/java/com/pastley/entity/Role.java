@@ -55,10 +55,14 @@ public class Role implements Serializable {
 	public Role() {
 	}
 	
+	public Role(Long id) {
+		this.id = id;
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////
-	
+
 	/**
 	 * Method that validates the attributes of the class.
 	 * 

@@ -6,6 +6,7 @@ spring:
       enabled: true
       uri: http://localhost:8084
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
     properties:
