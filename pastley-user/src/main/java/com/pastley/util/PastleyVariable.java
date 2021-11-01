@@ -16,4 +16,6 @@ public class PastleyVariable implements Serializable {
 	
 	
 	public static final Long PASTLEY_USER_CUSTOMER_ID = 1L;
+	public static final Long PASTLEY_USER_CASHIER_ID = 2L;
+	public static final Long PASTLEY_USER_ADMINISTRATOR_ID = 3L;
 }
