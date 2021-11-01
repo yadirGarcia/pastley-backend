@@ -19,10 +19,15 @@ target/
 *.iml
 *.ipr
 
+### Eclipse ###
+bin
+
 ### NetBeans ###
+bin/
 /nbproject/private/
 /nbbuild/
 /dist/
+/bin/
 /nbdist/
 /.nb-gradle/
 build/

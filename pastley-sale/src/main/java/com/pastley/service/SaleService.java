@@ -56,6 +56,14 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 	
+	public List<Sale> findByRangeDateRegister(String start, String end) {
+		try {
+			return saleRepository.findByRangeDateRegister(start, end);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////

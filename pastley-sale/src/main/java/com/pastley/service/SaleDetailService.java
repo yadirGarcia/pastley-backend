@@ -54,7 +54,7 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 	
 	public List<SaleDetail> findBySale(Long sale){
 		try {
-			return saleDetailRepository.findBySale(sale);
+			return saleDetailRepository.findByIdSale(sale);
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}

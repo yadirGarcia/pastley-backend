@@ -21,12 +21,17 @@ spring:
         - id: pastley-sale
           uri: lb://pastley-sale
           predicates:
-            - Path=/sale/**,/saleDetail/**,/method/**
+            - Path=/sale/**,/saleDetail/**,/method/**,/cart/**
         - id: pastley-user
           uri: lb://pastley-user
           predicates:
-            - Path=/person/**,/user/**
+            - Path=/person/**,/user/**,/typeDocument/**,/role/**
+        - id: pastley-product
+          uri: lb://pastley-product
+          predicates:
+            - Path=/products/**,/category/**
         - id: pastley-contact
           uri: lb://pastley-contact
           predicates:
-            - Path=/pqr/**,/contact/**,/contact-response/**
+            - Path=/contact/**,/contactResponse/**,/pqr/**,/typePqr/**
+

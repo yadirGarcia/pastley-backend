@@ -22,5 +22,5 @@ public interface SaleDetailRepository extends JpaRepository<SaleDetail, Long>{
 	 * @param sale, Represents the sale.
 	 * @return List with sale details.
 	 */
-	public List<SaleDetail> findBySale(Long sale);
+	public List<SaleDetail> findByIdSale(Long sale);
 }
