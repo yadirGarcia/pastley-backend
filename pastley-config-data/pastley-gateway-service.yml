@@ -34,3 +34,4 @@ spring:
           uri: lb://pastley-contact
           predicates:
             - Path=/contact/**,/contactResponse/**,/pqr/**,/typePqr/**
+
