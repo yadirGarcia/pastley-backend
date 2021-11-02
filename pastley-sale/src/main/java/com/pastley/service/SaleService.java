@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.pastley.entity.Sale;
 import com.pastley.repository.SaleRepository;
@@ -22,6 +23,9 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	
 	@Autowired
 	private SaleRepository saleRepository;
+	
+    @Autowired
+    RestTemplate restTemplate;
 	
 	///////////////////////////////////////////////////////
 	// Method - Find
