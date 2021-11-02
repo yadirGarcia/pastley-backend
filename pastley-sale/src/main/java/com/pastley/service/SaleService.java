@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.pastley.entity.Sale;
+import com.pastley.model.UserModel;
 import com.pastley.repository.SaleRepository;
 import com.pastley.util.PastleyInterface;
 
@@ -20,13 +21,13 @@ import com.pastley.util.PastleyInterface;
  */
 @Service
 public class SaleService implements PastleyInterface<Long, Sale> {
-	
+
 	@Autowired
 	private SaleRepository saleRepository;
-	
-    @Autowired
-    RestTemplate restTemplate;
-	
+
+	@Autowired
+	RestTemplate restTemplate;
+
 	///////////////////////////////////////////////////////
 	// Method - Find
 	///////////////////////////////////////////////////////
@@ -38,7 +39,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return null;
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	@Override
 	public List<Sale> findByStatuAll(boolean statu) {
 		try {
@@ -59,7 +60,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	public List<Sale> findByRangeDateRegister(String start, String end) {
 		try {
 			return saleRepository.findByRangeDateRegister(start, end);
@@ -67,7 +68,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
@@ -79,7 +80,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return null;
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Delete
 	///////////////////////////////////////////////////////
@@ -90,6 +91,18 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return findById(id) == null;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	///////////////////////////////////////////////////////
+	// Method - Other
+	///////////////////////////////////////////////////////
+	public UserModel findUserByDocument(Long documentUser) {
+		try {
+			return restTemplate.getForObject("http://localhost:8080/person/findByDocument/" + documentUser,
+					UserModel.class);
+		} catch (Exception e) {
+			return null;
 		}
 	}
 }
