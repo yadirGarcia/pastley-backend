@@ -1,11 +1,7 @@
 package com.pastley.repository;
 
-import com.pastley.entity.Category;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.pastley.entity.Product;

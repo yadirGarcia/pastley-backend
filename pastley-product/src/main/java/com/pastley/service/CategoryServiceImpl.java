@@ -68,10 +68,10 @@ public class CategoryServiceImpl implements CategoryService{
         if(categoryFound==null){
             throw new GenericException(HttpStatus.NOT_FOUND,"La Categoria que quiere actulizar el estado no existe en la BD");
         }
-        if(categoryFound.getStatus().equals("Activo")){
-            categoryFound.setStatus("Desactivado");
+        if(categoryFound.getStatu().equals("Activo")){
+            categoryFound.setStatu("Desactivado");
         }else{
-            categoryFound.setStatus("Activo");
+            categoryFound.setStatu("Activo");
         }
         categoryRepository.save(categoryFound);
         return categoryFound;

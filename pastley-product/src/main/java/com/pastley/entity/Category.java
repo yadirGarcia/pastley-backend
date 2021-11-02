@@ -16,11 +16,16 @@ public class Category implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
     private Long id;
+    
+	@Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
-    private String status;
+	
+	@Column(name = "statu", nullable = true, columnDefinition = "tinyint(1) default 1")
+    private String statu;
 
-    @Column(name = "date_register")
+    @Column(name = "date_register", nullable = false)
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateRegistrer;
@@ -36,13 +41,12 @@ public class Category implements Serializable{
     }
 
     public Category(){
-
     }
 
     public Category(Long id, String name, String statu, Date dateRegistrer) {
         this.id = id;
         this.name = name;
-        this.status = statu;
+        this.statu = statu;
         this.dateRegistrer = dateRegistrer;
     }
 
@@ -62,12 +66,12 @@ public class Category implements Serializable{
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStatu() {
+        return statu;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatu(String statu) {
+        this.statu = statu;
     }
 
     public Date getDateRegistrer() {
