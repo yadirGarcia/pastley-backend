@@ -36,10 +36,10 @@ public class PersonRest {
 
 	@Autowired
 	private PersonService personService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private TypeDocumentService typeDocumentService;
 
@@ -53,7 +53,7 @@ public class PersonRest {
 				String message = person.validate(false);
 				if (message == null) {
 					TypeDocument type = typeDocumentService.findById(person.getIdTypeDocument());
-					if(type != null) {
+					if (type != null) {
 						Person aux = personService.findByDocument(person.getDocument());
 						if (aux == null) {
 							aux = personService.findByEmail(person.getEmail());
@@ -71,7 +71,8 @@ public class PersonRest {
 										response.add("message",
 												"Se ha registrado la persona con el id " + aux.getId() + ".");
 									} else {
-										response.add("message", "No se ha registrado la persona.", HttpStatus.NO_CONTENT);
+										response.add("message", "No se ha registrado la persona.",
+												HttpStatus.NO_CONTENT);
 									}
 								} else {
 									response.add("message",
@@ -79,7 +80,8 @@ public class PersonRest {
 											HttpStatus.NO_CONTENT);
 								}
 							} else {
-								response.add("message", "Ya existe una persona con ese email '" + person.getEmail() + "'.",
+								response.add("message",
+										"Ya existe una persona con ese email '" + person.getEmail() + "'.",
 										HttpStatus.NO_CONTENT);
 							}
 						} else {
@@ -87,8 +89,11 @@ public class PersonRest {
 									"Ya existe una persona con ese documento '" + person.getDocument() + "'.",
 									HttpStatus.NO_CONTENT);
 						}
-					}else {
-						response.add("message", "No se ha registrado la persona, no existe ningun tipo de documento registrado con el id "+person.getIdTypeDocument()+".", HttpStatus.NO_CONTENT);
+					} else {
+						response.add("message",
+								"No se ha registrado la persona, no existe ningun tipo de documento registrado con el id "
+										+ person.getIdTypeDocument() + ".",
+								HttpStatus.NO_CONTENT);
 					}
 				} else {
 					response.add("message", "No se ha registrado la persona, " + message + ".", HttpStatus.NO_CONTENT);
@@ -102,7 +107,7 @@ public class PersonRest {
 		}
 		return response;
 	}
-	
+
 	public PastleyResponse updatePerson(Person person) {
 		PastleyResponse response = new PastleyResponse();
 		if (person != null) {
@@ -151,6 +156,22 @@ public class PersonRest {
 			response.add("person", person, HttpStatus.OK);
 		} else {
 			response.add("message", "No hay ninguna persona registrada con ese id " + id + ".", HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+
+	/**
+	 * Method that allows you to search for people by document.
+	 */
+	@GetMapping(value = { "/findByDocument/{document}" })
+	public ResponseEntity<?> findByDocument(@PathVariable("document") Long document) {
+		PastleyResponse response = new PastleyResponse();
+		Person person = personService.findByDocument(document);
+		if (person != null) {
+			response.add("person", person, HttpStatus.OK);
+		} else {
+			response.add("message", "No hay ninguna persona registrada con ese documento " + document + ".",
+					HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

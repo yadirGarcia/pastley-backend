@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
+import com.pastley.model.PersonModel;
 import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
 import com.pastley.util.PastleyDate;
@@ -129,6 +130,18 @@ public class SaleController implements Serializable {
 			response.add("message",
 					"No se ha recibido la fecha inicio o la fecha fin, el formato permitido es: 'Año-Mes-Dia'.",
 					HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	@GetMapping(value = "/findPersonByDocument/{documentPerson}")
+	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson){
+		PastleyResponse response = new PastleyResponse();
+		if(documentPerson > 0) {
+			PersonModel user = saleService.findPersonByDocument(documentPerson);
+			if(user != null) {
+				
+			}
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
