@@ -38,7 +38,7 @@ public class Product implements Serializable {
 	private String dimension;
 	
 	@Column(name = "image", nullable = true, length = 500)
-	private byte image;
+	private String image;
 	
 	@Column(name = "statu", nullable = true, columnDefinition = "tinyint(1) default 1")
 	private String statu;
@@ -46,7 +46,7 @@ public class Product implements Serializable {
 	@Column(name = "description", nullable = true, length = 500)
 	private String description;
 	
-	@Column(name = "description", nullable = true, length = 500)
+	@Column(name = "ingredients", nullable = true, length = 500)
 	private String ingredients;
 	
 	@Column(name = "discount", nullable = false)
@@ -164,11 +164,11 @@ public class Product implements Serializable {
 		this.dimension = dimension;
 	}
 
-	public byte getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
