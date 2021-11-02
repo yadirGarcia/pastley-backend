@@ -3,6 +3,7 @@ package com.pastley.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -10,28 +11,53 @@ import javax.persistence.*;
 @Entity
 @Table(name = "product")
 public class Product implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
 	private Long id;
 	
+	@Column(name = "name", nullable = false, unique = true, length = 100)
 	private String name;
-	private String flavor;
-	private double iva;
-	private int stock;
 	
-	@Column(name = "stockmin")
+	@Column(name = "flavor", nullable = true, length = 500)
+	private String flavor;
+	
+	@Column(name = "vat", nullable = false, length = 3)
+	private String vat;
+	
+	@Column(name = "stock", nullable = false)
+	private int stock;
+
+	@Column(name = "stock_min", nullable = false)
 	private int stockMin;
+	
+	@Column(name = "dimension", nullable = true)
 	private String dimension;
+	
+	@Column(name = "image", nullable = true, length = 500)
 	private byte image;
-	private String status;
-	private String descripcion;
+	
+	@Column(name = "statu", nullable = true, columnDefinition = "tinyint(1) default 1")
+	private String statu;
+	
+	@Column(name = "description", nullable = true, length = 500)
+	private String description;
+	
+	@Column(name = "description", nullable = true, length = 500)
 	private String ingredients;
-	@Column(name = "descu")
-	private double desc;
-	private double price;
+	
+	@Column(name = "discount", nullable = false)
+	private String discount;
+	
+	@Column(name = "price", nullable = false)
+	private BigInteger price;
+
+	public BigInteger getPrice() {
+		return price;
+	}
 
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
@@ -46,14 +72,9 @@ public class Product implements Serializable {
 	public void prePersist() {
 		this.createAt = new Date();
 	}
-	
-	
 
 	public Product() {
-		
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -79,12 +100,44 @@ public class Product implements Serializable {
 		this.flavor = flavor;
 	}
 
-	public double getIva() {
-		return iva;
+	public String getVat() {
+		return vat;
 	}
 
-	public void setIva(double iva) {
-		this.iva = iva;
+	public void setVat(String vat) {
+		this.vat = vat;
+	}
+
+	public String getStatu() {
+		return statu;
+	}
+
+	public void setStatu(String statu) {
+		this.statu = statu;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setPrice(BigInteger price) {
+		this.price = price;
 	}
 
 	public int getStock() {
@@ -119,44 +172,12 @@ public class Product implements Serializable {
 		this.image = image;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
 	public String getIngredients() {
 		return ingredients;
 	}
 
 	public void setIngredients(String ingredients) {
 		this.ingredients = ingredients;
-	}
-
-	public double getDesc() {
-		return desc;
-	}
-
-	public void setDesc(double desc) {
-		this.desc = desc;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
 	}
 
 	public Date getCreateAt() {

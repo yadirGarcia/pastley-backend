@@ -1,20 +1,27 @@
+#SPRING
 spring:
   #APP
   application:
-    name: pastley-products
-  #EUREKA
+    name: pastley-product
+  #CONFIG
   cloud:
     config:
       enabled: true
       uri: http://localhost:8084
-  
- 
+  #JPA
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update #create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dbproductos?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/lsy_product?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
-    password:   
-#ACTUATOR
+    password: 
+#ACTUATOR EUREKA
 management:
   endpoints:
     web:
@@ -22,4 +29,4 @@ management:
         include: "*"
   endpoint:
     health:
-      show-components: always
+      show-details: always

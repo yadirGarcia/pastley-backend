@@ -93,16 +93,16 @@ public class ProductServiceImpl implements ProductService {
 		productFound.setCategory(category);
 		productFound.setName(product.getName());
 		productFound.setFlavor(product.getFlavor());
-		productFound.setIva(product.getIva());
+		productFound.setVat(product.getVat());
 		productFound.setStock(product.getStock());
 		productFound.setStockMin(product.getStockMin());
 		productFound.setDimension(product.getDimension());
 		productFound.setImage(product.getImage());
-		productFound.setStatus(product.getStatus());
-		productFound.setDescripcion(product.getDescripcion());
+		productFound.setStatu(product.getStatu());
+		productFound.setDescription(product.getDescription());
 		productFound.setIngredients(product.getIngredients());
-		productFound.setDesc(product.getDesc());
-		productFound.setDesc(product.getPrice());
+		productFound.setDiscount(product.getDiscount());
+		productFound.setPrice(product.getPrice());
 		productRepository.save(productFound);
 
 		return productFound;
