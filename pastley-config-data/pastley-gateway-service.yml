@@ -29,7 +29,7 @@ spring:
         - id: pastley-product
           uri: lb://pastley-product
           predicates:
-            - Path=/products/**,/category/**
+            - Path=/product/**,/category/**
         - id: pastley-contact
           uri: lb://pastley-contact
           predicates:

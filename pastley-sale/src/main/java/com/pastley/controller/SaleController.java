@@ -134,14 +134,24 @@ public class SaleController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 	
+	/**
+	 * Method that allows consulting one person per document.
+	 * @param documentPerson Represents the person's document.
+	 * @returnThe generated response.
+	 */
 	@GetMapping(value = "/findPersonByDocument/{documentPerson}")
 	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson){
 		PastleyResponse response = new PastleyResponse();
 		if(documentPerson > 0) {
-			PersonModel user = saleService.findPersonByDocument(documentPerson);
-			if(user != null) {
-				
+			PersonModel person = saleService.findPersonByDocument(documentPerson);
+			if(person != null) {
+				response.add("person", person, HttpStatus.OK);
+				response.add("message", "Se han encontrado una persona con el documento "+documentPerson+".");
+			}else {
+				response.add("message", "No se han encontrado ninguna persona con el documento "+documentPerson+".");
 			}
+		}else {
+			response.add("message", "El documento de la persona no es valido.");
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
