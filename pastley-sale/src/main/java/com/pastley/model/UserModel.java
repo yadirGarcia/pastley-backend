@@ -2,6 +2,7 @@ package com.pastley.model;
 
 import java.io.Serializable;
 
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -14,106 +15,80 @@ public class UserModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Long document;
-	private String name;
-	private String subname;
-	private String phone;
-	private String email;
-	private String address;
-	private String dateBirthday;
-	private Long idTypeDocument;
 
+	private Long points;
+	private String ip;
+	private boolean statu;
+	private boolean session;
+	private PersonModel person;
+	private RoleModel role;
+	
 	public UserModel() {
-		this(0L, 0L, null, null, null, null, null, null, 0L);
+		this(0L, 0L, null, false, false, new PersonModel(), new RoleModel());
 	}
-
-	public UserModel(Long document, String name, String subname, String phone, String email, String address,
-			String dateBirthday, Long idTypeDocument) {
-		this(0L, document, name, subname, phone, email, address, dateBirthday, idTypeDocument);
+	
+	public UserModel(String ip, boolean statu, boolean session, PersonModel person,
+			RoleModel role) {
+		this(0L, 0L, ip, statu, session, person, role);
 	}
-
-	public UserModel(Long id, Long document, String name, String subname, String phone, String email, String address,
-			String dateBirthday, Long idTypeDocument) {
+	
+	public UserModel(Long id, Long points, String ip, boolean statu, boolean session, PersonModel person,
+			RoleModel role) {
 		this.id = id;
-		this.document = document;
-		this.name = name;
-		this.subname = subname;
-		this.phone = phone;
-		this.email = email;
-		this.address = address;
-		this.dateBirthday = dateBirthday;
-		this.idTypeDocument = idTypeDocument;
+		this.points = points;
+		this.ip = ip;
+		this.statu = statu;
+		this.session = session;
+		this.person = person;
+		this.role = role;
 	}
-
+	
+	///////////////////////////////////////////////////////
+	// Getter and Setters
+	///////////////////////////////////////////////////////
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Long getDocument() {
-		return document;
+	public Long getPoints() {
+		return points;
 	}
-
-	public void setDocument(Long document) {
-		this.document = document;
+	public void setPoints(Long points) {
+		this.points = points;
 	}
-
-	public String getName() {
-		return name;
+	public String getIp() {
+		return ip;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
-
-	public String getSubname() {
-		return subname;
+	public boolean isStatu() {
+		return statu;
 	}
-
-	public void setSubname(String subname) {
-		this.subname = subname;
+	public void setStatu(boolean statu) {
+		this.statu = statu;
 	}
-
-	public String getPhone() {
-		return phone;
+	public boolean isSession() {
+		return session;
 	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setSession(boolean session) {
+		this.session = session;
 	}
-
-	public String getEmail() {
-		return email;
+	public PersonModel getPerson() {
+		return person;
 	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setPerson(PersonModel person) {
+		this.person = person;
 	}
-
-	public String getAddress() {
-		return address;
+	public RoleModel getRole() {
+		return role;
 	}
-
-	public void setAddress(String address) {
-		this.address = address;
+	public void setRole(RoleModel role) {
+		this.role = role;
 	}
-
-	public String getDateBirthday() {
-		return dateBirthday;
-	}
-
-	public void setDateBirthday(String dateBirthday) {
-		this.dateBirthday = dateBirthday;
-	}
-
-	public Long getIdTypeDocument() {
-		return idTypeDocument;
-	}
-
-	public void setIdTypeDocument(Long idTypeDocument) {
-		this.idTypeDocument = idTypeDocument;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }
