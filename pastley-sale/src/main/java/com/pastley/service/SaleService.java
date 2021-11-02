@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.pastley.entity.Sale;
-import com.pastley.model.UserModel;
+import com.pastley.model.PersonModel;
 import com.pastley.repository.SaleRepository;
 import com.pastley.util.PastleyInterface;
 
@@ -97,10 +97,10 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	///////////////////////////////////////////////////////
 	// Method - Other
 	///////////////////////////////////////////////////////
-	public UserModel findUserByDocument(Long documentUser) {
+	public PersonModel findPersonByDocument(Long documentPerson) {
 		try {
-			return restTemplate.getForObject("http://localhost:8080/person/findByDocument/" + documentUser,
-					UserModel.class);
+			return restTemplate.getForObject("http://localhost:8080/person/findByDocument/" + documentPerson,
+					PersonModel.class);
 		} catch (Exception e) {
 			return null;
 		}
