@@ -27,6 +27,6 @@ public interface UserDAO extends JpaRepository<User,Long> {
 	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.id = :id AND u.role.id = :idRole")
 	public User findByIdAndIdRol(Long id, Long idRole);
 	
-	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.person.id = :idPerson AND u.role.id = :idRole")
-	public User findByPersonAndIdRol(Long idPerson, Long idRole);
+	@Query(nativeQuery = false, value = "SELECT u FROM User u WHERE u.person.document = :documentPerson AND u.role.id = :idRole")
+	public User findByPersonAndIdRol(Long documentPerson, Long idRole);
 }
