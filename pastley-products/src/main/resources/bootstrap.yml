@@ -1,0 +1,25 @@
+spring:
+  #APP
+  application:
+    name: pastley-products
+  #EUREKA
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8084
+  
+ 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dbproductos?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: root
+    password:   
+#ACTUATOR
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-components: always
