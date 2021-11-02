@@ -33,5 +33,5 @@ spring:
         - id: pastley-contact
           uri: lb://pastley-contact
           predicates:
-            - Path=/contact/**,/contactResponse/**,/pqr/**,/typePqr/**
+            - Path=/contact/**,/contactResponse/**,/company/**,/typePqr/**
 

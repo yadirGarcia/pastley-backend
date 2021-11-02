@@ -71,31 +71,34 @@ public class UserRest implements Serializable {
 					user.setRole(roleService.findById(idRole));
 					if (user.getRole() != null) {
 						message = user.getPerson().validate(false);
-						if(message == null ) {
+						if (message == null) {
 							PastleyResponse res = personRest.createPerson(user.getPerson());
 							Person personRegister = (Person) res.getMap().get("person");
 							message = (String) res.getMap().get("message");
-							boolean next = (user.getPerson() != null);
+							boolean next = (personRegister != null);
 							if (!next) {
-								System.out.println("VALIDANDO");
 								Person personDocument = personService.findByDocument(user.getPerson().getDocument());
-								if(personDocument != null) {
-									System.out.println("VALIDANDO DOCUMENT");
-									res = personRest.updatePerson(user.getPerson().update(personDocument));
-									personDocument = (Person) res.getMap().get("person");
-									next = (personDocument != null);
-									message = (!next) ? "No se ha actulizado la información de la persona." : "Se ha actualizado la información de la persona.";
+								if (personDocument != null) {
+									if (!next) {
+										next = (userService.findByIdAndIdRol(personDocument.getDocument(),
+												idRole) == null);
+										message = (!next) ? "Ya existe ese usuario con ese rol" : message;
+									}
+									if (!next) {
+										res = personRest.updatePerson(user.getPerson().update(personDocument));
+										personDocument = (Person) res.getMap().get("person");
+										next = (personDocument != null);
+										message = (!next) ? "No se ha actulizado la información de la persona."
+												: "Se ha actualizado la información de la persona.";
+									}
+
+								} else {
+									message = "No existe ninguna persona con ese documento.";
 								}
-								if(!next) {
-									System.out.println("VALIDANDO PERSON Y SOL");
-									next = (userService.findByIdAndIdRol(user.getId(), idRole) == null);
-									message = (!next) ? "Ya existe ese usuario con ese rol" : message;
-								}
-							}else {
+							} else {
 								user.setPerson(personRegister);
 							}
 							if (next) {
-								System.out.println("registrar usuario");
 								PastleyDate date = new PastleyDate();
 								// user.setPassword(passwordEncoder.encode(user.getPassword()));
 								user.setDateRegister(date.currentToDateTime(null));
@@ -115,13 +118,14 @@ public class UserRest implements Serializable {
 											"Se ha registrado el " + name + " con el id " + user.getId() + ".",
 											HttpStatus.OK);
 								} else {
-									response.add("message", "No se ha registrado el " + name + ".", HttpStatus.NO_CONTENT);
+									response.add("message", "No se ha registrado el " + name + ".",
+											HttpStatus.NO_CONTENT);
 								}
 							} else {
 								response.add("message", "No se ha registrado el " + name + ", " + message,
 										HttpStatus.NO_CONTENT);
 							}
-						}else {
+						} else {
 							response.add("message", "No se ha registrado el " + name + ", " + message,
 									HttpStatus.NO_CONTENT);
 						}
