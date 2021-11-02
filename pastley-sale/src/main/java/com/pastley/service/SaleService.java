@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.pastley.entity.Sale;
+import com.pastley.feignclients.PersonFeignClient;
 import com.pastley.model.PersonModel;
 import com.pastley.repository.SaleRepository;
 import com.pastley.util.PastleyInterface;
@@ -26,7 +26,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	private SaleRepository saleRepository;
 
 	@Autowired
-	RestTemplate restTemplate;
+	private PersonFeignClient personFeignClient;
 
 	///////////////////////////////////////////////////////
 	// Method - Find
@@ -99,8 +99,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	///////////////////////////////////////////////////////
 	public PersonModel findPersonByDocument(Long documentPerson) {
 		try {
-			return restTemplate.getForObject("http://localhost:8080/person/findByDocument/" + documentPerson,
-					PersonModel.class);
+			return personFeignClient.findByDocument(documentPerson);
 		} catch (Exception e) {
 			return null;
 		}
