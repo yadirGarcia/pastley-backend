@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
 import com.pastley.model.PersonModel;
+import com.pastley.model.ProductModel;
 import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
 import com.pastley.util.PastleyDate;
@@ -134,10 +135,13 @@ public class SaleController implements Serializable {
 		return ResponseEntity.ok(response.getMap());
 	}
 	
+	///////////////////////////////////////////////////////
+	// Method - Get - Microservice User
+	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows consulting one person per document.
 	 * @param documentPerson Represents the person's document.
-	 * @returnThe generated response.
+	 * @return The generated response.
 	 */
 	@GetMapping(value = "/findPersonByDocument/{documentPerson}")
 	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson){
@@ -152,6 +156,31 @@ public class SaleController implements Serializable {
 			}
 		}else {
 			response.add("message", "El documento de la persona no es valido.");
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Get - Microservice Product
+	///////////////////////////////////////////////////////
+	/**
+	 * 
+	 * @param idProduct
+	 * @return The generated response.
+	 */
+	@GetMapping(value = {"/findProductById/{idProduct}"})
+	public ResponseEntity<?> findProductById(@PathVariable("idProduct") Long idProduct){
+		PastleyResponse response = new PastleyResponse();
+		if(idProduct > 0) {
+			ProductModel product = saleService.findProductById(idProduct);
+			if(product != null) {
+				response.add("product", product, HttpStatus.OK);
+				response.add("message", "Se han encontrado el producto con el id "+idProduct+".");
+			}else {
+				response.add("message", "No se han encontrado ningun producto con el id "+idProduct+".");
+			}
+		}else {
+			response.add("message", "El id del producto no es valido.");
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
