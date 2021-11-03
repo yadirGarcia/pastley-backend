@@ -149,15 +149,14 @@ public class SaleController implements Serializable {
 		if(documentPerson > 0) {
 			PersonModel person = saleService.findPersonByDocument(documentPerson);
 			if(person != null) {
-				response.add("person", person, HttpStatus.OK);
-				response.add("message", "Se han encontrado una persona con el documento "+documentPerson+".");
+				return ResponseEntity.ok(person);
 			}else {
 				response.add("message", "No se han encontrado ninguna persona con el documento "+documentPerson+".");
 			}
 		}else {
 			response.add("message", "El documento de la persona no es valido.");
 		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getMap());
 	}
 	
 	///////////////////////////////////////////////////////
@@ -174,15 +173,14 @@ public class SaleController implements Serializable {
 		if(idProduct > 0) {
 			ProductModel product = saleService.findProductById(idProduct);
 			if(product != null) {
-				response.add("product", product, HttpStatus.OK);
-				response.add("message", "Se han encontrado el producto con el id "+idProduct+".");
+				return ResponseEntity.ok(product);
 			}else {
 				response.add("message", "No se han encontrado ningun producto con el id "+idProduct+".");
 			}
 		}else {
 			response.add("message", "El id del producto no es valido.");
 		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getMap());
 	}
 
 	///////////////////////////////////////////////////////
