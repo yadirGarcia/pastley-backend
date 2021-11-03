@@ -12,6 +12,4 @@ public class MensajeError {
     private String excepcion;
     private String url;
     private int status;
-
-
 }

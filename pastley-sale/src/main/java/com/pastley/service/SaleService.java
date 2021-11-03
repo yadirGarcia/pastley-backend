@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.pastley.entity.Sale;
 import com.pastley.feignclients.PersonFeignClient;
+import com.pastley.feignclients.ProductFeignClient;
 import com.pastley.model.PersonModel;
+import com.pastley.model.ProductModel;
 import com.pastley.repository.SaleRepository;
 import com.pastley.util.PastleyInterface;
 
@@ -27,6 +29,9 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 
 	@Autowired
 	private PersonFeignClient personFeignClient;
+	
+	@Autowired
+	private ProductFeignClient productFeignClient;
 
 	///////////////////////////////////////////////////////
 	// Method - Find
@@ -100,6 +105,14 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	public PersonModel findPersonByDocument(Long documentPerson) {
 		try {
 			return personFeignClient.findByDocument(documentPerson);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public ProductModel findProductById(Long idProduct) {
+		try {
+			return productFeignClient.findById(idProduct);
 		} catch (Exception e) {
 			return null;
 		}

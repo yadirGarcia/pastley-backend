@@ -21,6 +21,9 @@ public class ProductModel implements Serializable {
 	private String name;
 	private BigInteger price;
 	private String discount;
+	
+	private int stock;
+	private String image;
 
 	///////////////////////////////////////////////////////
 	// Other
@@ -37,22 +40,28 @@ public class ProductModel implements Serializable {
 	}
 
 	public ProductModel(Long id, String name, BigInteger price, String discount) {
-		this(id, name, price, discount, null);
+		this(id, name, price, discount, 0, null, null);
 	}
 
 	public ProductModel(BigInteger price, String discount, String vat) {
-		this(0L, null, price, discount, vat);
+		this(0L, null, price, discount, 0, null, vat);
 	}
 
 	public ProductModel(Long id, BigInteger price, String discount, String vat) {
-		this(id, null, price, discount, vat);
+		this(id, null, price, discount, 0, null, vat);
 	}
 
 	public ProductModel(Long id, String name, BigInteger price, String discount, String vat) {
+		this(id, name, price, discount, 0, null, vat);
+	}
+
+	public ProductModel(Long id, String name, BigInteger price, String discount, int stock, String image, String vat) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
+		this.stock = stock;
+		this.image = image;
 		this.vat = vat;
 	}
 
@@ -205,6 +214,26 @@ public class ProductModel implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getStock() {
+		return stock;
+	}
+
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public void setPriceVat(BigInteger priceVat) {
+		this.priceVat = priceVat;
 	}
 
 	public String getVat() {
