@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
-public class PastleExceptionModel implements Serializable {
+public class PastleExceptionMessage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,10 +21,10 @@ public class PastleExceptionModel implements Serializable {
 	///////////////////////////////////////////////////////
 	// Builders
 	///////////////////////////////////////////////////////
-	public PastleExceptionModel() {
+	public PastleExceptionMessage() {
 	}
 	
-	public PastleExceptionModel(String message, String exception, String path, int statu) {
+	public PastleExceptionMessage(String message, String exception, String path, int statu) {
 		this.message = message;
 		this.exception = exception;
 		this.path = path;
