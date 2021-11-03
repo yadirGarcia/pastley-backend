@@ -1,4 +1,4 @@
-package com.pastley.controller;
+package com.pastley.rest;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -32,7 +32,7 @@ import com.pastley.util.PastleyValidate;
  */
 @RestController
 @RequestMapping("/method")
-public class MethodPayController implements Serializable {
+public class MethodPayRest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,17 +48,9 @@ public class MethodPayController implements Serializable {
 	 * @param id, Represents the identifier of the payment method.
 	 * @return The generated response.
 	 */
-	@GetMapping(value = { "/findById/{id}", "{id}" })
-	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		MethodPay methodPay = methodPayService.findById(id);
-		if (methodPay != null) {
-			response.add("method", methodPay, HttpStatus.OK);
-			response.add("message", "Se ha encontrado el metodo de pago con el id " + id + ".");
-		} else {
-			response.add("message", "No existe ningun metodo de pago con el id " + id + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+	@GetMapping(value = { "/{id}" })
+	public ResponseEntity<MethodPay> findById(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.findById(id));
 	}
 
 	/**
@@ -124,9 +116,11 @@ public class MethodPayController implements Serializable {
 	}
 
 	/**
-	 * Method that allows filtering the payment methods that are registered between a date range.
+	 * Method that allows filtering the payment methods that are registered between
+	 * a date range.
+	 * 
 	 * @param start, Represents the start date.
-	 * @param end, Represents the end date.
+	 * @param end,   Represents the end date.
 	 * @return The generated response.
 	 */
 	@GetMapping(value = "/findByRangeDateRegisterAll/{start}/{end}")
@@ -134,10 +128,8 @@ public class MethodPayController implements Serializable {
 		PastleyResponse response = new PastleyResponse();
 		PastleyDate date = new PastleyDate();
 		try {
-			String array_date[] = { 
-				date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
-				date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) 
-			};
+			String array_date[] = { date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+					date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) };
 			List<MethodPay> list = methodPayService.findByRangeDateRegister(array_date[0], array_date[1]);
 			if (list.isEmpty()) {
 				response.add("message", "No hay ningun metodo de pago resgitrado en ese rango de fecha " + array_date[0]
@@ -155,47 +147,46 @@ public class MethodPayController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
+
 	/**
 	 * Method that allows to know the amount of sale made by a payment method.
+	 * 
 	 * @param id, Represents the identifier of the payment method.
 	 * @return The generated response.
 	 */
 	@GetMapping(value = "/findByStatisticSale/{id}")
-	public ResponseEntity<?> findByStatisticSale(@PathVariable Long id){
+	public ResponseEntity<?> findByStatisticSale(@PathVariable Long id) {
 		PastleyResponse response = new PastleyResponse();
-		if(id > 0) {
+		if (id > 0) {
 			MethodPay method = methodPayService.findById(id);
-			if(method != null) {
+			if (method != null) {
 				StatisticModel<MethodPay> sm = new StatisticModel<>(method, methodPayService.findByStatisticSale(id));
 				response.add("statistic", sm, HttpStatus.OK);
-				response.add("message",
-						"Se generado la estadistica del metodo de pago con id "+id+".");
-			}else {
-				response.add("message", "No existe ningun metodo de pago con el id " + id + ".",
-						HttpStatus.NO_CONTENT);
+				response.add("message", "Se generado la estadistica del metodo de pago con id " + id + ".");
+			} else {
+				response.add("message", "No existe ningun metodo de pago con el id " + id + ".", HttpStatus.NO_CONTENT);
 			}
-		}else {
+		} else {
 			response.add("message", "El id del metodo de pago no es valido.", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
+
 	/**
 	 * Method that allows to know the amount of sales made by a payment method.
+	 * 
 	 * @return The generated response.
 	 */
 	@GetMapping(value = "/findByStatisticSaleAll")
-	public ResponseEntity<?> findByStatisticSaleAll(){
+	public ResponseEntity<?> findByStatisticSaleAll() {
 		PastleyResponse response = new PastleyResponse();
 		List<StatisticModel<MethodPay>> list = methodPayService.findByStatisticSaleAll();
-		if(list.isEmpty()) {
+		if (list.isEmpty()) {
 			response.add("message", "No se pudo generar la estadistica, no hay valores para mostrar.",
 					HttpStatus.NO_CONTENT);
-		}else {
+		} else {
 			response.add("statistics", list, HttpStatus.OK);
-			response.add("message",
-					"Se generado la estadistica con " + list.size() + " metodos de pago.");
+			response.add("message", "Se generado la estadistica con " + list.size() + " metodos de pago.");
 		}
 		return ResponseEntity.ok(response.getMap());
 	}

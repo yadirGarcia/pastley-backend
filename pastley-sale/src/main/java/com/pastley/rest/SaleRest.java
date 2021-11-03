@@ -1,4 +1,4 @@
-package com.pastley.controller;
+package com.pastley.rest;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -34,7 +34,7 @@ import com.pastley.util.PastleyResponse;
  */
 @RestController
 @RequestMapping("/sale")
-public class SaleController implements Serializable {
+public class SaleRest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

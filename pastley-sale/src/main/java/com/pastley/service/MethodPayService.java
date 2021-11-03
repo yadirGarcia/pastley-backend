@@ -2,14 +2,17 @@ package com.pastley.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pastley.repository.MethodPayRepository;
 import com.pastley.entity.MethodPay;
 import com.pastley.model.StatisticModel;
 import com.pastley.util.PastleyInterface;
+import com.pastley.util.exception.PastleyException;
 
 /**
  * @project Pastley-Sale.
@@ -29,10 +32,15 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 	///////////////////////////////////////////////////////
 	@Override
 	public MethodPay findById(Long id) {
-		try {
-			return methodPayRepository.findById(id).orElse(null);
-		} catch (Exception e) {
-			return null;
+		if (id > 0) {
+			Optional<MethodPay> method = methodPayRepository.findById(id);
+			if (!method.isPresent()) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se encontro ningun metodo de pago con el id " + id + ".");
+			}
+			return method.orElse(null);
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del metodo de pago no es valido.");
 		}
 	}
 
@@ -76,7 +84,7 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 	///////////////////////////////////////////////////////
 	// Method - Find - Statistic
 	///////////////////////////////////////////////////////
-	public Long findByStatisticSale(Long id){
+	public Long findByStatisticSale(Long id) {
 		try {
 			Long count = methodPayRepository.countByMethodPaySale(id);
 			return count == null ? 0L : count;
@@ -84,6 +92,7 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 			return 0L;
 		}
 	}
+
 	///////////////////////////////////////////////////////
 	// Method - Find - Statistic - List
 	///////////////////////////////////////////////////////
