@@ -165,15 +165,11 @@ public class PersonRest {
 	 */
 	@GetMapping(value = { "/findByDocument/{document}" })
 	public ResponseEntity<?> findByDocument(@PathVariable("document") Long document) {
-		PastleyResponse response = new PastleyResponse();
 		Person person = personService.findByDocument(document);
 		if (person != null) {
-			response.add("person", person, HttpStatus.OK);
-		} else {
-			response.add("message", "No hay ninguna persona registrada con ese documento " + document + ".",
-					HttpStatus.NOT_FOUND);
-		}
-		return ResponseEntity.ok(response.getMap());
+			return ResponseEntity.ok(person);
+		} 
+		 return ResponseEntity.notFound().build();
 	}
 
 	/**
