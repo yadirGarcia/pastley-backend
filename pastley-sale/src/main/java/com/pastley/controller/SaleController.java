@@ -134,31 +134,33 @@ public class SaleController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Get - Microservice User
 	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows consulting one person per document.
+	 * 
 	 * @param documentPerson Represents the person's document.
 	 * @return The generated response.
 	 */
 	@GetMapping(value = "/findPersonByDocument/{documentPerson}")
-	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson){
+	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson) {
 		PastleyResponse response = new PastleyResponse();
-		if(documentPerson > 0) {
+		if (documentPerson > 0) {
 			PersonModel person = saleService.findPersonByDocument(documentPerson);
-			if(person != null) {
+			if (person != null) {
 				return ResponseEntity.ok(person);
-			}else {
-				response.add("message", "No se han encontrado ninguna persona con el documento "+documentPerson+".");
+			} else {
+				response.add("message",
+						"No se han encontrado ninguna persona con el documento " + documentPerson + ".");
 			}
-		}else {
+		} else {
 			response.add("message", "El documento de la persona no es valido.");
 		}
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getMap());
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Get - Microservice Product
 	///////////////////////////////////////////////////////
@@ -167,20 +169,10 @@ public class SaleController implements Serializable {
 	 * @param idProduct
 	 * @return The generated response.
 	 */
-	@GetMapping(value = {"/findProductById/{idProduct}"})
-	public ResponseEntity<?> findProductById(@PathVariable("idProduct") Long idProduct){
-		PastleyResponse response = new PastleyResponse();
-		if(idProduct > 0) {
-			ProductModel product = saleService.findProductById(idProduct);
-			if(product != null) {
-				return ResponseEntity.ok(product);
-			}else {
-				response.add("message", "No se han encontrado ningun producto con el id "+idProduct+".");
-			}
-		}else {
-			response.add("message", "El id del producto no es valido.");
-		}
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getMap());
+	@GetMapping(value = { "/findProductById/{idProduct}" })
+	public ResponseEntity<?> findProductById(@PathVariable("idProduct") Long idProduct) {
+		ProductModel product = saleService.findProductById(idProduct);
+		return (product != null) ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
 	}
 
 	///////////////////////////////////////////////////////

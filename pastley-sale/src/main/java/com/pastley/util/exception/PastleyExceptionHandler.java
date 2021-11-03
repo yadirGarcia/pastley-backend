@@ -25,13 +25,13 @@ public class PastleyExceptionHandler {
 	///////////////////////////////////////////////////////
 	// METHOD
 	///////////////////////////////////////////////////////
-	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<PastleExceptionMessage> AllExceptions(HttpServletRequest request, Exception exception) {
+	@ExceptionHandler(PastleyException.class)
+	public final ResponseEntity<PastleExceptionModel> AllExceptions(HttpServletRequest request, Exception exception) {
 
-		ResponseEntity<PastleExceptionMessage> result;
+		ResponseEntity<PastleExceptionModel> result;
 		Integer code = getStatus(exception);
 		code = (code == null) ? HttpStatus.INTERNAL_SERVER_ERROR.value() : code;
-		PastleExceptionMessage error = new PastleExceptionMessage(exception.getMessage(),
+		PastleExceptionModel error = new PastleExceptionModel(exception.getMessage(),
 				exception.getClass().getSimpleName(), request.getRequestURI(), code);
 		result = new ResponseEntity<>(error, HttpStatus.valueOf(code));
 		exception.printStackTrace();
