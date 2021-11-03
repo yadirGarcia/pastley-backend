@@ -21,7 +21,7 @@ import com.pastley.model.ProductModel;
 @RequestMapping("/product")
 public interface ProductFeignClient {
 	
-	@GetMapping(value = { "/findById/{id}" })
+	@GetMapping(value = { "/{id}" })
 	public ProductModel findById(@PathVariable("id") Long id);
 	
 	@PutMapping(value = {"update/stock"})

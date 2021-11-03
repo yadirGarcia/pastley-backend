@@ -1,4 +1,4 @@
-package com.pastley.controller;
+package com.pastley.rest;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +30,7 @@ import com.pastley.util.PastleyResponse;
  */
 @RestController
 @RequestMapping("/cart")
-public class CartController implements Serializable {
+public class CartRest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

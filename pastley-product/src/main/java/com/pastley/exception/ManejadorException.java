@@ -42,5 +42,4 @@ public class ManejadorException {
         }
         return STATUS.get(e.getClass().getSimpleName());
     }
-
 }

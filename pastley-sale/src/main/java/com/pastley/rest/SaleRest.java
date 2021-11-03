@@ -1,4 +1,4 @@
-package com.pastley.controller;
+package com.pastley.rest;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
 import com.pastley.model.PersonModel;
+import com.pastley.model.ProductModel;
 import com.pastley.service.SaleDetailService;
 import com.pastley.service.SaleService;
 import com.pastley.util.PastleyDate;
@@ -33,7 +34,7 @@ import com.pastley.util.PastleyResponse;
  */
 @RestController
 @RequestMapping("/sale")
-public class SaleController implements Serializable {
+public class SaleRest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -133,27 +134,45 @@ public class SaleController implements Serializable {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
-	
+
+	///////////////////////////////////////////////////////
+	// Method - Get - Microservice User
+	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows consulting one person per document.
+	 * 
 	 * @param documentPerson Represents the person's document.
-	 * @returnThe generated response.
+	 * @return The generated response.
 	 */
 	@GetMapping(value = "/findPersonByDocument/{documentPerson}")
-	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson){
+	public ResponseEntity<?> findUserByDocument(@PathVariable("documentPerson") Long documentPerson) {
 		PastleyResponse response = new PastleyResponse();
-		if(documentPerson > 0) {
+		if (documentPerson > 0) {
 			PersonModel person = saleService.findPersonByDocument(documentPerson);
-			if(person != null) {
-				response.add("person", person, HttpStatus.OK);
-				response.add("message", "Se han encontrado una persona con el documento "+documentPerson+".");
-			}else {
-				response.add("message", "No se han encontrado ninguna persona con el documento "+documentPerson+".");
+			if (person != null) {
+				return ResponseEntity.ok(person);
+			} else {
+				response.add("message",
+						"No se han encontrado ninguna persona con el documento " + documentPerson + ".");
 			}
-		}else {
+		} else {
 			response.add("message", "El documento de la persona no es valido.");
 		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getMap());
+	}
+
+	///////////////////////////////////////////////////////
+	// Method - Get - Microservice Product
+	///////////////////////////////////////////////////////
+	/**
+	 * 
+	 * @param idProduct
+	 * @return The generated response.
+	 */
+	@GetMapping(value = { "/findProductById/{idProduct}" })
+	public ResponseEntity<?> findProductById(@PathVariable("idProduct") Long idProduct) {
+		ProductModel product = saleService.findProductById(idProduct);
+		return (product != null) ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
 	}
 
 	///////////////////////////////////////////////////////

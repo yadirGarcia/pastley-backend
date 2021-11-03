@@ -11,6 +11,13 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * @project Pastley-Sale.
+ * @author Sergio Stives Barrios Buitrago.
+ * @Github https://github.com/SerBuitrago.
+ * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
+ * @version 1.0.0.
+ */
 public class PastleyDate implements Serializable{
 
 	private static final long serialVersionUID = 1L;

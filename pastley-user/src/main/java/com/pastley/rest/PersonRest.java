@@ -150,7 +150,6 @@ public class PersonRest {
 	@GetMapping(value = { "/findById/{id}", "/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
-
 		Person person = personService.findById(id);
 		if (person != null) {
 			response.add("person", person, HttpStatus.OK);
@@ -166,14 +165,18 @@ public class PersonRest {
 	@GetMapping(value = { "/findByDocument/{document}" })
 	public ResponseEntity<?> findByDocument(@PathVariable("document") Long document) {
 		PastleyResponse response = new PastleyResponse();
-		Person person = personService.findByDocument(document);
-		if (person != null) {
-			response.add("person", person, HttpStatus.OK);
+		if (document > 0) {
+			Person person = personService.findByDocument(document);
+			if (person != null) {
+				return ResponseEntity.ok(person);
+			} else {
+				response.add("message", "No hay ninguna persona registrada con numero de documento " + document + ".",
+						HttpStatus.NO_CONTENT);
+			}
 		} else {
-			response.add("message", "No hay ninguna persona registrada con ese documento " + document + ".",
-					HttpStatus.NOT_FOUND);
+			response.add("message", "El documento de la persona no es valido.", HttpStatus.NO_CONTENT);
 		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getMap());
 	}
 
 	/**
