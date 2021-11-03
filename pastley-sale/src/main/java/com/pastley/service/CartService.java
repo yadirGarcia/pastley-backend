@@ -2,11 +2,14 @@ package com.pastley.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pastley.util.PastleyInterface;
+import com.pastley.util.exception.PastleyException;
 import com.pastley.entity.Cart;
 import com.pastley.repository.CartRepository;
 
@@ -28,10 +31,15 @@ public class CartService implements PastleyInterface<Long, Cart>{
 	///////////////////////////////////////////////////////
 	@Override
 	public Cart findById(Long id) {
-		try {
-			return cartRepository.findById(id).orElse(null);
-		} catch (Exception e) {
-			return null;
+		if(id > 0 ) {
+			Optional<Cart> cart = cartRepository.findById(id);
+			if(cart.isPresent()) {
+				return cart.orElse(null);
+			}else {
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha encontrado ningun producto en el carrito con el id "+id+".");
+			}
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del producto del carrito no es valido.");
 		}
 	}
 
