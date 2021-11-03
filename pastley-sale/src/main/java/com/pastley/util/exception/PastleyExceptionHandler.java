@@ -27,7 +27,6 @@ public class PastleyExceptionHandler {
 	///////////////////////////////////////////////////////
 	@ExceptionHandler(PastleyException.class)
 	public final ResponseEntity<PastleExceptionModel> AllExceptions(HttpServletRequest request, Exception exception) {
-
 		ResponseEntity<PastleExceptionModel> result;
 		Integer code = getStatus(exception);
 		code = (code == null) ? HttpStatus.INTERNAL_SERVER_ERROR.value() : code;
