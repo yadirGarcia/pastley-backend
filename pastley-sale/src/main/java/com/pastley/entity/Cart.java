@@ -108,7 +108,7 @@ public class Cart implements Serializable {
 	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////	
-	public String validate(boolean isId) {
+	public String validate(boolean isId, boolean isPrice) {
 		String chain = null;
 		if(isId) {
 			if(id <= 0) {
@@ -121,8 +121,10 @@ public class Cart implements Serializable {
 		if(idCustomer <= 0) {
 			chain = "El id del cliente debe ser mayor a cero.";
 		}
-		if(!PastleyValidate.bigIntegerHigherZero(price)) {
-			chain = "El precio del producto debe ser mayor a cero.";
+		if(isPrice) {
+			if(!PastleyValidate.bigIntegerHigherZero(price)) {
+				chain = "El precio del producto debe ser mayor a cero.";
+			}
 		}
 		if(count < 0) {
 			chain = "La cantidad debe ser mayor a cero.";

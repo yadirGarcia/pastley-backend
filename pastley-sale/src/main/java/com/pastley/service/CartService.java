@@ -1,5 +1,6 @@
 package com.pastley.service;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import com.pastley.util.PastleyInterface;
 import com.pastley.util.PastleyValidate;
 import com.pastley.util.exception.PastleyException;
 import com.pastley.entity.Cart;
+import com.pastley.model.ProductModel;
 import com.pastley.repository.CartRepository;
 
 /**
@@ -238,25 +240,44 @@ public class CartService implements PastleyInterface<Long, Cart> {
 	 */
 	public Cart save(Cart entity, byte type) {
 		if (entity != null) {
-			String message = entity.validate(false);
+			String message = entity.validate(false, false);
 			String messageType = (type == 1) ? "registrar"
 					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
 			if (message == null) {
-				Cart cart = null;
-				if (entity.getId() != null && entity.getId() > 0) {
-					cart = saveToUpdate(entity, type);
-				} else {
-					cart = saveToSave(entity, type);
-				}
-				cart.setDiscount(PastleyValidate.isChain(cart.getDiscount()) ? cart.getDiscount() : "0");
-				cart.setVat(PastleyValidate.isChain(cart.getVat()) ? cart.getVat() : "0");
-				cart.calculate();
-				cart = cartRepository.save(cart);
-				if (cart != null) {
-					return cart;
+				ProductModel product = saService.findProductById(entity.getIdProduct());
+				if (product != null) {
+					Cart cart = null;
+					if (entity.getId() != null && entity.getId() > 0) {
+						cart = saveToUpdate(entity, type);
+					} else {
+						cart = saveToSave(entity, type);
+					}
+					cart.setPrice(PastleyValidate.bigIntegerHigherZero(entity.getPrice()) ? entity.getPrice()
+							: PastleyValidate.bigIntegerHigherZero(product.getPrice()) ? product.getPrice()
+									: BigInteger.ZERO);
+					if(PastleyValidate.bigIntegerHigherZero(cart.getPrice())) {
+						cart.setDiscount(PastleyValidate.isChain(cart.getDiscount()) ? cart.getDiscount()
+								: PastleyValidate.isChain(product.getDiscount()) ? product.getDiscount() : "0");
+						cart.setVat(PastleyValidate.isChain(cart.getVat()) ? cart.getVat()
+								: PastleyValidate.isChain(product.getVat()) ? product.getVat() : "0");
+						cart.calculate();
+						cart = cartRepository.save(cart);
+						if (cart != null) {
+							return cart;
+						} else {
+							throw new PastleyException(HttpStatus.NOT_FOUND,
+									"No se ha " + messageType + " el producto carrito.");
+						}
+					}else {
+						throw new PastleyException(HttpStatus.NOT_FOUND,
+								"No se ha " + messageType
+										+ " el producto carrito, el precio del producto debe ser mayor a cero.");
+					}
 				} else {
 					throw new PastleyException(HttpStatus.NOT_FOUND,
-							"No se ha " + messageType + " el producto carrito.");
+							"No se ha " + messageType
+									+ " el producto carrito, no se ha encontrado ningun producto con el id "
+									+ entity.getId() + ".");
 				}
 			} else {
 				throw new PastleyException(HttpStatus.NOT_FOUND,
