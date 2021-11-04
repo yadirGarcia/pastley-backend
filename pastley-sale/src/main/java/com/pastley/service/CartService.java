@@ -135,6 +135,24 @@ public class CartService implements PastleyInterface<Long, Cart> {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del cliente no es valido.");
 		}
 	}
+	
+	/**
+	 * Method that allows consulting the different carts with the same product.
+	 * @param idCustomer, Represents the customer id.
+	 * @param idProduct,  Represents the product id.
+	 * @return List Cart.
+	 */
+	public List<Cart> findByCustomerAndProduct(Long idCustomer, Long idProduct){
+		if (idCustomer > 0) {
+			if (idProduct > 0) {
+				return cartRepository.findByCustomerAndProduct(idCustomer, idProduct);
+			} else {
+				throw new PastleyException(HttpStatus.NOT_FOUND, "El id del producto no es valido.");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del cliente no es valido.");
+		}
+	}
 
 	/**
 	 * Method that allows you to check the products in the cart by product and
@@ -210,6 +228,12 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		return null;
 	}
 
+	/**
+	 * Method that allows you to register or update a cart product.
+	 * @param entity, Represents the cart product.
+	 * @param type, Represents the type of operation
+	 * @return Cart.
+	 */
 	public Cart save(Cart entity, byte type) {
 		if (entity != null) {
 			String message = entity.validate(false);
@@ -241,6 +265,12 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
+	/**
+	 * Method that allows you to register a cart product.
+	 * @param entity, Represents the cart product.
+	 * @param type, Represents the type of operation
+	 * @return Cart.
+	 */
 	private Cart saveToSave(Cart entity, byte type) {
 		try {
 			findByCustomerAndProductAndStatu(true, entity.getIdCustomer(), entity.getIdProduct());
@@ -256,6 +286,12 @@ public class CartService implements PastleyInterface<Long, Cart> {
 				+ " ya tiene agregado en el carrito el producto con el id " + entity.getIdProduct() + ".");
 	}
 
+	/**
+	 * Method that allows you to update a cart product.
+	 * @param entity, Represents the cart product.
+	 * @param type, Represents the type of operation
+	 * @return Cart.
+	 */
 	private Cart saveToUpdate(Cart entity, byte type) {
 		return null;
 	}
