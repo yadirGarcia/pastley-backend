@@ -1,7 +1,8 @@
 package com.pastley.service;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,9 @@ import com.pastley.model.PersonModel;
 import com.pastley.model.ProductModel;
 import com.pastley.model.UserModel;
 import com.pastley.repository.SaleRepository;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyInterface;
+import com.pastley.util.PastleyValidate;
 import com.pastley.util.exception.PastleyException;
 
 /**
@@ -39,41 +42,82 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	///////////////////////////////////////////////////////
 	// Method - Find
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to consult a sale by its id.
+	 * 
+	 * @param id, Represents the identifier of the sale.
+	 * @return Sale.
+	 */
 	@Override
 	public Sale findById(Long id) {
-		try {
-			return saleRepository.findById(id).orElse(null);
-		} catch (Exception e) {
-			return null;
+		if(id > 0) {
+			Optional<Sale> sale = saleRepository.findById(id);
+			if(sale != null) {
+				return sale.orElse(null);
+			}else {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se ha encontrado ninguna venta con el id " + id + ".");
+			}
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id de la venta no es valido.");
 		}
 	}
 
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows all sales to be consulted.
+	 */
 	@Override
 	public List<Sale> findAll() {
-		try {
-			return saleRepository.findAll();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
+		return saleRepository.findAll();
 	}
 
+	/**
+	 * Method that allows you to check sales by their status.
+	 * @param statu, Represents the state.
+	 * @return List of Sale.
+	 */
 	@Override
 	public List<Sale> findByStatuAll(boolean statu) {
-		try {
-			return saleRepository.findByStatu(statu);
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
+		return saleRepository.findByStatu(statu);
 	}
-
+	
+	///////////////////////////////////////////////////////
+	// Method - Find - List - Range
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows consulting the sales that are in a date range.
+	 * @param start, Represents the start date.
+	 * @param end,   Represents the end date.
+	 * @return List of Sale.
+	 */
 	public List<Sale> findByRangeDateRegister(String start, String end) {
-		try {
-			return saleRepository.findByRangeDateRegister(start, end);
-		} catch (Exception e) {
-			return new ArrayList<>();
+		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
+		return saleRepository.findByRangeDateRegister(array_date[0], array_date[1]);
+	}
+	
+	/**
+	 * Method that allows to validate the two dates.
+	 * 
+	 * @param start, Represents the start date.
+	 * @param end,   Represents the end date.
+	 * @return Array.
+	 */
+	private String[] findByRangeDateRegisterValidateDate(String start, String end) {
+		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
+			PastleyDate date = new PastleyDate();
+			try {
+				String array_date[] = { date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+						date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) };
+				return array_date;
+			} catch (ParseException e) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"El formato permitido para las fechas es: 'Año-Mes-Dia'.");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la fecha inicio o la fecha fin.");
 		}
 	}
 

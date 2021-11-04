@@ -41,4 +41,34 @@ public class SaleRest implements Serializable {
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(saleService.findById(id));
 	}
+	
+	/**
+	 * Method that allows all sales to be consulted.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = {"", "/all"})
+	public ResponseEntity<?> findAll() {
+		return ResponseEntity.status(HttpStatus.OK).body(saleService.findAll());
+	}
+	
+	/**
+	 * Method that allows you to check sales by their status.
+	 * @param statu, Represents the state.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/all/find/statu/{statu}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") Boolean statu) {
+		return ResponseEntity.status(HttpStatus.OK).body(saleService.findByStatuAll(statu));
+	}
+	
+	/**
+	 * Method that allows consulting the sales that are in a date range.
+	 * @param start, Represents the start date.
+	 * @param end,   Represents the end date.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/range/all/find/date/register/{start}/{end}")
+	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("start") String start, @PathVariable("end") String end) {
+		return ResponseEntity.status(HttpStatus.OK).body(saleService.findByRangeDateRegister(start, end));
+	}
 }
