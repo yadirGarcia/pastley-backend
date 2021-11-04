@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,6 +83,16 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomerAndStatus(idCustomer, statu));
 	}
 	
-
-	
+	///////////////////////////////////////////////////////
+	// Method - Delete
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to delete a product with the cart.
+	 * @param id, Represents the identifier of the cart.
+	 * @return The generated response.
+	 */
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.delete(id));
+	}	
 }

@@ -1,5 +1,6 @@
 package com.pastley.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyInterface;
+import com.pastley.util.PastleyValidate;
 import com.pastley.util.exception.PastleyException;
 import com.pastley.entity.Cart;
 import com.pastley.repository.CartRepository;
@@ -109,6 +112,54 @@ public class CartService implements PastleyInterface<Long, Cart>{
 	public List<Cart> findByProductAndStatus(Long idProduct, boolean statu) {
 		saService.findProductById(idProduct);
 		return cartRepository.findByProductAndStatus(idProduct, statu);
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Find - List - Range
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to filter the products in the cart that are registered between a range of dates.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return List of carts.
+	 */
+	public List<Cart> findByRangeDateRegister(String start, String end) {
+		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
+		return cartRepository.findByRangeDateRegister(array_date[0], array_date[1]);
+	}
+	
+	/**
+	 * Method that allows you to filter the products in the cart that are registered between a range of dates and the customer's id.
+	 * @param idCustomer, Represents the customer id.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return List of carts.
+	 */
+	public List<Cart> findByRangeDateRegisterAndCustomer(Long idCustomer, String start, String end) {
+		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
+		return cartRepository.findByRangeDateRegisterAndCustomer(idCustomer, array_date[0], array_date[1]);
+	}
+	
+	/**
+	 * Method that allows to validate the two dates.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return Array.
+	 */
+	private String[] findByRangeDateRegisterValidateDate(String start, String end) {
+		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
+			PastleyDate date = new PastleyDate();
+			try {
+				String array_date[] = { date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+						date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) };
+				return array_date;
+			} catch (ParseException e) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"El formato permitido para las fechas es: 'Año-Mes-Dia'.");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la fecha inicio o la fecha fin.");
+		}
 	}
 	
 	///////////////////////////////////////////////////////
