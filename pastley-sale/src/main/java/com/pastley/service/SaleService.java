@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pastley.entity.Sale;
@@ -11,8 +12,10 @@ import com.pastley.feignclients.PersonFeignClient;
 import com.pastley.feignclients.ProductFeignClient;
 import com.pastley.model.PersonModel;
 import com.pastley.model.ProductModel;
+import com.pastley.model.UserModel;
 import com.pastley.repository.SaleRepository;
 import com.pastley.util.PastleyInterface;
+import com.pastley.util.exception.PastleyException;
 
 /**
  * @project Pastley-Sale.
@@ -103,18 +106,34 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	// Method - Other
 	///////////////////////////////////////////////////////
 	public PersonModel findPersonByDocument(Long documentPerson) {
-		try {
-			return personFeignClient.findByDocument(documentPerson);
-		} catch (Exception e) {
-			return null;
+		if(documentPerson > 0) {
+			PersonModel person = personFeignClient.findByDocument(documentPerson);
+			if(person == null) {
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha encontrado ninguna persona con el documento "+documentPerson+".");
+			}
+			return person;
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El documento de la persona no es valido.");
+		}
+	}
+	
+	public UserModel findUserById(Long idUser) {
+		if(idUser > 0) {
+			return new UserModel();
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del usuario no es valido.");
 		}
 	}
 	
 	public ProductModel findProductById(Long idProduct) {
-		try {
-			return productFeignClient.findById(idProduct);
-		} catch (Exception e) {
-			return null;
+		if(idProduct > 0) {
+			ProductModel product = productFeignClient.findById(idProduct);
+			if(product == null) {
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha encontrado ningun producto con el id "+idProduct+".");
+			}
+			return product;
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del producto no es valido.");
 		}
 	}
 }

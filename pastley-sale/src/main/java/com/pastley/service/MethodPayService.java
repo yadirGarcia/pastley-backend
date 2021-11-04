@@ -73,6 +73,9 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 		return methodPayRepository.findByStatu(statu);
 	}
 
+	///////////////////////////////////////////////////////
+	// Method - Find - List - Range
+	///////////////////////////////////////////////////////
 	public List<MethodPay> findByRangeDateRegister(String start, String end) {
 		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
 			PastleyDate date = new PastleyDate();

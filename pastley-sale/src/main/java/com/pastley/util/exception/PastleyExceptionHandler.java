@@ -23,7 +23,7 @@ public class PastleyExceptionHandler {
 	private static final Map<String, Integer> STATUS = new HashMap<>();
 	
 	///////////////////////////////////////////////////////
-	// METHOD
+	// Method
 	///////////////////////////////////////////////////////
 	@ExceptionHandler(PastleyException.class)
 	public final ResponseEntity<PastleExceptionModel> AllExceptions(HttpServletRequest request, Exception exception) {
