@@ -1,6 +1,5 @@
 package com.pastley.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,13 +54,23 @@ public class CartService implements PastleyInterface<Long, Cart>{
 	///////////////////////////////////////////////////////
 	// Method - Find - List
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to consult all the products in the cart.
+	 * @return List of carts.
+	 */
 	@Override
 	public List<Cart> findAll() {
-		try {
-			return cartRepository.findAll();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
+		return cartRepository.findAll();
+	}
+	
+	/**
+	 * Method that allows you to consult all the carts by their status.
+	 * @param statu, Represents the status of the product in cart.
+	 * @return List of carts.
+	 */
+	@Override
+	public List<Cart> findByStatuAll(boolean statu) {
+		return cartRepository.findByStatu(statu);
 	}
 	
 	/**
@@ -101,11 +110,6 @@ public class CartService implements PastleyInterface<Long, Cart>{
 		saService.findProductById(idProduct);
 		return cartRepository.findByProductAndStatus(idProduct, statu);
 	}
-
-	@Override
-	public List<Cart> findByStatuAll(boolean statu) {
-		return new ArrayList<>();
-	}
 	
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
@@ -122,13 +126,26 @@ public class CartService implements PastleyInterface<Long, Cart>{
 	///////////////////////////////////////////////////////
 	// Method - Save and Update
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to delete a product with the cart.
+	 */
 	@Override
 	public boolean delete(Long id) {
-		try {
+		Cart cart = findById(id);
+		if(cart.isStatu()) {
 			cartRepository.deleteById(id);
-			return findById(id) == null;
-		} catch (Exception e) {
-			return false;
+			try {
+				if(findById(id) == null) {
+					return true;
+				}
+			} catch (PastleyException e) {
+				return true;
+			}
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"No se ha eliminado el producto del carito con el id " + id + ", ya se realizo la venta.");
 		}
+		throw new PastleyException(HttpStatus.NOT_FOUND,
+				"No se ha eliminado el producto del carito con el id " + id + ".");
 	}
 }

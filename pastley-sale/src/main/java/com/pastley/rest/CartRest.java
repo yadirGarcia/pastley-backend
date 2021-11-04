@@ -43,6 +43,25 @@ public class CartRest implements Serializable {
 	}
 	
 	/**
+	 * Method that allows you to consult all the products in the cart.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = {"", "/all"})
+	public ResponseEntity<?> findAll() {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.findAll());
+	}
+	
+	/**
+	 * Method that allows you to consult all the carts by their status.
+	 * @param statu, Represents the status of the product in cart.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/all/find/statu/{statu}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") Boolean statu) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByStatuAll(statu));
+	}
+	
+	/**
 	 * Method that allows consulting all the products of a client.
 	 * @param idCustomer, Represents the customer id.
 	 * @return The generated response.
@@ -59,8 +78,10 @@ public class CartRest implements Serializable {
 	 * @return The generated response.
 	 */
 	@GetMapping(value = { "/all/find/customer/{idCustomer}/statu/{statu}"})
-	public ResponseEntity<?> findProductsByCustomer(@PathVariable("idCustomer") Long idCustomer, @PathVariable("statu") boolean statu) {
+	public ResponseEntity<?> findProductsByCustomer(@PathVariable("idCustomer") Long idCustomer, @PathVariable("statu") Boolean statu) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomerAndStatus(idCustomer, statu));
 	}
+	
+
 	
 }
