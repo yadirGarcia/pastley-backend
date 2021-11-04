@@ -135,14 +135,15 @@ public class CartService implements PastleyInterface<Long, Cart> {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del cliente no es valido.");
 		}
 	}
-	
+
 	/**
 	 * Method that allows consulting the different carts with the same product.
+	 * 
 	 * @param idCustomer, Represents the customer id.
 	 * @param idProduct,  Represents the product id.
 	 * @return List Cart.
 	 */
-	public List<Cart> findByCustomerAndProduct(Long idCustomer, Long idProduct){
+	public List<Cart> findByCustomerAndProduct(Long idCustomer, Long idProduct) {
 		if (idCustomer > 0) {
 			if (idProduct > 0) {
 				return cartRepository.findByCustomerAndProduct(idCustomer, idProduct);
@@ -230,8 +231,9 @@ public class CartService implements PastleyInterface<Long, Cart> {
 
 	/**
 	 * Method that allows you to register or update a cart product.
+	 * 
 	 * @param entity, Represents the cart product.
-	 * @param type, Represents the type of operation
+	 * @param type,   Represents the type of operation
 	 * @return Cart.
 	 */
 	public Cart save(Cart entity, byte type) {
@@ -267,8 +269,9 @@ public class CartService implements PastleyInterface<Long, Cart> {
 
 	/**
 	 * Method that allows you to register a cart product.
+	 * 
 	 * @param entity, Represents the cart product.
-	 * @param type, Represents the type of operation
+	 * @param type,   Represents the type of operation
 	 * @return Cart.
 	 */
 	private Cart saveToSave(Cart entity, byte type) {
@@ -288,12 +291,24 @@ public class CartService implements PastleyInterface<Long, Cart> {
 
 	/**
 	 * Method that allows you to update a cart product.
+	 * 
 	 * @param entity, Represents the cart product.
-	 * @param type, Represents the type of operation
+	 * @param type,   Represents the type of operation
 	 * @return Cart.
 	 */
 	private Cart saveToUpdate(Cart entity, byte type) {
-		return null;
+		Cart cart = findById(entity.getId());
+		if (cart != null) {
+			PastleyDate date = new PastleyDate();
+			entity.setDateRegister(cart.getDateRegister());
+			entity.setCount(entity.getCount() + cart.getCount());
+			entity.setDateUpdate(date.currentToDateTime(null));
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"No se ha encontrado ningun producto carrito con el id " + entity.getId() + ".");
+		}
+		return entity;
+
 	}
 
 	///////////////////////////////////////////////////////
