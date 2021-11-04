@@ -40,5 +40,16 @@ public class CartRest implements Serializable {
 	@GetMapping(value = { "/find/id/{id}", "{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findById(id));
-	}	
+	}
+	
+	/**
+	 * Method that allows consulting all the products of a client.
+	 * @param idCustomer, Represents the customer id.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = { "/all/find/customer/{idCustomer}"})
+	public ResponseEntity<?> findProductsByCustomer(@PathVariable("idCustomer") Long idCustomer) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomer(idCustomer));
+	}
+	
 }

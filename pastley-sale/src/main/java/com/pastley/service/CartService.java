@@ -29,6 +29,12 @@ public class CartService implements PastleyInterface<Long, Cart>{
 	///////////////////////////////////////////////////////
 	// Method - Find
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to check the cart for its id.
+	 * 
+	 * @param id, Represents the identifier of the cart.
+	 * @return Cart.
+	 */
 	@Override
 	public Cart findById(Long id) {
 		if(id > 0 ) {
@@ -55,11 +61,16 @@ public class CartService implements PastleyInterface<Long, Cart>{
 		}
 	}
 	
-	public List<Cart> findByCustomer(Long customer){
-		try {
-			return cartRepository.findByIdCustomer(customer);
-		} catch (Exception e) {
-			return new ArrayList<>();
+	/**
+	 * Method that allows consulting all the products of a client.
+	 * @param idCustomer, Represents the customer id.
+	 * @return List of carts.
+	 */
+	public List<Cart> findByCustomer(Long idCustomer){
+		if(idCustomer > 0) {
+			return cartRepository.findByIdCustomer(idCustomer);
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del cliente no es valido.");
 		}
 	}
 	
