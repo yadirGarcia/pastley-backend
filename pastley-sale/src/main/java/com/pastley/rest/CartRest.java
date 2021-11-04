@@ -83,6 +83,29 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomerAndStatus(idCustomer, statu));
 	}
 	
+	/**
+	 * Method that allows you to filter the products in the cart that are registered between a range of dates.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/range/all/find/date/register/{start}/{end}")
+	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("start") String start, @PathVariable("end") String end) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByRangeDateRegister(start, end));
+	}
+	
+	/**
+	 * Method that allows you to filter the products in the cart that are registered between a range of dates and the customer's id.
+	 * @param idCustomer, Represents the customer id.
+	 * @param start, Represents the start date.
+	 * @param end, Represents the end date.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/range/all/find/customer/{idCustomer}/date/register/{start}/{end}")
+	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("idCustomer") Long idCustomer, @PathVariable("start") String start, @PathVariable("end") String end) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByRangeDateRegisterAndCustomer(idCustomer, start, end));
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Delete
 	///////////////////////////////////////////////////////

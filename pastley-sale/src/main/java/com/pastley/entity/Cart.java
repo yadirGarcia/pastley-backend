@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.pastley.model.ProductModel;
+import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-Sale.
@@ -106,6 +107,28 @@ public class Cart implements Serializable {
 	
 	///////////////////////////////////////////////////////
 	// Method
+	///////////////////////////////////////////////////////	
+	public String validate(boolean isId) {
+		String chain = null;
+		if(isId) {
+			if(id <= 0) {
+				chain = "El id del carrito debe ser mayor a cero.";
+			}
+		}
+		if(idProduct <= 0) {
+			chain = "El id del producto debe ser mayor a cero.";
+		}
+		if(idCustomer <= 0) {
+			chain = "El id del cliente debe ser mayor a cero.";
+		}
+		if(!PastleyValidate.bigIntegerHigherZero(price)) {
+			chain = "El precio del producto debe ser mayor a cero.";
+		}
+		return chain;
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Price
 	///////////////////////////////////////////////////////	
 	/**
 	 * Method that allows all prices to be calculated.
