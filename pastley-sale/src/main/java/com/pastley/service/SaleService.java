@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pastley.entity.Sale;
+import com.pastley.entity.SaleDetail;
 import com.pastley.feignclients.PersonFeignClient;
 import com.pastley.feignclients.ProductFeignClient;
 import com.pastley.model.PersonModel;
@@ -34,8 +35,11 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	private SaleRepository saleRepository;
 
 	@Autowired
+	private SaleDetailService saleDetailService;
+
+	@Autowired
 	private PersonFeignClient personFeignClient;
-	
+
 	@Autowired
 	private ProductFeignClient productFeignClient;
 
@@ -50,15 +54,15 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	 */
 	@Override
 	public Sale findById(Long id) {
-		if(id > 0) {
+		if (id > 0) {
 			Optional<Sale> sale = saleRepository.findById(id);
-			if(sale != null) {
+			if (sale != null) {
 				return sale.orElse(null);
-			}else {
+			} else {
 				throw new PastleyException(HttpStatus.NOT_FOUND,
 						"No se ha encontrado ninguna venta con el id " + id + ".");
 			}
-		}else {
+		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id de la venta no es valido.");
 		}
 	}
@@ -76,6 +80,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 
 	/**
 	 * Method that allows you to check sales by their status.
+	 * 
 	 * @param statu, Represents the state.
 	 * @return List of Sale.
 	 */
@@ -83,12 +88,13 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	public List<Sale> findByStatuAll(boolean statu) {
 		return saleRepository.findByStatu(statu);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Method - Find - List - Range
 	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows consulting the sales that are in a date range.
+	 * 
 	 * @param start, Represents the start date.
 	 * @param end,   Represents the end date.
 	 * @return List of Sale.
@@ -97,7 +103,7 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
 		return saleRepository.findByRangeDateRegister(array_date[0], array_date[1]);
 	}
-	
+
 	/**
 	 * Method that allows to validate the two dates.
 	 * 
@@ -126,57 +132,145 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	///////////////////////////////////////////////////////
 	@Override
 	public Sale save(Sale entity) {
-		try {
-			return saleRepository.save(entity);
-		} catch (Exception e) {
-			return null;
+		return null;
+	}
+	
+	/**
+	 * Method that allows you to register or update a sale.
+	 * 
+	 * @param entity, Represents the sale.
+	 * @param type,   Represents the type of operation
+	 * @return Sale.
+	 */
+	public Sale save(Sale entity, byte type) {
+		if (entity != null) {
+			String message = entity.validate(false);
+			String messageType = (type == 1) ? "registrar"
+					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
+			if (message == null) {
+				Sale sale = null;
+				if (entity.getId() != null && entity.getId() > 0) {
+					sale = saveToUpdate(entity, type);
+				} else {
+					sale = saveToSave(entity, type);
+				}
+				sale = saleRepository.save(sale);
+				if (sale != null) {
+					return sale;
+				} else {
+					throw new PastleyException(HttpStatus.NOT_FOUND,
+							"No se ha " + messageType + " la venta.");
+				}
+			} else {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se ha " + messageType + " la venta, " + message + ".");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la venta.");
 		}
+	}
+
+	/**
+	 * Method that allows you to register a sale.
+	 * 
+	 * @param entity, Represents the sale.
+	 * @param type,   Represents the type of operation
+	 * @return Sale.
+	 */
+	public Sale saveToSave(Sale entity, byte type) {
+		return null;
+	}
+
+	/**
+	 * Method that allows you to update a sale.
+	 * 
+	 * @param entity, Represents the sale.
+	 * @param type,   Represents the type of operation
+	 * @return Sale.
+	 */
+	public Sale saveToUpdate(Sale entity, byte type) {
+		return null;
 	}
 
 	///////////////////////////////////////////////////////
 	// Method - Delete
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to delete a sale
+	 * 
+	 * @param id, Represents the identifier of the sale.
+	 */
 	@Override
 	public boolean delete(Long id) {
-		try {
+		findById(id);
+		List<SaleDetail> list = saleDetailService.findBySale(id);
+		if (list.isEmpty()) {
 			saleRepository.deleteById(id);
-			return findById(id) == null;
-		} catch (Exception e) {
-			return false;
+			try {
+				if (findById(id) == null) {
+					return true;
+				}
+			} catch (PastleyException e) {
+				return true;
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la venta con el id  " + id
+					+ ", tiene asociado a " + list.size() + " detalles de ventas.");
 		}
+		throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la venta con el id " + id + ".");
 	}
 
 	///////////////////////////////////////////////////////
 	// Method - Other
 	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows a person to consult their document.
+	 * 
+	 * @param documentPerson, Represents the person document.
+	 * @return Person.
+	 */
 	public PersonModel findPersonByDocument(Long documentPerson) {
-		if(documentPerson > 0) {
+		if (documentPerson > 0) {
 			PersonModel person = personFeignClient.findByDocument(documentPerson);
-			if(person == null) {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha encontrado ninguna persona con el documento "+documentPerson+".");
+			if (person == null) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se ha encontrado ninguna persona con el documento " + documentPerson + ".");
 			}
 			return person;
-		}else {
+		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El documento de la persona no es valido.");
 		}
 	}
-	
+
+	/**
+	 * Method that allows consulting a user by his id.
+	 * 
+	 * @param idUser, Represents the id of the user.
+	 * @return User.
+	 */
 	public UserModel findUserById(Long idUser) {
-		if(idUser > 0) {
+		if (idUser > 0) {
 			return new UserModel();
-		}else {
+		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del usuario no es valido.");
 		}
 	}
-	
+
+	/**
+	 * Method that allows knowing a product by its id
+	 * 
+	 * @param idProduct, Represents the product id.
+	 * @return Product.
+	 */
 	public ProductModel findProductById(Long idProduct) {
-		if(idProduct > 0) {
+		if (idProduct > 0) {
 			ProductModel product = productFeignClient.findById(idProduct);
-			if(product == null) {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha encontrado ningun producto con el id "+idProduct+".");
+			if (product == null) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se ha encontrado ningun producto con el id " + idProduct + ".");
 			}
 			return product;
-		}else {
+		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del producto no es valido.");
 		}
 	}
