@@ -32,7 +32,7 @@ public class SaleRest implements Serializable {
 	// Method - Get
 	///////////////////////////////////////////////////////
 	/**
-	 * Method that allows you to consult a sale by its id.
+	 * Method that allows you to consult a s  ale by its id.
 	 * 
 	 * @param id, Represents the identifier of the sale.
 	 * @return The generated response.
