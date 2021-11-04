@@ -25,6 +25,9 @@ public class CartService implements PastleyInterface<Long, Cart>{
 	
 	@Autowired
 	private CartRepository cartRepository;
+	
+	@Autowired
+	private SaleService saService;
 
 	///////////////////////////////////////////////////////
 	// Method - Find
@@ -74,20 +77,29 @@ public class CartService implements PastleyInterface<Long, Cart>{
 		}
 	}
 	
-	public List<Cart> findByCustomerAndStatus(Long customer, boolean statu) {
-		try {
-			return cartRepository.findByCustomerAndStatus(customer, statu);
-		} catch (Exception e) {
-			return new ArrayList<>();
+	/**
+	 * Method that allows to consult all the products of a client and by their status.
+	 * @param id, Represents the customer id.
+	 * @param statu, Represents the status of the product
+	 * @return List of carts.
+	 */
+	public List<Cart> findByCustomerAndStatus(Long idCustomer, boolean statu) {
+		if(idCustomer > 0) {
+			return cartRepository.findByCustomerAndStatus(idCustomer, statu);
+		}else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del cliente no es valido.");
 		}
 	}
 	
-	public List<Cart> findByProductAndStatus(Long id, boolean statu) {
-		try {
-			return cartRepository.findByProductAndStatus(id, statu);
-		} catch (Exception e) {
-			return null;
-		}
+	/**
+	 * Method that allows you to check the products in the cart by product and status.
+	 * @param idProduct, Represents the product id.
+	 * @param statu, Represents the status of the product.
+	 * @return List of carts.
+	 */
+	public List<Cart> findByProductAndStatus(Long idProduct, boolean statu) {
+		saService.findProductById(idProduct);
+		return cartRepository.findByProductAndStatus(idProduct, statu);
 	}
 
 	@Override

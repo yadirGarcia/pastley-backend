@@ -52,4 +52,15 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomer(idCustomer));
 	}
 	
+	/**
+	 * Method that allows to consult all the products of a client and by their status.
+	 * @param id, Represents the customer id.
+	 * @param statu, Represents the status of the product
+	 * @return The generated response.
+	 */
+	@GetMapping(value = { "/all/find/customer/{idCustomer}/statu/{statu}"})
+	public ResponseEntity<?> findProductsByCustomer(@PathVariable("idCustomer") Long idCustomer, @PathVariable("statu") boolean statu) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomerAndStatus(idCustomer, statu));
+	}
+	
 }
