@@ -124,6 +124,9 @@ public class Cart implements Serializable {
 		if(!PastleyValidate.bigIntegerHigherZero(price)) {
 			chain = "El precio del producto debe ser mayor a cero.";
 		}
+		if(count < 0) {
+			chain = "La cantidad debe ser mayor a cero.";
+		}
 		return chain;
 	}
 	

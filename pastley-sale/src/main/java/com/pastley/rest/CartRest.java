@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pastley.entity.Cart;
 import com.pastley.service.CartService;
 
 /**
@@ -104,6 +108,45 @@ public class CartRest implements Serializable {
 	@GetMapping(value = "/range/all/find/customer/{idCustomer}/date/register/{start}/{end}")
 	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("idCustomer") Long idCustomer, @PathVariable("start") String start, @PathVariable("end") String end) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByRangeDateRegisterAndCustomer(idCustomer, start, end));
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Post
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows you to register a product in the cart.
+	 * @param cart, Represents the cart.
+	 * @return The generated response.
+	 */
+	@PostMapping(value = "")
+	public ResponseEntity<?> create(@RequestBody Cart cart) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 1));
+	}
+	
+	///////////////////////////////////////////////////////
+	// Method - Put
+	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows updating the information of a product in the cart.
+	 * 
+	 * @param cart, Represents the cart.
+	 * @return The generated response.
+	 */
+	@PutMapping(value = "")
+	public ResponseEntity<?> update(@RequestBody Cart cart) {
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 2));
+	}
+	
+	/**
+	 * Method that allows updating the status of a cart product
+	 * 
+	 * @param id, Represents the identifier of the cart.
+	 * @return The generated response.
+	 */
+	@PutMapping(value = "/update/{id}/statu")
+	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
+		Cart cart = cartService.findById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 3));
 	}
 	
 	///////////////////////////////////////////////////////

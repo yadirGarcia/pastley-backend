@@ -18,6 +18,16 @@ import com.pastley.entity.Cart;
  */
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
+	
+	/**
+	 * Method that allows consulting a product in the cart by the customer id and the product id.
+	 * @param idCustomer, Represents the customer id.
+	 * @param statu, Represents the status of the product.
+	 * @param idProduct, Represents the product id.
+	 * @return Cart.
+	 */
+	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.idCustomer = :idCustomer c.statu = :statu AND AND c.idProduct = :idProduct")
+	public Cart findByCustomerAndProductAndStatu(boolean statu, Long idCustomer, Long idProduct);
 
 	/**
 	 * Method that allows you to consult all the carts by their status.
