@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pastley.dao.ContactDAO;
 import com.pastley.entity.Contact;
+import com.pastley.entity.TypePQR;
 import com.pastley.util.PastleyInterface;
 
 /**
@@ -47,6 +48,8 @@ public class ContactService implements PastleyInterface<Long,Contact> {
 			return new ArrayList<>();
 		}
 	}
+	
+	 
 
 	 
 	@Override
@@ -73,8 +76,13 @@ public class ContactService implements PastleyInterface<Long,Contact> {
 
 	@Override
 	public List<Contact> findByStatuAll(boolean statu) {
-		// TODO Auto-generated method stub
-		return null;
+		
+			try {
+				return contactDao.findByStatu(statu);
+			} catch (Exception e) {
+				return new ArrayList<>();
+			}
+		
 	}
 
 	

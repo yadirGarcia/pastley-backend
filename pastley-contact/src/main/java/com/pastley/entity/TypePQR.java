@@ -41,13 +41,13 @@ public class TypePQR implements Serializable {
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	 
 	@Column(name = "date_register", nullable = false)
-	private Date dateRegister;
+	private String dateRegister;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_update", nullable = true, columnDefinition = "datetime default null")
-	private Date dateUpdate;
+	 
+	@Column(name = "date_update", nullable = true)
+	private String dateUpdate;
 
 	///////////////////////////////////////////////////////
 	// Builder
@@ -102,11 +102,11 @@ public class TypePQR implements Serializable {
 		return statu;
 	}
 
-	public Date getDateRegister() {
+	public String getDateRegister() {
 		return dateRegister;
 	}
 
-	public Date getDateUpdate() {
+	public String getDateUpdate() {
 		return dateUpdate;
 	}
 
@@ -126,11 +126,11 @@ public class TypePQR implements Serializable {
 		this.statu = statu;
 	}
 
-	public void setDateRegister(Date dateRegister) {
+	public void setDateRegister(String dateRegister) {
 		this.dateRegister = dateRegister;
 	}
 
-	public void setDateUpdate(Date dateUpdate) {
+	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
 
