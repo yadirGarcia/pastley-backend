@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.dao.RoleDAO;
 import com.pastley.entity.Role;
+import com.pastley.security.repository.RoleDAO;
 import com.pastley.util.PastleyInterface;
 
 /**

@@ -26,3 +26,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+# security
+security:
+  jwt:
+    token:
+      secret-key: secret
+      expire-length: 36000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
