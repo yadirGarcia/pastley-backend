@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.pastley.entity.Contact;
-import com.pastley.entity.TypePQR;
 
 /**
  * @project Pastley-Contact.
@@ -18,6 +17,11 @@ import com.pastley.entity.TypePQR;
 @Repository
 public interface ContactDAO extends JpaRepository<Contact, Long> {
 	
+	/**
+	 * 
+	 * @param statu
+	 * @return
+	 */
 	public List<Contact> findByStatu(boolean statu);
 
 }

@@ -1,7 +1,6 @@
 package com.pastley.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * @project Pastley-Sale.
@@ -23,7 +20,6 @@ import javax.persistence.TemporalType;
 @Table(name = "contact")
 public class Contact implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -37,32 +33,27 @@ public class Contact implements Serializable {
 	@Column(name = "statu",  nullable = false)
 	private boolean statu;
 
-	
 	@Column(name = "date_register", nullable = false)
 	private String dateRegister;
 
-	
 	@Column(name = "date_update",nullable = true)
 	private String dateUpdate;
 	
-	@Column(name = "id_usuario",nullable = false)
-	private Long idUsuario;
+	@Column(name = "id_user", nullable = false)
+	private Long idUser;
 	
-	@Column(name = "id_pqr",nullable = false)
+	@Column(name = "id_type_pqr",nullable = false)
 	private Long idTypePQR;
 
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	
 	Contact() {
-
 	}
 	
 	///////////////////////////////////////////////////////
 	// Getter and Setter
 	///////////////////////////////////////////////////////
-		
 	public Long getId() {
 		return id;
 	}
@@ -103,12 +94,16 @@ public class Contact implements Serializable {
 		this.dateUpdate = dateUpdate;
 	}
 
-	public Long getIdUsuario() {
-		return idUsuario;
+	public Long getIdUser() {
+		return idUser;
 	}
 
-	public void setIdUsuario(Long idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public Long getIdTypePQR() {
@@ -118,7 +113,4 @@ public class Contact implements Serializable {
 	public void setIdTypePQR(Long idTypePQR) {
 		this.idTypePQR = idTypePQR;
 	}
-	
-	
-
 }

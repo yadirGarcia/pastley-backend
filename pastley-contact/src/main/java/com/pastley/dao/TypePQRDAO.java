@@ -31,13 +31,13 @@ public interface TypePQRDAO  extends JpaRepository<TypePQR, Long>{
 	 * @return A list with the payment methods found.
 	 */
 	public List<TypePQR> findByStatu(boolean statu);
+	
 	/**
 	 * Method that allows filtering the payment methods that are registered between a date range.
 	 * @param start, Represents the start date.
 	 * @param end, Represents the end date.
 	 * @return A list with the payment methods found.
 	 */
-	
 	@Query(nativeQuery = false, value = "SELECT id FROM typepqr mp WHERE mp.dateRegister BETWEEN :start AND :end ORDER BY mp.dateRegister")
 	public List<TypePQR> findByRangeDateRegister(@Param("start") String start, @Param("end") String end);
 	

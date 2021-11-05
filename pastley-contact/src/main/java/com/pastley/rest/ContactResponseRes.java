@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pastley.entity.Contact;
 import com.pastley.entity.ContactResponse;
-import com.pastley.entity.TypePQR;
 import com.pastley.service.ContactResponseService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
@@ -87,11 +85,8 @@ public class ContactResponseRes {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
 			ContactResponse aux = contactResponseService.findById(method.getId());
-			ContactResponse axu = contactResponseService.findById(method.getIdUsuario());
-
-			if (axu != null) {
+			if (aux != null) {
 				if (method.getResponse() == null) {
-
 					// validar si el pqr existe; que los campos no esten vacios , que el usuario
 					// exista ----- contactResponse debe tener contacto
 					if (aux == null) {
@@ -117,7 +112,6 @@ public class ContactResponseRes {
 						}
 
 					}
-
 					else {
 						response.add("message", "Ya existe un Contacto con ese id '" + method.getId() + "'.",
 								HttpStatus.NO_CONTENT);
@@ -151,7 +145,6 @@ public class ContactResponseRes {
 		if (method != null) {
 
 			ContactResponse aux = contactResponseService.findById(method.getId());
-			ContactResponse axu = contactResponseService.findById(method.getIdUsuario());
 
 			if (aux != null) {
 				PastleyDate date = new PastleyDate();
