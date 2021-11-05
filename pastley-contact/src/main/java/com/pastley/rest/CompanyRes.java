@@ -39,7 +39,7 @@ public class CompanyRes {
 	 * @return The generated response.
 	 */
 
-	@RequestMapping(value = "id")
+	@GetMapping(value = { "/findById/{id}", "{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
 		Company company = companyService.findById(id);
@@ -57,7 +57,7 @@ public class CompanyRes {
 	 * @return The generated response.
 	 */
 
-	@GetMapping
+	@GetMapping(value = "/findAll")
 	public ResponseEntity<?> findAll() {
 		PastleyResponse response = new PastleyResponse();
 		List<Company> list = companyService.findAll();
@@ -83,31 +83,25 @@ public class CompanyRes {
 	public ResponseEntity<?> create(@RequestBody Company method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			Company aux = companyService.findById(method.getId());
+			
+			
+				if (method.getMision() != null) {
+					if (method.getName() != null) {
+						if (method.getPassword() != null) {
+							if (method.getVision() != null) {
+								if (method.getAlertMinStock() != null) {
+									if (method.getAddress() != null) {
+										if (method.getAlertStock() != null) {
+											if (method.getButdget() != null) {
+												if (method.getEmail() != null) {
+													if (method.getWho() != null) {
+														if (method.getSendSale() != null) {
+															if (method.getSize() != null) {
 
-			if (aux != null) {
-				if (method.getMision() == null) {
-					if (method.getName() == null) {
-						if (method.getPassword() == null) {
-							if (method.getVision() == null) {
-								if (method.getAlertMinStock() == null) {
-									if (method.getAddress() == null) {
-										if (method.getAlertStock() == null) {
-											if (method.getButdget() == null) {
-												if (method.getEmail() == null) {
-													if (method.getWho() == null) {
-														if (method.getSendSale() == null) {
-															if (method.getSize() == null) {
+																
+																	 companyService.save(method);
 
-																if (aux == null) {
-																	aux = companyService.save(method);
-
-																} else {
-																	response.add("message",
-																			"Ya existe una compañia con ese id '"
-																					+ method.getId() + "'.",
-																			HttpStatus.NO_CONTENT);
-																}
+																
 
 															} else {
 																response.add("message", "Se Requiere ese campo",
@@ -152,13 +146,8 @@ public class CompanyRes {
 				} else {
 					response.add("message", "Se Requiere ese campo'", HttpStatus.NO_CONTENT);
 				}
-			}
-
-			else {
-				response.add("message", "La comapñia no Existe'", HttpStatus.NO_CONTENT);
-			}
 		} else {
-			response.add("message", "No se ha recibido la Comañia.", HttpStatus.NOT_FOUND);
+			response.add("message", "No se ha recibido la Compañia.", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
@@ -190,7 +179,7 @@ public class CompanyRes {
 							HttpStatus.NO_CONTENT);
 				}
 			} else {
-				response.add("message", "Ya existe una compañia con ese id '" + method.getId() + "'.",
+				response.add("message", "No existe una compañia con ese id '" + method.getId() + "'.",
 						HttpStatus.NO_CONTENT);
 			}
 
@@ -200,30 +189,5 @@ public class CompanyRes {
 		
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows you to delete a sale by means of its id.
-	 * 
-	 * @param id, Represents the identifier of the sale to be deleted.
-	 * @return The generated response.
-	 */
-	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		Company method = companyService.findById(id);
-		if (method != null) {
-			if (companyService.delete(id)) {
-				response.add("message", "Se ha eliminado la compañia con id " + id + ".", HttpStatus.OK);
-			} else {
-				response.add("message", "No se ha eliminado la compañia con id " + id + ".",
-						HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "No existe ninguna compañia con el id " + id + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
-	}
-
+	 
 }

@@ -17,6 +17,7 @@ import com.pastley.service.TypePQRService;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyValidate;
 import com.pastley.entity.*;
+import com.pastley.util.PastleyDate;
 
 @RestController
 @RequestMapping("typePqr")
@@ -103,6 +104,29 @@ public class TypePQRRes {
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
+	
+	
+	
+	/**
+	 * Method that allows to know the amount of sale made by a payment method.
+	 * 
+	 * @param id, Represents the identifier of the payment method.
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/statistic/find/type/{id}")
+	public ResponseEntity<?> findByStatisticSale(@PathVariable Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findByStatisticType(id));
+	}
+
+	/**
+	 * Method that allows to know the amount of sales made by a payment method.
+	 * 
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/statistic/all/find/type")
+	public ResponseEntity<?> findByStatisticSaleAll() {
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findByStatisticTypeAll());
+	}
 
 	///////////////////////////////////////////////////////
 	// Method - Post
@@ -122,7 +146,12 @@ public class TypePQRRes {
 				method.uppercase();
 				TypePQR aux = typePQRService.findByName(method.getName());
 				if (aux == null) {
+					PastleyDate date = new PastleyDate();
+					method.setStatu(true);
+					method.setDateUpdate(null);
+					method.setDateRegister(date.currentToDateTime(null));
 					aux = typePQRService.save(method);
+					
 					if (aux != null) {
 						response.add("method", aux, HttpStatus.OK);
 						response.add("message", "Se ha registrado el PQR con id " + aux.getId() + ".");
@@ -160,6 +189,11 @@ public class TypePQRRes {
 				method.uppercase();
 				TypePQR aux = typePQRService.findById(method.getId());
 				if (aux != null) {
+					 
+					PastleyDate date = new PastleyDate();
+					method.setStatu(true);
+					method.setDateRegister(aux.getDateRegister());
+					method.setDateUpdate(date.currentToDateTime(null));
 					aux = typePQRService.save(method);
 					if (aux != null) {
 						response.add("method", aux, HttpStatus.OK);
@@ -224,15 +258,14 @@ public class TypePQRRes {
 		PastleyResponse response = new PastleyResponse();
 		TypePQR aux = typePQRService.findById(id);
 		if (aux != null) {
-			if (typePQRService.delete(id)) {
-				response.add("message", "Se ha eliminado el PQR con id " + id + ".", HttpStatus.OK);
-			} else {
-				response.add("message", "No se ha eliminado el PQR con id " + id + ".",
-						HttpStatus.NO_CONTENT);
-			}
+			typePQRService.delete(id);
+			response.add("message", "Se ha eliminado el PQR con id " + id + ".", HttpStatus.OK);
+			
 		} else {
 			response.add("message", "No existe ningun PQR con el id " + id + ".", HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(response.getMap());
 	}
+	
+	 
 }

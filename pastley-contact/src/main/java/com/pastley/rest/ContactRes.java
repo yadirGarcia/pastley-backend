@@ -41,7 +41,7 @@ public class ContactRes {
 	 * @return The generated response.
 	 */
 
-	@RequestMapping(value = "id")
+	@GetMapping(value = { "/findById/{id}", "{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
 
@@ -60,7 +60,7 @@ public class ContactRes {
 	 * @return The generated response.
 	 */
 
-	@GetMapping
+	@GetMapping(value = "/findAll")
 	public ResponseEntity<?> findAll() {
 		PastleyResponse response = new PastleyResponse();
 		List<Contact> list = contactService.findAll();
@@ -73,6 +73,24 @@ public class ContactRes {
 
 	}
 
+	/**
+	 * Method that allows you to obtain all payment methods through your state.
+	 * 
+	 * @return The generated response.
+	 */
+	@GetMapping(value = "/findByStatuAll/{statu}")
+	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") Boolean statu) {
+		PastleyResponse response = new PastleyResponse();
+		List<Contact> list = contactService.findByStatuAll(statu);
+		if (list.isEmpty()) {
+			response.add("message", "No hay ningun Contacto resgitrado con el estado " + statu + ".", HttpStatus.NO_CONTENT);
+		} else {
+			response.add("methods", list, HttpStatus.OK);
+			response.add("message", "Se han encontrado " + list.size() + " PQR con el estado " + statu + ".");
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
+	
 	///////////////////////////////////////////////////////
 	// Method - Post
 	///////////////////////////////////////////////////////
@@ -90,7 +108,7 @@ public class ContactRes {
 			TypePQR axu = typePQRService.findById(method.getIdTypePQR());
 			
 			if (axu != null) {
-				if (method.getMessage() == null) {
+				if (method.getMessage() != null) {
 
 					// validar si el pqr existe; que los campos no esten vacios , que el usuario
 					// exista ----- contactResponse debe tener contacto
@@ -181,6 +199,34 @@ public class ContactRes {
 		return ResponseEntity.ok(response.getMap());
 	}
 
+	/**
+	 * Method that allows changing the status of a payment method.
+	 * @param id, Represents the identifier of the payment method.
+	 * @return The generated response.
+	 */
+	@PutMapping(value = "/update/statu/{id}")
+	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
+		PastleyResponse response = new PastleyResponse();
+		if(id > 0) {
+			Contact method = contactService.findById(id);
+			if(method != null) {
+				method.setStatu(!method.isStatu());
+				method = contactService.save(method);
+				if(method != null) {
+					response.add("method", method, HttpStatus.OK);
+					response.add("message", "Se ha actualizado el estado del Contacto con id " + id + ".");
+				}else {
+					response.add("message", "No se ha actualizado el estado del Contacto con id " + id + ".",
+							HttpStatus.NO_CONTENT);
+				}
+			}else {
+				response.add("message", "No existe ningun Contacto con el id " + id + ".", HttpStatus.NOT_FOUND);
+			}
+		}else {
+			response.add("message", "El id del Contacto no es valido.", HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(response.getMap());
+	}
 	///////////////////////////////////////////////////////
 	// Method - Delete
 	///////////////////////////////////////////////////////
@@ -196,12 +242,9 @@ public class ContactRes {
 		
 			Contact method = contactService.findById(id);
 			if (method != null) {
-				if (contactService.delete(id)) {
-					response.add("message", "Se ha eliminado el Contacto con id " + id + ".", HttpStatus.OK);
-				} else {
-					response.add("message", "No se ha eliminado el contacto con id " + id + ".",
-							HttpStatus.NO_CONTENT);
-				}
+				contactService.delete(id);
+				response.add("message", "Se ha eliminado el Contacto con id " + id + ".", HttpStatus.OK);
+				
 			} else {
 				response.add("message", "No existe ningun Contacto con el id " + id + ".", HttpStatus.NO_CONTENT);
 			}

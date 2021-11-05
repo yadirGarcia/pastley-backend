@@ -27,10 +27,9 @@ public class ContactResponseRes {
 
 	@Autowired
 	public ContactResponseService contactResponseService;
-	
+
 	@Autowired
 	public ContactResponseService contactService;
-
 
 ///////////////////////////////////////////////////////
 // Method - Get
@@ -42,7 +41,7 @@ public class ContactResponseRes {
 	 * @return The generated response.
 	 */
 
-	@RequestMapping(value = "id")
+	@GetMapping(value = { "/findById/{id}", "{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
 
@@ -61,7 +60,7 @@ public class ContactResponseRes {
 	 * @return The generated response.
 	 */
 
-	@GetMapping
+	@GetMapping(value = "/findAll")
 	public ResponseEntity<?> findAll() {
 		PastleyResponse response = new PastleyResponse();
 		List<ContactResponse> list = contactResponseService.findAll();
@@ -89,7 +88,7 @@ public class ContactResponseRes {
 		if (method != null) {
 			ContactResponse aux = contactResponseService.findById(method.getId());
 			ContactResponse axu = contactResponseService.findById(method.getIdUsuario());
-			
+
 			if (axu != null) {
 				if (method.getResponse() == null) {
 
@@ -100,9 +99,10 @@ public class ContactResponseRes {
 						method.setDateUpdate(null);
 						method.setDateRegister(date.currentToDateTime(null));
 						aux = contactService.save(method);
-						//Email email = new Email("",aux.getIdUsuario(),"","","","");//de, usuario,clave, para
+						// Email email = new Email("",aux.getIdUsuario(),"","","","");//de,
+						// usuario,clave, para
 						try {
-						//	email.sendMail();
+							// email.sendMail();
 
 							if (aux != null) {
 								response.add("method", aux, HttpStatus.OK);
@@ -149,31 +149,29 @@ public class ContactResponseRes {
 	public ResponseEntity<?> update(@RequestBody ContactResponse method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			
+
 			ContactResponse aux = contactResponseService.findById(method.getId());
 			ContactResponse axu = contactResponseService.findById(method.getIdUsuario());
-			
+
+			if (aux != null) {
+				PastleyDate date = new PastleyDate();
+				method.setDateRegister(aux.getDateRegister());
+				method.setDateUpdate(date.currentToDateTime(null));
+				aux = contactResponseService.save(method);
 				if (aux != null) {
-					PastleyDate date = new PastleyDate();
-					method.setDateRegister(aux.getDateRegister());
-					method.setDateUpdate(date.currentToDateTime(null));
-					aux = contactResponseService.save(method);
-					if (aux != null) {
-						response.add("method", aux, HttpStatus.OK);
-						
-						response.add("message", "Se ha actualizado el Contacto con id " + aux.getId() + ".");
-					} else {
-						response.add("message", "No se ha actualizado el Contacto con id " + method.getId() + ".",
-								HttpStatus.NO_CONTENT);
-					}
+					response.add("method", aux, HttpStatus.OK);
+
+					response.add("message", "Se ha actualizado el Contacto con id " + aux.getId() + ".");
 				} else {
-					response.add("message", "No existe ningun Contacto con el id " + method.getId() + ".",
+					response.add("message", "No se ha actualizado el Contacto con id " + method.getId() + ".",
 							HttpStatus.NO_CONTENT);
 				}
-			
-		
+			} else {
+				response.add("message", "No existe ningun Contacto con el id " + method.getId() + ".",
+						HttpStatus.NO_CONTENT);
 			}
-		else {
+
+		} else {
 			response.add("message", "No se ha recibido el PQR.", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(response.getMap());
@@ -191,18 +189,16 @@ public class ContactResponseRes {
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		PastleyResponse response = new PastleyResponse();
-		
+
 		ContactResponse method = contactResponseService.findById(id);
 		if (method != null) {
-			if (contactResponseService.delete(id)) {
-				response.add("message", "Se ha eliminado la respuesta del contacto con id " + id + ".", HttpStatus.OK);
-			} else {
-				response.add("message", "No se ha eliminado la respuesta del contacto con id " + id + ".",
-						HttpStatus.NO_CONTENT);
-			}
+			contactResponseService.delete(id);
+			response.add("message", "Se ha eliminado la respuesta del contacto con id " + id + ".", HttpStatus.OK);
+
 		} else {
-			response.add("message", "No existe ninguna respuesta del Contacto con el id " + id + ".", HttpStatus.NO_CONTENT);
+			response.add("message", "No existe ninguna respuesta del Contacto con el id " + id + ".",
+					HttpStatus.NO_CONTENT);
 		}
-return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.ok(response.getMap());
 	}
 }
