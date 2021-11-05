@@ -1,7 +1,6 @@
 package com.pastley.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.pastley.util.PastleyValidate;
 
@@ -32,19 +29,17 @@ public class TypePQR implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false, length = 50)
+	@Column(name = "name", unique = true, nullable = false, length = 50)
 	private String name;
 
-	@Column(name = "descripcion", nullable = false)
-	private String descripcion;
+	@Column(name = "description", nullable = true, length = 500)
+	private String description;
 
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
-
 	 
 	@Column(name = "date_register", nullable = false)
 	private String dateRegister;
-
 	 
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
@@ -52,9 +47,7 @@ public class TypePQR implements Serializable {
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-
-	TypePQR() {
-
+	public TypePQR() {
 	}
 
 	///////////////////////////////////////////////////////
@@ -94,10 +87,6 @@ public class TypePQR implements Serializable {
 		return name;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
 	public boolean isStatu() {
 		return statu;
 	}
@@ -118,8 +107,16 @@ public class TypePQR implements Serializable {
 		this.name = name;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void setStatu(boolean statu) {
@@ -133,5 +130,4 @@ public class TypePQR implements Serializable {
 	public void setDateUpdate(String dateUpdate) {
 		this.dateUpdate = dateUpdate;
 	}
-
 }

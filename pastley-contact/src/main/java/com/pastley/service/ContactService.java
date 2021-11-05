@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pastley.dao.ContactDAO;
 import com.pastley.entity.Contact;
-import com.pastley.entity.TypePQR;
 import com.pastley.util.PastleyInterface;
 
 /**

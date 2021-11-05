@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Company;
-import com.pastley.entity.Contact;
-import com.pastley.entity.TypePQR;
 import com.pastley.service.CompanyService;
-import com.pastley.service.ContactService;
-import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 
 @RestController
@@ -83,53 +78,33 @@ public class CompanyRes {
 	public ResponseEntity<?> create(@RequestBody Company method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			
-			
-				if (method.getMision() != null) {
-					if (method.getName() != null) {
-						if (method.getPassword() != null) {
-							if (method.getVision() != null) {
-								if (method.getAlertMinStock() != null) {
-									if (method.getAddress() != null) {
-										if (method.getAlertStock() != null) {
-											if (method.getButdget() != null) {
-												if (method.getEmail() != null) {
-													if (method.getWho() != null) {
-														if (method.getSendSale() != null) {
-															if (method.getSize() != null) {
 
-																
-																	 companyService.save(method);
-
-																
-
-															} else {
-																response.add("message", "Se Requiere ese campo",
-																		HttpStatus.NO_CONTENT);
-															}
-
-														} else {
-															response.add("message", "Se Requiere ese campo",
-																	HttpStatus.NO_CONTENT);
-														}
-													} else {
-														response.add("message", "Se Requiere ese campo",
-																HttpStatus.NO_CONTENT);
-													}
+			if (method.getMission() != null) {
+				if (method.getName() != null) {
+					if (method.getPassword() != null) {
+						if (method.getVision() != null) {
+							if (method.getAlertMinStock() != null) {
+								if (method.getAddress() != null) {
+									if (method.getButdget() != null) {
+										if (method.getEmail() != null) {
+											if (method.getAboutUs() != null) {
+												if (method.getSize() != null) {
+													companyService.save(method);
 												} else {
 													response.add("message", "Se Requiere ese campo",
 															HttpStatus.NO_CONTENT);
-
 												}
 											} else {
 												response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
 											}
 										} else {
 											response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+
 										}
 									} else {
 										response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
 									}
+
 								} else {
 									response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
 								}
@@ -141,11 +116,14 @@ public class CompanyRes {
 						}
 					} else {
 						response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
-
 					}
 				} else {
-					response.add("message", "Se Requiere ese campo'", HttpStatus.NO_CONTENT);
+					response.add("message", "Se Requiere ese campo", HttpStatus.NO_CONTENT);
+
 				}
+			} else {
+				response.add("message", "Se Requiere ese campo'", HttpStatus.NO_CONTENT);
+			}
 		} else {
 			response.add("message", "No se ha recibido la Compañia.", HttpStatus.NOT_FOUND);
 		}
@@ -183,11 +161,12 @@ public class CompanyRes {
 						HttpStatus.NO_CONTENT);
 			}
 
-		} else{response.add("message","No se ha recibido la Compañia.",HttpStatus.NOT_FOUND);}
-		
+		} else {
+			response.add("message", "No se ha recibido la Compañia.", HttpStatus.NOT_FOUND);
+		}
+
 		return ResponseEntity.ok(response.getMap());
-		
+
 	}
 
-	 
 }

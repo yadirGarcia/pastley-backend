@@ -20,5 +20,4 @@ public class PastleyContactApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PastleyContactApplication.class, args);
 	}
-
 }

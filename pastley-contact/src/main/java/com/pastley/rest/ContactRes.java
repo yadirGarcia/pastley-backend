@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.*;
 
-import com.pastley.model.Email;
 import com.pastley.service.*;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
@@ -167,7 +166,6 @@ public class ContactRes {
 	public ResponseEntity<?> update(@RequestBody Contact method) {
 		PastleyResponse response = new PastleyResponse();
 		if (method != null) {
-			
 			Contact aux = contactService.findById(method.getId());
 			TypePQR axu = typePQRService.findById(method.getIdTypePQR());
 			if(aux.isStatu()==true) {
@@ -188,7 +186,6 @@ public class ContactRes {
 					response.add("message", "No existe ningun Contacto con el id " + method.getId() + ".",
 							HttpStatus.NO_CONTENT);
 				}
-			
 		}else {
 			response.add("message", "El estado del contacto es false.", HttpStatus.NOT_FOUND);
 		}
