@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Person;
 import com.pastley.entity.TypeDocument;
-import com.pastley.entity.User;
+import com.pastley.security.entity.User;
+import com.pastley.security.service.UserService;
 import com.pastley.service.PersonService;
 import com.pastley.service.TypeDocumentService;
-import com.pastley.service.UserService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 

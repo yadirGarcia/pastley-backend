@@ -12,72 +12,53 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.pastley.security.dto.JwtDto;
-import com.pastley.security.dto.LoginUser;
-import com.pastley.security.dto.NewUser;
-import com.pastley.security.entity.Role;
-import com.pastley.security.entity.User;
-import com.pastley.security.enums.RoleName;
+import com.pastley.security.enums.RoleEnum;
 import com.pastley.security.jwt.JwtProvider;
+import com.pastley.security.model.JwtDto;
+import com.pastley.security.model.UserModel;
 import com.pastley.security.service.RoleService;
 import com.pastley.security.service.UserService;
 import com.pastley.util.PastleyMensaje;
+
+import lombok.Data;
 
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
 
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Autowired
-	RoleService roleService;
+	private RoleService roleService;
 
 	@Autowired
-	JwtProvider jwtProvider;
+	private JwtProvider jwtProvider;
 
-	@PostMapping("/nuevo")
-	public ResponseEntity<?> nuevo(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) {
-		if (bindingResult.hasErrors())
-			return new ResponseEntity(new PastleyMensaje("campos mal puestos o email inválido"),
-					HttpStatus.BAD_REQUEST);
-		if (userService.existsByUserName(newUser.getUserName()))
-			return new ResponseEntity(new PastleyMensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
-		if (userService.existsByMail(newUser.getMail()))
-			return new ResponseEntity(new PastleyMensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
-		User user = new User(newUser.getName(), newUser.getUserName(), newUser.getMail(),
-				passwordEncoder.encode(newUser.getPassword()));
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleService.getByRoleName(RoleName.CASHIER).get());
-		if (newUser.getRoles().contains("admin"))
-			roles.add(roleService.getByRoleName(RoleName.ADMINISTRATOR).get());
-		user.setRoles(roles);
-		userService.save(user);
-		return new ResponseEntity(new PastleyMensaje("usuario guardado"), HttpStatus.CREATED);
-	}
 
 	@PostMapping("/login")
-	public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult) {
+	public ResponseEntity<JwtDto> login(@Valid @RequestBody UserModel loginUser, BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
 			return new ResponseEntity(new PastleyMensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword()));
+				new UsernamePasswordAuthenticationToken(loginUser.getNickname(), loginUser.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtProvider.generateToken(authentication);
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-		return new ResponseEntity(jwtDto, HttpStatus.OK);
+		return new ResponseEntity<JwtDto>(jwtDto, HttpStatus.OK);
 	}
 
 }

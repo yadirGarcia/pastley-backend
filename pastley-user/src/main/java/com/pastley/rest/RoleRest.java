@@ -1,4 +1,4 @@
-	package com.pastley.rest;
+package com.pastley.rest;
 
 import java.util.List;
 
@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pastley.entity.Role;
-import com.pastley.entity.User;
-import com.pastley.service.RoleService;
-import com.pastley.service.UserService;
+import com.pastley.security.entity.Role;
+import com.pastley.security.entity.User;
+import com.pastley.security.service.RoleService;
+import com.pastley.security.service.UserService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
-import com.pastley.util.PastleyValidate;
 
 /**
  * @project Pastley-User.
@@ -97,14 +96,14 @@ public class RoleRest {
 		PastleyResponse response = new PastleyResponse();
 		if (role != null) {
 			if (role.getId() <= 0) {
-				if (PastleyValidate.isChain(role.getName())) {
-					Role aux = roleService.findByName(role.getName());
+				String message = role.validate(false);
+				if(message != null) {
+					Role aux = roleService.findByName(role.getName().name());
 					if (aux == null) {
 						PastleyDate date = new PastleyDate();
 						role.setDateUpdate(null);
 						role.setDateRegister(date.currentToDateTime(null));
 						role.setStatu(true);
-						role.setName(role.getName().toUpperCase());
 						aux = roleService.save(role);
 						if (aux != null) {
 							response.add("role", aux, HttpStatus.OK);
@@ -117,8 +116,9 @@ public class RoleRest {
 								"Ya existe una un rol registrado con ese nombre '" + role.getName() + "'.",
 								HttpStatus.NO_CONTENT);
 					}
-				} else {
-					response.add("message", "No se ha registrado el rol, debe darle un nombre al rol.",
+				}else {
+					response.add("message",
+							"No se ha registrado el rol, "+message+".",
 							HttpStatus.NO_CONTENT);
 				}
 			} else {
@@ -143,13 +143,11 @@ public class RoleRest {
 		if (role != null) {
 			String message = role.validate(true);
 			if (message == null) {
-				role.uppercase();
 				Role aux = roleService.findById(role.getId());
 				if (aux != null) {
 					PastleyDate date = new PastleyDate();
 					role.setDateRegister(aux.getDateRegister());
 					role.setDateUpdate(date.currentToDateTime(null));
-					role.setName(role.getName().toUpperCase());
 					aux = roleService.save(role);
 					if (aux != null) {
 						response.add("role", aux, HttpStatus.OK);

@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import io.jsonwebtoken.*;
 import java.util.Date;
 
-import com.pastley.security.entity.PrimaryUser;
+import com.pastley.security.model.UserModel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +23,8 @@ public class JwtProvider {
     private int expiration;
     
     public String generateToken(Authentication authentication){
-        PrimaryUser primaryUser = (PrimaryUser) authentication.getPrincipal();
-        return Jwts.builder().setSubject(primaryUser.getUsername())
+        UserModel user = (UserModel) authentication.getPrincipal();
+        return Jwts.builder().setSubject(user.getNickname())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)

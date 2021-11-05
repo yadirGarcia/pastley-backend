@@ -1,4 +1,4 @@
-package com.pastley.security.dto;
+package com.pastley.security.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
@@ -15,7 +15,7 @@ public class JwtDto {
         this.userName = userName;
         this.authorities = authorities;
     }
-
+    
 	public String getToken() {
 		return token;
 	}

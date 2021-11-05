@@ -18,13 +18,13 @@ import java.io.IOException;
 
 public class JwtTokenFilter extends OncePerRequestFilter{
 
-	 private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+	private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 	
 	@Autowired
-    JwtProvider jwtProvider;
+    private JwtProvider jwtProvider;
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
     
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         try {

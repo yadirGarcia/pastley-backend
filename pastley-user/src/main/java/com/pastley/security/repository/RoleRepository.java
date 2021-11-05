@@ -4,11 +4,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.pastley.security.entity.Role;
-import com.pastley.security.enums.RoleName;
 
-import java.util.Optional;
-
+/**
+ * @project Pastley-User.
+ * @author Leyner Jose Ortega Arias.
+ * @Github https://github.com/leynerjoseoa.
+ * @contributors soleimygomez, serbuitrago, jhonatanbeltran.
+ * @version 1.0.0.
+ */
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer>{
-	Optional<Role> findByRolNombre(RoleName roleName);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+	
+	public Role findByName(String name);
 }

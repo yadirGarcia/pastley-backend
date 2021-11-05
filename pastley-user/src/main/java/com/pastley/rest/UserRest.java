@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Person;
-import com.pastley.entity.Role;
-import com.pastley.entity.User;
+import com.pastley.security.entity.Role;
+import com.pastley.security.entity.User;
+import com.pastley.security.service.RoleService;
+import com.pastley.security.service.UserService;
 import com.pastley.service.PersonService;
-import com.pastley.service.RoleService;
-import com.pastley.service.UserService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 import com.pastley.util.PastleyVariable;

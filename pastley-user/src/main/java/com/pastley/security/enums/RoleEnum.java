@@ -1,5 +1,5 @@
 package com.pastley.security.enums;
 
-public enum RoleName {
+public enum RoleEnum {
 	 ADMINISTRATOR, CASHIER, CUSTOMER
 }
