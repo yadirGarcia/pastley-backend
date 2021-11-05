@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.pastley.security.enums.RoleEnum;
 import com.pastley.security.jwt.JwtProvider;
 import com.pastley.security.model.JwtDto;
 import com.pastley.security.model.UserModel;
@@ -23,8 +22,6 @@ import com.pastley.util.PastleyMensaje;
 import lombok.Data;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @RestController

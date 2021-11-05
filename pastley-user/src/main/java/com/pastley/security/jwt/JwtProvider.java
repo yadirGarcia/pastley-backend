@@ -1,6 +1,5 @@
 package com.pastley.security.jwt;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 import io.jsonwebtoken.*;
@@ -16,11 +15,8 @@ public class JwtProvider {
 	
 	private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 	
-	@Value("${jwt.secret}")
-    private String secret;
-
-    @Value("${jwt.expiration}")
-    private int expiration;
+    private String secret = "secret";
+    private int expiration = 36000;
     
     public String generateToken(Authentication authentication){
         UserModel user = (UserModel) authentication.getPrincipal();
