@@ -1,7 +1,6 @@
 package com.pastley.rest;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pastley.entity.Sale;
 import com.pastley.entity.SaleDetail;
 import com.pastley.service.SaleDetailService;
-import com.pastley.service.SaleService;
-import com.pastley.util.PastleyResponse;
 
 /**
  * @project Pastley-Sale.
@@ -35,8 +31,6 @@ public class SaleDetailRest implements Serializable {
 	
 	@Autowired
 	private SaleDetailService saleDetailService;
-	@Autowired
-	private SaleService saleService;
 
 	///////////////////////////////////////////////////////
 	// Method - Get
@@ -47,16 +41,9 @@ public class SaleDetailRest implements Serializable {
 	 * @param id, Represents the identifier of the sale detail.
 	 * @return The generated response.
 	 */
-	@GetMapping(value = { "/findById/{id}", "{id}" })
+	@GetMapping(value = { "/find/id/{id}", "/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		SaleDetail saleDetail = saleDetailService.findById(id);
-		if (saleDetail != null) {
-			response.add("saleDetail", saleDetail, HttpStatus.OK);
-		} else {
-			response.add("message", "No existe ningun detalle de venta con el id " + id + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(saleDetailService.findById(id));
 	}
 	
 	/**
@@ -64,41 +51,19 @@ public class SaleDetailRest implements Serializable {
 	 * 
 	 * @return The generated response.
 	 */
-	@GetMapping(value = "/findAll")
+	@GetMapping(value = {"", "/all"})
 	public ResponseEntity<?> findAll() {
-		PastleyResponse response = new PastleyResponse();
-		List<SaleDetail> list = saleDetailService.findAll();
-		if (list.isEmpty()) {
-			response.add("message", "No hay ningun detalle de venta resgitrado.", HttpStatus.NO_CONTENT);
-		} else {
-			response.add("saleDetails", list, HttpStatus.OK);
-			response.add("message", "Se han encontrado " + list.size() + " detalles de ventas.");
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(saleDetailService.findAll());
 	}
 	
 	/**
 	 * Method that allows knowing the sale details of a sale made.
-	 * 
+	 * @param idSale, Represents the identifier of the sale.
 	 * @return The generated response.
 	 */
-	@GetMapping(value = "/findBySale/{sale}")
-	public ResponseEntity<?> findBySale(@PathVariable("sale") Long sale){
-		PastleyResponse response = new PastleyResponse();
-		Sale saleEntity = saleService.findById(sale);
-		if(saleEntity != null) {
-			List<SaleDetail> list = saleDetailService.findBySale(sale);
-			if(list.isEmpty()) {
-				response.add("message", "No hay ningun detalle de venta asociada a la venta con el id "+sale+".", HttpStatus.NO_CONTENT);
-			}else {
-				response.add("sale", saleEntity);
-				response.add("saleDetails", list, HttpStatus.OK);
-				response.add("message", "Se han encontrado " + list.size() + " detalles de ventas asociadas a la venta con el id "+sale+".");
-			}
-		}else {
-			response.add("message", "No existe ninguna venta con el id " + sale + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+	@GetMapping(value = "/find/sale/{idSale}")
+	public ResponseEntity<?> findBySale(@PathVariable("sale") Long idSale){
+		return ResponseEntity.status(HttpStatus.OK).body(saleDetailService.findBySale(idSale));
 	}
 	
 	///////////////////////////////////////////////////////
@@ -110,10 +75,9 @@ public class SaleDetailRest implements Serializable {
 	 * @param saleDetail, Represents the sale detail to update.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "/update")
+	@PutMapping(value = "")
 	public ResponseEntity<?> update(@RequestBody SaleDetail saleDetail) {
-		PastleyResponse response = new PastleyResponse();
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(saleDetailService.save(saleDetail));
 	}
 	
 	///////////////////////////////////////////////////////
@@ -124,19 +88,8 @@ public class SaleDetailRest implements Serializable {
 	 * @param id, Represents the identifier of the sale detail to be deleted.
 	 * @return The generated response.
 	 */
-	@DeleteMapping(value = "/delete/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		SaleDetail aux = saleDetailService.findById(id);
-		if (aux != null) {
-			if (saleDetailService.delete(id)) {
-				response.add("message", "Se ha eliminado el detalle de venta con id " + id + ".", HttpStatus.OK);
-			}else {
-				response.add("message", "No se ha eliminado el detalle de venta con id " + id + ".", HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "No existe ningun detalle de venta con el id " + id + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(saleDetailService.delete(id));
 	}
 }
