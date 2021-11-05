@@ -38,14 +38,14 @@ public interface TypePQRDAO  extends JpaRepository<TypePQR, Long>{
 	 * @param end, Represents the end date.
 	 * @return A list with the payment methods found.
 	 */
-	@Query(nativeQuery = false, value = "SELECT id FROM typepqr mp WHERE mp.dateRegister BETWEEN :start AND :end ORDER BY mp.dateRegister")
+	@Query(nativeQuery = false, value = "SELECT ty FROM TypePQR ty WHERE ty.dateRegister BETWEEN :start AND :end ORDER BY ty.dateRegister")
 	public List<TypePQR> findByRangeDateRegister(@Param("start") String start, @Param("end") String end);
 	
 	/**
 	 * Method that allows to know the amount of sales made by a payment method.
 	 * @return A list with the payment methods found.
 	 */
-	@Query(nativeQuery = false, value = "SELECT COUNT(s.id) FROM typepqr s WHERE s.id = :id GROUP BY s.id")
+	@Query(nativeQuery = false, value = "SELECT COUNT(s.id) FROM TypePQR s WHERE s.id = :id GROUP BY s.id")
 	public Long countByTypePQR(Long id);
 
 }
