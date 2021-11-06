@@ -14,6 +14,9 @@ import javax.persistence.Transient;
 import com.pastley.model.ProductModel;
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -21,6 +24,8 @@ import com.pastley.util.PastleyValidate;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "cart")
 public class Cart implements Serializable {
@@ -86,8 +91,6 @@ public class Cart implements Serializable {
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	public Cart() {
-	}
 	
 	public Cart(String discount, String iva, BigInteger price) {
 		this(0L, discount, iva, price);
@@ -180,156 +183,5 @@ public class Cart implements Serializable {
 		pm.calculateDiscount();
 		this.otherSubtotalPriceDisount = pm.getPriceDiscount().multiply(new BigInteger(String.valueOf(this.count)));
 		return this.otherSubtotalPriceDisount;
-	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setters
-	///////////////////////////////////////////////////////
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getIdProduct() {
-		return idProduct;
-	}
-
-	public void setIdProduct(Long idProduct) {
-		this.idProduct = idProduct;
-	}
-
-	public Long getIdCustomer() {
-		return idCustomer;
-	}
-
-	public void setIdCustomer(Long idCustomer) {
-		this.idCustomer = idCustomer;
-	}
-
-	public String getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(String discount) {
-		this.discount = discount;
-	}
-
-	public String getVat() {
-		return vat;
-	}
-
-	public void setVat(String vat) {
-		this.vat = vat;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public BigInteger getOtherPriceVat() {
-		return otherPriceVat;
-	}
-
-	public void setOtherPriceVat(BigInteger otherPriceVat) {
-		this.otherPriceVat = otherPriceVat;
-	}
-
-	public BigInteger getOtherPriceDisount() {
-		return otherPriceDisount;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
-
-	public void setOtherPriceDisount(BigInteger otherPriceDisount) {
-		this.otherPriceDisount = otherPriceDisount;
-	}
-
-	public BigInteger getOtherSubtotalPriceDisount() {
-		return otherSubtotalPriceDisount;
-	}
-
-	public void setOtherSubtotalPriceDisount(BigInteger otherSubtotalPriceDisount) {
-		this.otherSubtotalPriceDisount = otherSubtotalPriceDisount;
-	}
-
-	public BigInteger getOtherPriceAddPriceVat() {
-		return otherPriceAddPriceVat;
-	}
-
-	public void setOtherPriceAddPriceVat(BigInteger otherPriceAddPriceVat) {
-		this.otherPriceAddPriceVat = otherPriceAddPriceVat;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public BigInteger getSubtotalNet() {
-		return subtotalNet;
-	}
-
-	public BigInteger getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigInteger price) {
-		this.price = price;
-	}
-
-	public void setSubtotalNet(BigInteger subtotalNet) {
-		this.subtotalNet = subtotalNet;
-	}
-
-	public BigInteger getSubtotalGross() {
-		return subtotalGross;
-	}
-
-	public void setSubtotalGross(BigInteger subtotalGross) {
-		this.subtotalGross = subtotalGross;
-	}
-
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
-	public BigInteger getOtherPriceSubPriceDisount() {
-		return otherPriceSubPriceDisount;
-	}
-
-	public void setOtherPriceSubPriceDisount(BigInteger otherPriceSubPriceDisount) {
-		this.otherPriceSubPriceDisount = otherPriceSubPriceDisount;
 	}
 }

@@ -2,6 +2,8 @@ package com.pastley.util.exception;
 
 import org.springframework.http.HttpStatus;
 
+import lombok.Getter;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Getter
 public class PastleyException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -20,21 +23,6 @@ public class PastleyException extends RuntimeException {
 	public PastleyException(HttpStatus httpStatus, String message) {
 		super(message);
 		this.httpStatus = httpStatus;
-	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setetrs
-	///////////////////////////////////////////////////////
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
-	}
-
-	public void setHttpStatus(HttpStatus httpStatus) {
-		this.httpStatus = httpStatus;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

@@ -6,6 +6,9 @@ import java.math.BigInteger;
 
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -13,6 +16,8 @@ import com.pastley.util.PastleyValidate;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Data
+@NoArgsConstructor
 public class ProductModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -36,8 +41,6 @@ public class ProductModel implements Serializable {
 	///////////////////////////////////////////////////////
 	// Builder
 	///////////////////////////////////////////////////////
-	public ProductModel() {
-	}
 
 	public ProductModel(Long id, String name, BigInteger price, String discount) {
 		this(id, name, price, discount, 0, null, null);
@@ -195,88 +198,5 @@ public class ProductModel implements Serializable {
 			return price.toBigInteger();
 		}
 		return BigInteger.ZERO;
-	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setters
-	///////////////////////////////////////////////////////
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getStock() {
-		return stock;
-	}
-
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-	public void setPriceVat(BigInteger priceVat) {
-		this.priceVat = priceVat;
-	}
-
-	public String getVat() {
-		return vat;
-	}
-
-	public void setVat(String vat) {
-		this.vat = vat;
-	}
-
-	public BigInteger getPriceVat() {
-		return priceVat;
-	}
-
-	public void setPriceIva(BigInteger priceVat) {
-		this.priceVat = priceVat;
-	}
-
-	public BigInteger getPriceDiscount() {
-		return priceDiscount;
-	}
-
-	public void setPriceDiscount(BigInteger priceDiscount) {
-		this.priceDiscount = priceDiscount;
-	}
-
-	public BigInteger getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigInteger price) {
-		this.price = price;
-	}
-
-	public String getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(String discount) {
-		this.discount = discount;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }

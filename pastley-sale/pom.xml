@@ -108,6 +108,15 @@
 		</dependency>
 		
 		<!-- -->
+		<!-- LOMBOK -->
+		<!-- -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- -->
 		<!-- SWAGGER -->
 		<!-- -->
 		<dependency>
