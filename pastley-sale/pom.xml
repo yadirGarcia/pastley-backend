@@ -59,6 +59,55 @@
 		</dependency>
 
 		<!-- -->
+		<!-- CONFIG -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+
+		<!-- -->
+		<!-- BOOTSTRAP -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+
+		<!-- -->
+		<!-- EUREKA CLIENT -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<!-- -->
+		<!-- ACTUATOR -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
+		<!-- -->
+		<!-- RESILIENCE4J -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
+		
+		<!-- -->
+		<!-- AOP -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+			<version>2.5.4</version>
+		</dependency>
+
+		<!-- -->
 		<!-- ZIPKIN -->
 		<!-- -->
 		<dependency>
@@ -89,38 +138,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-		<!-- -->
-		<!-- CONFIG -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-
-		<!-- -->
-		<!-- BOOTSTRAP -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-		</dependency>
-
-		<!-- -->
-		<!-- EUREKA CLIENT -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-
-		<!-- -->
-		<!-- ACTUATOR -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<!-- -->
