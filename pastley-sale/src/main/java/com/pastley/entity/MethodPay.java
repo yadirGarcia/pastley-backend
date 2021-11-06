@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -18,6 +21,8 @@ import com.pastley.util.PastleyValidate;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "method_pay")
 public class MethodPay implements Serializable {
@@ -40,12 +45,6 @@ public class MethodPay implements Serializable {
 
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
-
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public MethodPay() {
-	}
 
 	///////////////////////////////////////////////////////
 	// Method
@@ -73,52 +72,5 @@ public class MethodPay implements Serializable {
 	 */
 	public void uppercase() {
 		this.name = PastleyValidate.uppercase(this.name);
-	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setters
-	///////////////////////////////////////////////////////
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name.toUpperCase();
-	}
-
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
 	}
 }

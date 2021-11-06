@@ -12,6 +12,9 @@ import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -19,6 +22,8 @@ import com.pastley.util.PastleyValidate;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name="sale")
 public class Sale implements Serializable{
@@ -55,12 +60,6 @@ public class Sale implements Serializable{
 	private String dateUpdate;
 	
 	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public Sale() {
-	}
-	
-	///////////////////////////////////////////////////////
 	// Method
 	///////////////////////////////////////////////////////
 	/**
@@ -88,84 +87,5 @@ public class Sale implements Serializable{
 			chain = "El total neto o bruto de la venta debe ser mayor a cero.";
 		}
 		return chain;
-	}
-	
-	///////////////////////////////////////////////////////
-	// Getter and Setters
-	///////////////////////////////////////////////////////
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getIva() {
-		return iva;
-	}
-
-	public void setIva(String iva) {
-		this.iva = iva;
-	}
-
-	public BigInteger getTotalNet() {
-		return totalNet;
-	}
-
-	public void setTotalNet(BigInteger totalNet) {
-		this.totalNet = totalNet;
-	}
-
-	public BigInteger getTotalGross() {
-		return totalGross;
-	}
-
-	public void setTotalGross(BigInteger totalGross) {
-		this.totalGross = totalGross;
-	}
-
-	public Long getIdCoustomer() {
-		return idCoustomer;
-	}
-
-	public void setIdCoustomer(Long idCoustomer) {
-		this.idCoustomer = idCoustomer;
-	}
-
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
-	public Long getIdMethodPay() {
-		return idMethodPay;
-	}
-
-	public void setIdMethodPay(Long idMethodPay) {
-		this.idMethodPay = idMethodPay;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }

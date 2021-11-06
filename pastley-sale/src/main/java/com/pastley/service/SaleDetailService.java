@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.pastley.entity.Cart;
 import com.pastley.entity.SaleDetail;
 import com.pastley.repository.SaleDetailRepository;
 import com.pastley.util.PastleyInterface;
@@ -28,6 +29,9 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 
 	@Autowired
 	private SaleService saleService;
+
+	@Autowired
+	private CartService cartService;
 
 	///////////////////////////////////////////////////////
 	// Method - Find
@@ -90,10 +94,33 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 	///////////////////////////////////////////////////////
 	@Override
 	public SaleDetail save(SaleDetail entity) {
-		try {
-			return saleDetailRepository.save(entity);
-		} catch (Exception e) {
-			return null;
+		if (entity != null) {
+			String message = entity.validate(false);
+			if (message == null) {
+				String messageType = (entity.getId() <= 0) ? "registrar" : "actualizar";
+				SaleDetail saleDetail = null;
+				Cart cart = cartService.findById(entity.getCart().getId());
+				if (cart != null) {
+					entity.setCart(cart);
+					saleDetail = saleDetailRepository.save(saleDetail);
+					if (saleDetail != null) {
+						return saleDetail;
+					} else {
+						throw new PastleyException(HttpStatus.NOT_FOUND,
+								"No se ha " + messageType + " el detalle de venta.");
+					}
+				} else {
+					throw new PastleyException(HttpStatus.NOT_FOUND,
+							"No se ha " + messageType
+									+ " el detalle de venta, no existe ningun producto en el carrito con el id "
+									+ entity.getCart().getId() + ".");
+				}
+			} else {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se ha procesado el detalle de venta," + message + ".");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el detalle de venta.");
 		}
 	}
 

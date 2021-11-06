@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -18,6 +21,8 @@ import javax.persistence.Table;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "sale_detail")
 public class SaleDetail implements Serializable {
@@ -35,12 +40,6 @@ public class SaleDetail implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_cart", nullable = false)
 	private Cart cart;
-
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public SaleDetail() {
-	}
 
 	///////////////////////////////////////////////////////
 	// Method
@@ -65,36 +64,5 @@ public class SaleDetail implements Serializable {
 			chain = "El producto del carrito no es valido.";
 		} 
 		return chain;
-	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setters
-	///////////////////////////////////////////////////////
-	public Long getId() {
-		return id;
-	}
-
-	public Long getIdSale() {
-		return idSale;
-	}
-
-	public void setIdSale(Long idSale) {
-		this.idSale = idSale;
-	}
-
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }

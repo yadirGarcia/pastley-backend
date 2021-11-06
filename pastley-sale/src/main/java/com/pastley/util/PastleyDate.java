@@ -11,6 +11,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import lombok.Data;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -18,6 +20,7 @@ import java.util.Date;
  * @contributors soleimygomez, leynerjoseoa, jhonatanbeltran.
  * @version 1.0.0.
  */
+@Data
 public class PastleyDate implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -150,60 +153,5 @@ public class PastleyDate implements Serializable{
 		} catch (ParseException e) {
 			return null;
 		}
-	}
-	
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	///////////////////////////////////////////////////////
-	public ZoneId getZone() {
-		return zone;
-	}
-
-	public LocalTime getLocalTime() {
-		return localTime;
-	}
-
-	public void setLocalTime(LocalTime localTime) {
-		this.localTime = localTime;
-	}
-
-	public LocalDate getLocalDate() {
-		return localDate;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public void setLocalDate(LocalDate localDate) {
-		this.localDate = localDate;
-	}
-
-	public LocalDateTime getLocalDateTime() {
-		return localDateTime;
-	}
-
-	public void setLocalDateTime(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
-	}
-
-	public void setZone(ZoneId zone) {
-		this.zone = zone;
-	}
-
-	public DateTimeFormatter getFormat() {
-		return format;
-	}
-
-	public void setFormat(DateTimeFormatter format) {
-		this.format = format;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }
