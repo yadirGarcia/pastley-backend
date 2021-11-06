@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.Sale;
 import com.pastley.service.SaleService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -85,7 +87,8 @@ public class SaleRest implements Serializable {
 	 * @param sale, Represents the sale.
 	 * @return The generated response.
 	 */
-	@PostMapping(value = "")
+	@CircuitBreaker(name = "userCB", fallbackMethod = "fallBackCreate")
+	@PostMapping()
 	public ResponseEntity<?> create(@RequestBody Sale sale) {
 		return ResponseEntity.status(HttpStatus.OK).body(saleService.save(sale, (byte) 1));
 	}
@@ -99,7 +102,7 @@ public class SaleRest implements Serializable {
 	 * @param sale, Represents the sale.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "")
+	@PutMapping()
 	public ResponseEntity<?> update(@RequestBody Sale sale) {
 		return ResponseEntity.status(HttpStatus.OK).body(saleService.save(sale, (byte) 2));
 	}
