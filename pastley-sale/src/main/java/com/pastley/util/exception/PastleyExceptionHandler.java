@@ -26,11 +26,11 @@ public class PastleyExceptionHandler {
 	// Method
 	///////////////////////////////////////////////////////
 	@ExceptionHandler(PastleyException.class)
-	public final ResponseEntity<PastleExceptionModel> AllExceptions(HttpServletRequest request, Exception exception) {
-		ResponseEntity<PastleExceptionModel> result;
+	public final ResponseEntity<PastleyExceptionModel> AllExceptions(HttpServletRequest request, Exception exception) {
+		ResponseEntity<PastleyExceptionModel> result;
 		Integer code = getStatus(exception);
 		code = (code == null) ? HttpStatus.INTERNAL_SERVER_ERROR.value() : code;
-		PastleExceptionModel error = new PastleExceptionModel(exception.getMessage(),
+		PastleyExceptionModel error = new PastleyExceptionModel(exception.getMessage(),
 				exception.getClass().getSimpleName(), request.getRequestURI(), code);
 		result = new ResponseEntity<>(error, HttpStatus.valueOf(code));
 		exception.printStackTrace();
