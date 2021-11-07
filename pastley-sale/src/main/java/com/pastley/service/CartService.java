@@ -31,7 +31,7 @@ public class CartService implements PastleyInterface<Long, Cart> {
 	private CartRepository cartRepository;
 
 	@Autowired
-	private SaleService saService;
+	private SaleService saleService;
 
 	///////////////////////////////////////////////////////
 	// Method - Find
@@ -166,7 +166,7 @@ public class CartService implements PastleyInterface<Long, Cart> {
 	 * @return List of carts.
 	 */
 	public List<Cart> findByProductAndStatus(Long idProduct, boolean statu) {
-		saService.findProductById(idProduct);
+		saleService.findProductById(idProduct);
 		return cartRepository.findByProductAndStatus(idProduct, statu);
 	}
 
@@ -241,10 +241,14 @@ public class CartService implements PastleyInterface<Long, Cart> {
 	public Cart save(Cart entity, byte type) {
 		if (entity != null) {
 			String message = entity.validate(false, false);
-			String messageType = (type == 1) ? "registrar"
-					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
+			String messageType = (type == 1) ? "registrado"
+					: ((type == 2) ? "actualizado" : ((type == 3) ? "actualizado el estado" : "n/a"));
 			if (message == null) {
-				ProductModel product = saService.findProductById(entity.getIdProduct());
+				ProductModel product =  null;
+				try{
+					product = saleService.findProductById(entity.getIdProduct());
+				}catch (Exception e) {
+				}
 				if (product != null) {
 					Cart cart = null;
 					if (entity.getId() != null && entity.getId() > 0) {
@@ -277,11 +281,11 @@ public class CartService implements PastleyInterface<Long, Cart> {
 					throw new PastleyException(HttpStatus.NOT_FOUND,
 							"No se ha " + messageType
 									+ " el producto carrito, no se ha encontrado ningun producto con el id "
-									+ entity.getId() + ".");
+									+ entity.getIdProduct() + ".");
 				}
 			} else {
 				throw new PastleyException(HttpStatus.NOT_FOUND,
-						"No se ha " + type + " el producto carrito, " + message + ".");
+						"No se ha " + messageType + " el producto carrito, " + message);
 			}
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el cart.");

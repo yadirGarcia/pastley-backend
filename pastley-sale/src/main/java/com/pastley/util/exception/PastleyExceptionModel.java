@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PastleExceptionModel implements Serializable {
+public class PastleyExceptionModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

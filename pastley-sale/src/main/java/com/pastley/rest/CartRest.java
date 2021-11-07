@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.Cart;
 import com.pastley.service.CartService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 /**
  * @project Pastley-Sale.
  * @author Sergio Stives Barrios Buitrago.
@@ -96,6 +98,7 @@ public class CartRest implements Serializable {
 	 * @param idProduct,  Represents the product id.
 	 * @return The generated response.
 	 */
+	@CircuitBreaker(name = "productCB", fallbackMethod = "fallBackFindByCustomerAndProduct")
 	@GetMapping(value = { "/all/find/customer/{idCustomer}/product/{idProduct}"})
 	public ResponseEntity<?> findByCustomerAndProduct(@PathVariable("idCustomer") Long idCustomer, @PathVariable("idProduct") Long idProduct){
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomerAndProduct(idCustomer, idProduct));
@@ -143,7 +146,8 @@ public class CartRest implements Serializable {
 	 * @param cart, Represents the cart.
 	 * @return The generated response.
 	 */
-	@PostMapping(value = "")
+	@CircuitBreaker(name = "productCB", fallbackMethod = "fallBackCreate")
+	@PostMapping()
 	public ResponseEntity<?> create(@RequestBody Cart cart) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 1));
 	}
@@ -157,7 +161,7 @@ public class CartRest implements Serializable {
 	 * @param cart, Represents the cart.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "")
+	@PutMapping()
 	public ResponseEntity<?> update(@RequestBody Cart cart) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 2));
 	}
@@ -186,4 +190,16 @@ public class CartRest implements Serializable {
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.delete(id));
 	}	
+	
+	///////////////////////////////////////////////////////
+	// Method - CircuitBreaker
+	///////////////////////////////////////////////////////
+	public ResponseEntity<?> fallBackCreate(@RequestBody Cart cart, RuntimeException e){
+		return new ResponseEntity("No se ha registrado el producto en el carrito, el producto con id " + cart.getIdProduct() + " no se ha podido validar.", HttpStatus.OK);
+	}
+	
+	
+	public ResponseEntity<?> fallBackFindByCustomerAndProduct(@PathVariable("idCustomer") Long idCustomer, @PathVariable("idProduct") Long idProduct, RuntimeException e){
+		return new ResponseEntity("No se ha podido mostrar los producto en el carrito del cliente "+idCustomer+", el producto con id " + idProduct + " no se ha podido validar.", HttpStatus.OK);
+	}
 }
