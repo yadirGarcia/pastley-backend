@@ -26,7 +26,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	 * @param idProduct, Represents the product id.
 	 * @return Cart.
 	 */
-	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.idCustomer = :idCustomer c.statu = :statu AND AND c.idProduct = :idProduct")
+	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.idCustomer = :idCustomer AND c.statu = :statu AND c.idProduct = :idProduct")
 	public Cart findByCustomerAndProductAndStatu(boolean statu, Long idCustomer, Long idProduct);
 
 	/**
@@ -76,7 +76,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	 * @param end, Represents the end date.
 	 * @return List of carts.
 	 */
-	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.dateRegister BETWEEN :start AND :end ORDER BY mp.dateRegister")
+	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.dateRegister BETWEEN :start AND :end ORDER BY c.dateRegister")
 	public List<Cart> findByRangeDateRegister(@Param("start") String start, @Param("end") String end);
 	
 	/**
@@ -86,7 +86,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	 * @param end, Represents the end date.
 	 * @return List of carts.
 	 */
-	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.idCustomer = :idCustomer AND c.dateRegister BETWEEN :start AND :end ORDER BY mp.dateRegister")
+	@Query(nativeQuery = false, value = "SELECT c FROM Cart c WHERE c.idCustomer = :idCustomer AND c.dateRegister BETWEEN :start AND :end ORDER BY c.dateRegister")
 	public List<Cart> findByRangeDateRegisterAndCustomer(@Param("idCustomer") Long idCustomer, @Param("start") String start, @Param("end") String end);
 	
 }
