@@ -2,6 +2,8 @@ package com.pastley.rest;
 
 import java.io.Serializable;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pastley.entity.Cart;
 import com.pastley.service.CartService;
+import com.pastley.util.PastleyVariable;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
@@ -31,6 +34,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 public class CartRest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = LoggerFactory.getLogger(CartService.class);
 
 	@Autowired
 	private CartService cartService;
@@ -146,9 +150,10 @@ public class CartRest implements Serializable {
 	 * @param cart, Represents the cart.
 	 * @return The generated response.
 	 */
-	@CircuitBreaker(name = "productCB", fallbackMethod = "fallBackCreate")
+	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = "fallBackCreate")
 	@PostMapping()
-	public ResponseEntity<?> create(@RequestBody Cart cart) {
+	public ResponseEntity<Cart> create(@RequestBody Cart cart) {
+		LOGGER.info("Calling create cart.");
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 1));
 	}
 	
@@ -194,12 +199,12 @@ public class CartRest implements Serializable {
 	///////////////////////////////////////////////////////
 	// Method - CircuitBreaker
 	///////////////////////////////////////////////////////
-	public ResponseEntity<?> fallBackCreate(@RequestBody Cart cart, RuntimeException e){
-		return new ResponseEntity("No se ha registrado el producto en el carrito, el producto con id " + cart.getIdProduct() + " no se ha podido validar.", HttpStatus.OK);
+	public ResponseEntity<?> fallBackCreate(@RequestBody Cart cart, Exception e){
+		return new ResponseEntity<>("No se ha registrado el producto en el carrito, el producto con id " + cart.getIdProduct() + " no se ha podido validar.", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	
-	public ResponseEntity<?> fallBackFindByCustomerAndProduct(@PathVariable("idCustomer") Long idCustomer, @PathVariable("idProduct") Long idProduct, RuntimeException e){
-		return new ResponseEntity("No se ha podido mostrar los producto en el carrito del cliente "+idCustomer+", el producto con id " + idProduct + " no se ha podido validar.", HttpStatus.OK);
+	public ResponseEntity<?> fallBackFindByCustomerAndProduct(@PathVariable("idCustomer") Long idCustomer, @PathVariable("idProduct") Long idProduct, Exception e){
+		return new ResponseEntity<>("No se ha registrado el producto en el carrito, el producto con id " + idProduct + " no se ha podido validar.", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
