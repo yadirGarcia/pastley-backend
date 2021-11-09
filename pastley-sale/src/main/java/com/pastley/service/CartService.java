@@ -47,6 +47,7 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		if (id > 0) {
 			Optional<Cart> cart = cartRepository.findById(id);
 			if (cart.isPresent()) {
+				cart.get().calculate();
 				return cart.orElse(null);
 			} else {
 				throw new PastleyException(HttpStatus.NOT_FOUND,
@@ -94,7 +95,12 @@ public class CartService implements PastleyInterface<Long, Cart> {
 	 */
 	@Override
 	public List<Cart> findAll() {
-		return cartRepository.findAll();
+		List<Cart> list = cartRepository.findAll();
+		if (!list.isEmpty())
+			list.forEach((e) -> {
+				e.calculate();
+			});
+		return list;
 	}
 
 	/**
@@ -242,12 +248,13 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		if (entity != null) {
 			String message = entity.validate(false, false);
 			String messageType = (type == 1) ? "registrado"
-					: ((type == 2) ? "actualizado" : ((type == 3) ? "actualizado el estado" : "n/a"));
+					: ((type == 2) ? "actualizado"
+							: ((type == 3) ? "actualizado el estado" : ((type == 4) ? "actualizando stock" : "n/a")));
 			if (message == null) {
-				ProductModel product =  null;
-				try{
+				ProductModel product = null;
+				try {
 					product = saleService.findProductById(entity.getIdProduct());
-				}catch (Exception e) {
+				} catch (Exception e) {
 				}
 				if (product != null) {
 					Cart cart = null;
@@ -259,7 +266,7 @@ public class CartService implements PastleyInterface<Long, Cart> {
 					cart.setPrice(PastleyValidate.bigIntegerHigherZero(entity.getPrice()) ? entity.getPrice()
 							: PastleyValidate.bigIntegerHigherZero(product.getPrice()) ? product.getPrice()
 									: BigInteger.ZERO);
-					if(PastleyValidate.bigIntegerHigherZero(cart.getPrice())) {
+					if (PastleyValidate.bigIntegerHigherZero(cart.getPrice())) {
 						cart.setDiscount(PastleyValidate.isChain(cart.getDiscount()) ? cart.getDiscount()
 								: PastleyValidate.isChain(product.getDiscount()) ? product.getDiscount() : "0");
 						cart.setVat(PastleyValidate.isChain(cart.getVat()) ? cart.getVat()
@@ -273,10 +280,9 @@ public class CartService implements PastleyInterface<Long, Cart> {
 							throw new PastleyException(HttpStatus.NOT_FOUND,
 									"No se ha " + messageType + " el producto carrito.");
 						}
-					}else {
-						throw new PastleyException(HttpStatus.NOT_FOUND,
-								"No se ha " + messageType
-										+ " el producto carrito, el precio del producto debe ser mayor a cero.");
+					} else {
+						throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType
+								+ " el producto carrito, el precio del producto debe ser mayor a cero.");
 					}
 				} else {
 					throw new PastleyException(HttpStatus.NOT_FOUND,
@@ -308,6 +314,7 @@ public class CartService implements PastleyInterface<Long, Cart> {
 			entity.setId(0L);
 			entity.setDateRegister(date.currentToDateTime(null));
 			entity.setDateUpdate(null);
+			entity.setStatu(true);
 			entity.setCount(entity.getCount() <= 0 ? 1 : entity.getCount());
 			return entity;
 		}
@@ -327,7 +334,8 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		if (cart != null) {
 			PastleyDate date = new PastleyDate();
 			entity.setDateRegister(cart.getDateRegister());
-			entity.setCount(entity.getCount() + cart.getCount());
+			entity.setCount((type == 4) ? entity.getCount() : (cart.getCount() <= 0) ? ((cart.getCount() <= 0) ? 1 : cart.getCount()) : entity.getCount());
+			entity.setStatu((type == 4) ? cart.isStatu() : (type == 3) ? !entity.isStatu() : entity.isStatu());
 			entity.setDateUpdate(date.currentToDateTime(null));
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND,
