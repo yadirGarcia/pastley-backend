@@ -113,8 +113,8 @@ public class SaleRest implements Serializable {
 	 * @param id, Represents the identifier of the sale.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "/update/{id}/statu")
-	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
+	@PutMapping(value = "/update/statu")
+	public ResponseEntity<?> updateStatu(@RequestBody Long id) {
 		Sale sale= saleService.findById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(saleService.save(sale, (byte) 3));
 	}
