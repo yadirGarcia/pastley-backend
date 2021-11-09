@@ -1,5 +1,8 @@
-![Logo](https://raw.githubusercontent.com/DeveUp/pastley-backend/bfbce5a4186c8159435faa29667a1624fae04192/pastley-logos/04.svg)
-
+<p align="center">
+    <a href="https://github.com/DeveUp/pastley-backend" target="_blank"> 
+        <img src="https://raw.githubusercontent.com/DeveUp/pastley-backend/bfbce5a4186c8159435faa29667a1624fae04192/pastley-logos/04.svg" alt="docker" width="500" height="300"/> 
+    </a> 
+</p> 
     
 # Pastley
 
