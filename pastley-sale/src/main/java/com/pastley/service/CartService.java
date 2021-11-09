@@ -267,6 +267,7 @@ public class CartService implements PastleyInterface<Long, Cart> {
 						cart.calculate();
 						cart = cartRepository.save(cart);
 						if (cart != null) {
+							cart.calculate();
 							return cart;
 						} else {
 							throw new PastleyException(HttpStatus.NOT_FOUND,

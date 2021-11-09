@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pastley.entity.Cart;
 import com.pastley.service.CartService;
 import com.pastley.util.PastleyVariable;
+import com.pastley.util.exception.PastleyExceptionModel;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
@@ -102,7 +103,7 @@ public class CartRest implements Serializable {
 	 * @param idProduct,  Represents the product id.
 	 * @return The generated response.
 	 */
-	@CircuitBreaker(name = "productCB", fallbackMethod = "fallBackFindByCustomerAndProduct")
+	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_FALLBACK_METHOD)
 	@GetMapping(value = { "/all/find/customer/{idCustomer}/product/{idProduct}"})
 	public ResponseEntity<?> findByCustomerAndProduct(@PathVariable("idCustomer") Long idCustomer, @PathVariable("idProduct") Long idProduct){
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByCustomerAndProduct(idCustomer, idProduct));
@@ -150,7 +151,7 @@ public class CartRest implements Serializable {
 	 * @param cart, Represents the cart.
 	 * @return The generated response.
 	 */
-	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = "fallBackCreate")
+	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_FALLBACK_METHOD)
 	@PostMapping()
 	public ResponseEntity<Cart> create(@RequestBody Cart cart) {
 		LOGGER.info("Calling create cart.");
@@ -166,6 +167,7 @@ public class CartRest implements Serializable {
 	 * @param cart, Represents the cart.
 	 * @return The generated response.
 	 */
+	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_FALLBACK_METHOD)
 	@PutMapping()
 	public ResponseEntity<?> update(@RequestBody Cart cart) {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 2));
@@ -199,12 +201,7 @@ public class CartRest implements Serializable {
 	///////////////////////////////////////////////////////
 	// Method - CircuitBreaker
 	///////////////////////////////////////////////////////
-	public ResponseEntity<?> fallBackCreate(@RequestBody Cart cart, Exception e){
-		return new ResponseEntity<>("No se ha registrado el producto en el carrito, el producto con id " + cart.getIdProduct() + " no se ha podido validar.", HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	
-	public ResponseEntity<?> fallBackFindByCustomerAndProduct(@PathVariable("idCustomer") Long idCustomer, @PathVariable("idProduct") Long idProduct, Exception e){
-		return new ResponseEntity<>("No se ha registrado el producto en el carrito, el producto con id " + idProduct + " no se ha podido validar.", HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<?> fallBack(Exception e){
+		return new ResponseEntity<>(PastleyExceptionModel.builder(e, HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

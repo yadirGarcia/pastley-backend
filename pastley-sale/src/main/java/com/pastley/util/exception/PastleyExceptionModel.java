@@ -24,4 +24,8 @@ public class PastleyExceptionModel implements Serializable {
 	private String exception;
 	private String path;
 	private int statu;
+	
+	public static PastleyExceptionModel builder(Exception e, int code) {
+		return new PastleyExceptionModel(e.getMessage(), e.getClass().getSimpleName(), e.getLocalizedMessage(), code);
+	}
 }
