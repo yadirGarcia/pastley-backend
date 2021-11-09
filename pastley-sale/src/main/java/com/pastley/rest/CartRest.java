@@ -174,15 +174,30 @@ public class CartRest implements Serializable {
 	}
 	
 	/**
-	 * Method that allows updating the status of a cart product
+	 * Method that allows updating the status of a cart product.
 	 * 
 	 * @param id, Represents the identifier of the cart.
 	 * @return The generated response.
 	 */
+	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_FALLBACK_METHOD)
 	@PutMapping(value = "/update/{id}/statu")
 	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
 		Cart cart = cartService.findById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 3));
+	}
+	
+	/**
+	 * Method that allows updating the count of a cart product.
+	 * 
+	 * @param id, Represents the identifier of the cart.
+	 * @return The generated response.
+	 */
+	@CircuitBreaker(name = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_INSTANCES_A, fallbackMethod = PastleyVariable.PASTLEY_CIRCUIT_BREAKER_FALLBACK_METHOD)
+	@PutMapping(value = "/update/{id}/count/{count}")
+	public ResponseEntity<?> updateCount(@PathVariable("id") Long id, @PathVariable("count") int count) {
+		Cart cart = cartService.findById(id);
+		cart.setCount(cart.getCount() + count);
+		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 4));
 	}
 	
 	///////////////////////////////////////////////////////
