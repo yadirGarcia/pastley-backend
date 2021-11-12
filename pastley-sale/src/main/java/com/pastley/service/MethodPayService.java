@@ -29,9 +29,6 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 	@Autowired
 	private MethodPayRepository methodPayRepository;
 
-	///////////////////////////////////////////////////////
-	// Method - Find
-	///////////////////////////////////////////////////////
 	@Override
 	public MethodPay findById(Long id) {
 		if (id > 0) {
@@ -60,22 +57,16 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List
-	///////////////////////////////////////////////////////
 	@Override
 	public List<MethodPay> findAll() {
 		return methodPayRepository.findAll();
 	}
-
+	
 	@Override
 	public List<MethodPay> findByStatuAll(boolean statu) {
 		return methodPayRepository.findByStatu(statu);
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List - Range
-	///////////////////////////////////////////////////////
 	public List<MethodPay> findByRangeDateRegister(String start, String end) {
 		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
 			PastleyDate date = new PastleyDate();
@@ -92,9 +83,6 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - Statistic
-	///////////////////////////////////////////////////////
 	private Long findByStatisticSalePrivate(Long id) {
 		if (id > 0) {
 			Long count = methodPayRepository.countByMethodPaySale(id);
