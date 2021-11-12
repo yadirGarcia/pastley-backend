@@ -95,10 +95,7 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 	public StatisticModel<MethodPay> findByStatisticSale(Long id) {
 		return new StatisticModel<>(findById(id), findByStatisticSalePrivate(id));
 	}
-
-	///////////////////////////////////////////////////////
-	// Method - Find - Statistic - List
-	///////////////////////////////////////////////////////
+	
 	public List<StatisticModel<MethodPay>> findByStatisticSaleAll() {
 		try {
 			List<MethodPay> methods = methodPayRepository.findByStatu(true);
@@ -112,9 +109,6 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
 	@Override
 	public MethodPay save(MethodPay entity) {
 		return null;
@@ -192,9 +186,6 @@ public class MethodPayService implements PastleyInterface<Long, MethodPay> {
 		return (method == null) ? true : false;
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	@Override
 	public boolean delete(Long id) {
 		findById(id);

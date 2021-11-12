@@ -14,9 +14,6 @@ public class PastleyValidate implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	///////////////////////////////////////////////////////
-	// Method - Chain
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows to validate the strings.
 	 * 
@@ -39,9 +36,6 @@ public class PastleyValidate implements Serializable{
 		return chain;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Number
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that validates if a string contains pure numbers.
 	 * 
@@ -67,10 +61,7 @@ public class PastleyValidate implements Serializable{
 		}
 		return false;
 	}
-	
-	///////////////////////////////////////////////////////
-	// Method - BigInteger
-	///////////////////////////////////////////////////////
+
 	/**
 	 * Method that allows verifying if a biginteger is greater than zero.
 	 * 

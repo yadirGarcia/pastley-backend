@@ -33,9 +33,6 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 	@Autowired
 	private CartService cartService;
 
-	///////////////////////////////////////////////////////
-	// Method - Find
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows to know a sale detail by its id.
 	 * 
@@ -57,9 +54,6 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows to know all the details of registered sales.
 	 * 
@@ -89,9 +83,6 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 		return saleDetailRepository.findByIdSale(idSale);
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
 	@Override
 	public SaleDetail save(SaleDetail entity) {
 		if (entity != null) {
@@ -124,9 +115,6 @@ public class SaleDetailService implements PastleyInterface<Long, SaleDetail> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to delete a sale detail.
 	 * 

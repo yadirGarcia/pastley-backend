@@ -46,9 +46,6 @@ public class MethodPay implements Serializable {
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
 
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that validates the attributes of the class.
 	 * @param isId, Represents if you want to validate the id.

@@ -18,9 +18,6 @@ public class RestTemplateConfig implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 	@Bean
 	public RestTemplate template() {
 		return new RestTemplate();

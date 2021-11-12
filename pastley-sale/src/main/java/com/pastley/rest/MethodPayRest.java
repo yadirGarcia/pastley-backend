@@ -126,7 +126,7 @@ public class MethodPayRest implements Serializable {
 	 * @param method, Represents the payment method to update.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "")
+	@PutMapping()
 	public ResponseEntity<?> update(@RequestBody MethodPay method) {
 		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.save(method, (byte) 2));
 	}

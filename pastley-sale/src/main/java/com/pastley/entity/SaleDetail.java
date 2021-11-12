@@ -41,9 +41,6 @@ public class SaleDetail implements Serializable {
 	@JoinColumn(name = "id_cart", nullable = false)
 	private Cart cart;
 
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that validates the attributes of the class.
 	 * 
