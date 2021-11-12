@@ -22,9 +22,6 @@ public class PastleyExceptionHandler {
 
 	private static final Map<String, Integer> STATUS = new HashMap<>();
 	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 	@ExceptionHandler(PastleyException.class)
 	public final ResponseEntity<PastleyExceptionModel> AllExceptions(HttpServletRequest request, Exception exception) {
 		ResponseEntity<PastleyExceptionModel> result;

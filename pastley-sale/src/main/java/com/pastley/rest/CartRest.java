@@ -40,9 +40,6 @@ public class CartRest implements Serializable {
 	@Autowired
 	private CartService cartService;
 
-	///////////////////////////////////////////////////////
-	// Method - Get
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to check the cart for its id.
 	 * 
@@ -143,9 +140,6 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.findByRangeDateRegisterAndCustomer(idCustomer, start, end));
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Post
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to register a product in the cart.
 	 * @param cart, Represents the cart.
@@ -158,9 +152,6 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 1));
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Put
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows updating the information of a product in the cart.
 	 * 
@@ -200,9 +191,6 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.save(cart, (byte) 4));
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to delete a product with the cart.
 	 * @param id, Represents the identifier of the cart.
@@ -213,9 +201,6 @@ public class CartRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(cartService.delete(id));
 	}	
 	
-	///////////////////////////////////////////////////////
-	// Method - CircuitBreaker
-	///////////////////////////////////////////////////////
 	public ResponseEntity<?> fallBack(Exception e){
 		return new ResponseEntity<>(PastleyExceptionModel.builder(e, HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}

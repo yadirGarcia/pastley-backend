@@ -33,15 +33,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 	@Autowired
 	private SaleService saleService;
 
-	///////////////////////////////////////////////////////
-	// Method - Find
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows you to check the cart for its id.
-	 * 
-	 * @param id, Represents the identifier of the cart.
-	 * @return Cart.
-	 */
 	@Override
 	public Cart findById(Long id) {
 		if (id > 0) {
@@ -58,15 +49,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	/**
-	 * Method that allows consulting a product in the cart by the customer id and
-	 * the product id.
-	 * 
-	 * @param idCustomer, Represents the customer id.
-	 * @param statu,      Represents the status of the product.
-	 * @param idProduct,  Represents the product id.
-	 * @return Cart.
-	 */
 	public Cart findByCustomerAndProductAndStatu(boolean statu, Long idCustomer, Long idProduct) {
 		if (idCustomer > 0) {
 			if (idProduct > 0) {
@@ -85,36 +67,16 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows you to consult all the products in the cart.
-	 * 
-	 * @return List of carts.
-	 */
 	@Override
 	public List<Cart> findAll() {
 		return calculate(cartRepository.findAll());
 	}
 
-	/**
-	 * Method that allows you to consult all the carts by their status.
-	 * 
-	 * @param statu, Represents the status of the product in cart.
-	 * @return List of carts.
-	 */
 	@Override
 	public List<Cart> findByStatuAll(boolean statu) {
 		return calculate(cartRepository.findByStatu(statu));
 	}
 
-	/**
-	 * Method that allows consulting all the products of a client.
-	 * 
-	 * @param idCustomer, Represents the customer id.
-	 * @return List of carts.
-	 */
 	public List<Cart> findByCustomer(Long idCustomer) {
 		if (idCustomer > 0) {
 			return calculate(cartRepository.findByIdCustomer(idCustomer));
@@ -123,14 +85,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	/**
-	 * Method that allows to consult all the products of a client and by their
-	 * status.
-	 * 
-	 * @param id,    Represents the customer id.
-	 * @param statu, Represents the status of the product
-	 * @return List of carts.
-	 */
 	public List<Cart> findByCustomerAndStatus(Long idCustomer, boolean statu) {
 		if (idCustomer > 0) {
 			return calculate(cartRepository.findByCustomerAndStatus(idCustomer, statu));
@@ -139,13 +93,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	/**
-	 * Method that allows consulting the different carts with the same product.
-	 * 
-	 * @param idCustomer, Represents the customer id.
-	 * @param idProduct,  Represents the product id.
-	 * @return List Cart.
-	 */
 	public List<Cart> findByCustomerAndProduct(Long idCustomer, Long idProduct) {
 		if (idCustomer > 0) {
 			if (idProduct > 0) {
@@ -158,56 +105,21 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	/**
-	 * Method that allows you to check the products in the cart by product and
-	 * status.
-	 * 
-	 * @param idProduct, Represents the product id.
-	 * @param statu,     Represents the status of the product.
-	 * @return List of carts.
-	 */
 	public List<Cart> findByProductAndStatus(Long idProduct, boolean statu) {
 		saleService.findProductById(idProduct);
 		return calculate(cartRepository.findByProductAndStatus(idProduct, statu));
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List - Range
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows you to filter the products in the cart that are registered
-	 * between a range of dates.
-	 * 
-	 * @param start, Represents the start date.
-	 * @param end,   Represents the end date.
-	 * @return List of carts.
-	 */
 	public List<Cart> findByRangeDateRegister(String start, String end) {
 		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
 		return calculate(cartRepository.findByRangeDateRegister(array_date[0], array_date[1]));
 	}
 
-	/**
-	 * Method that allows you to filter the products in the cart that are registered
-	 * between a range of dates and the customer's id.
-	 * 
-	 * @param idCustomer, Represents the customer id.
-	 * @param start,      Represents the start date.
-	 * @param end,        Represents the end date.
-	 * @return List of carts.
-	 */
 	public List<Cart> findByRangeDateRegisterAndCustomer(Long idCustomer, String start, String end) {
 		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
 		return calculate(cartRepository.findByRangeDateRegisterAndCustomer(idCustomer, array_date[0], array_date[1]));
 	}
 
-	/**
-	 * Method that allows to validate the two dates.
-	 * 
-	 * @param start, Represents the start date.
-	 * @param end,   Represents the end date.
-	 * @return Array.
-	 */
 	private String[] findByRangeDateRegisterValidateDate(String start, String end) {
 		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
 			PastleyDate date = new PastleyDate();
@@ -224,21 +136,11 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
 	@Override
 	public Cart save(Cart entity) {
 		return null;
 	}
 
-	/**
-	 * Method that allows you to register or update a cart product.
-	 * 
-	 * @param entity, Represents the cart product.
-	 * @param type,   Represents the type of operation
-	 * @return Cart.
-	 */
 	public Cart save(Cart entity, byte type) {
 		if (entity != null) {
 			String message = entity.validate(false, false);
@@ -294,13 +196,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 		}
 	}
 
-	/**
-	 * Method that allows you to register a cart product.
-	 * 
-	 * @param entity, Represents the cart product.
-	 * @param type,   Represents the type of operation
-	 * @return Cart.
-	 */
 	private Cart saveToSave(Cart entity, byte type) {
 		try {
 			findByCustomerAndProductAndStatu(true, entity.getIdCustomer(), entity.getIdProduct());
@@ -317,13 +212,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 				+ " ya tiene agregado en el carrito el producto con el id " + entity.getIdProduct() + ".");
 	}
 
-	/**
-	 * Method that allows you to update a cart product.
-	 * 
-	 * @param entity, Represents the cart product.
-	 * @param type,   Represents the type of operation
-	 * @return Cart.
-	 */
 	private Cart saveToUpdate(Cart entity, byte type) {
 		Cart cart = findById(entity.getId());
 		if (cart != null) {
@@ -341,12 +229,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows you to delete a product with the cart.
-	 */
 	@Override
 	public boolean delete(Long id) {
 		Cart cart = findById(id);
@@ -367,9 +249,6 @@ public class CartService implements PastleyInterface<Long, Cart> {
 				"No se ha eliminado el producto del carito con el id " + id + ".");
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Private
-	///////////////////////////////////////////////////////
 	public List<Cart> calculate(List<Cart> list) {
 		if (!list.isEmpty())
 			list.forEach((e) -> {

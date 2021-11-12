@@ -73,9 +73,6 @@ public class Cart implements Serializable {
 	@Column(name="date_update", nullable = true)
 	private String dateUpdate;
 	
-	///////////////////////////////////////////////////////
-	// Other
-	///////////////////////////////////////////////////////
 	@Transient
 	private BigInteger otherPriceVat;
 	@Transient 
@@ -87,10 +84,6 @@ public class Cart implements Serializable {
 	private BigInteger otherPriceSubPriceDisount;
 	@Transient 
 	private BigInteger otherSubtotalPriceDisount;
-
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
 	
 	public Cart(String discount, String iva, BigInteger price) {
 		this(0L, discount, iva, price);
@@ -108,9 +101,6 @@ public class Cart implements Serializable {
 		this.price = price;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////	
 	public String validate(boolean isId, boolean isPrice) {
 		String chain = null;
 		if(isId) {
@@ -134,10 +124,7 @@ public class Cart implements Serializable {
 		}
 		return chain;
 	}
-	
-	///////////////////////////////////////////////////////
-	// Method - Price
-	///////////////////////////////////////////////////////	
+
 	/**
 	 * Method that allows all prices to be calculated.
 	 */

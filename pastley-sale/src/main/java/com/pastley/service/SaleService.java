@@ -43,9 +43,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	@Autowired
 	private ProductFeignClient productFeignClient;
 
-	///////////////////////////////////////////////////////
-	// Method - Find
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to consult a sale by its id.
 	 * 
@@ -67,9 +64,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows all sales to be consulted.
 	 */
@@ -89,9 +83,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		return saleRepository.findByStatu(statu);
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Find - List - Range
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows consulting the sales that are in a date range.
 	 * 
@@ -127,9 +118,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
 	@Override
 	public Sale save(Sale entity) {
 		return null;
@@ -192,9 +180,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		return null;
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to delete a sale
 	 * 
@@ -220,9 +205,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la venta con el id " + id + ".");
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Other
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows a person to consult their document.
 	 * 

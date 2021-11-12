@@ -34,17 +34,11 @@ public class PastleyDate implements Serializable{
 	private ZoneId zone;
 	private DateTimeFormatter format;
 	
-	///////////////////////////////////////////////////////
-	// Builders
-	///////////////////////////////////////////////////////
 	public PastleyDate() {
 		initZoneId(null);
 		initFormat(null);
 	}
 	
-	///////////////////////////////////////////////////////
-	// Init
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that initializes the zone.
 	 * 
@@ -63,9 +57,6 @@ public class PastleyDate implements Serializable{
 		this.format = DateTimeFormatter.ofPattern((PastleyValidate.isChain(format)) ? format : PastleyVariable.PASTLEY_DATE_TIME_FORMAT);
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Current
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows obtaining the current date.
 	 * 
@@ -105,9 +96,6 @@ public class PastleyDate implements Serializable{
 		return date;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Convert
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that converts a date.
 	 * @param date, Represents the convert date.
@@ -130,9 +118,6 @@ public class PastleyDate implements Serializable{
 	     return dt.parse(date);
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Format
-	///////////////////////////////////////////////////////
 	public String formatToDateTime(Date date, String format) {
 		if(date != null) {
 			if(!PastleyValidate.isChain(format)) {
@@ -144,9 +129,6 @@ public class PastleyDate implements Serializable{
 		return null;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Combine
-	///////////////////////////////////////////////////////
 	public Date combineFormatToDateTime(Date date, String format) {
 		try {
 			return convertToDateTime(formatToDateTime(date, format));

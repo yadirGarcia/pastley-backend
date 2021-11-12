@@ -17,9 +17,6 @@ public class PastleyException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private HttpStatus httpStatus;
 
-	///////////////////////////////////////////////////////
-	// Builders
-	///////////////////////////////////////////////////////
 	public PastleyException(HttpStatus httpStatus, String message) {
 		super(message);
 		this.httpStatus = httpStatus;

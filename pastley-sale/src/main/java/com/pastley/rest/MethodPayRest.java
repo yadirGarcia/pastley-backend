@@ -33,9 +33,6 @@ public class MethodPayRest implements Serializable {
 	@Autowired
 	private MethodPayService methodPayService;
 
-	///////////////////////////////////////////////////////
-	// Method - Get
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows consulting a payment method by its id.
 	 * 
@@ -98,7 +95,7 @@ public class MethodPayRest implements Serializable {
 	 * @return The generated response.
 	 */
 	@GetMapping(value = "/statistic/find/sale/{id}")
-	public ResponseEntity<?> findByStatisticSale(@PathVariable Long id) {
+	public ResponseEntity<?> findByStatisticSale(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.findByStatisticSale(id));
 	}
 
@@ -112,30 +109,24 @@ public class MethodPayRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.findByStatisticSaleAll());
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Post
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to register a payment method.
 	 * 
 	 * @param method, Represents the payment method to register.
 	 * @return The generated response.
 	 */
-	@PostMapping(value = "")
+	@PostMapping()
 	public ResponseEntity<?> create(@RequestBody MethodPay method) {
 		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.save(method, (byte) 1));
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Put
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows updating a payment method.
 	 * 
 	 * @param method, Represents the payment method to update.
 	 * @return The generated response.
 	 */
-	@PutMapping(value = "")
+	@PutMapping()
 	public ResponseEntity<?> update(@RequestBody MethodPay method) {
 		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.save(method, (byte) 2));
 	}
@@ -152,9 +143,6 @@ public class MethodPayRest implements Serializable {
 		return ResponseEntity.status(HttpStatus.OK).body(methodPayService.save(method, (byte) 3));
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows you to delete a payment method by means of its id.
 	 * 
