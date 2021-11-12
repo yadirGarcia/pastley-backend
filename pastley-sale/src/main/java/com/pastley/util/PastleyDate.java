@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 import lombok.Data;
@@ -55,6 +56,36 @@ public class PastleyDate implements Serializable{
 	 */
 	public void initFormat(String format) {
 		this.format = DateTimeFormatter.ofPattern((PastleyValidate.isChain(format)) ? format : PastleyVariable.PASTLEY_DATE_TIME_FORMAT);
+	}
+	
+	/**
+	 * Method that allows knowing the current month.
+	 * @return the current month.
+	 */
+	public int currentYear() {
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.YEAR);
+	}
+
+	/**
+	 * Method that allows to know the current year.
+	 * @return the current year.
+	 */
+	public int currentMonth() {
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.MONTH);
+	}
+
+	/**
+	 * Method that allows knowing the name of the current month.
+	 * @return the current month name.
+	 */
+	public String currentMonthName() {
+		try {
+			return PastleyVariable.PASTLEY_ARRAY_DATE[currentMonth()];
+		}catch (Exception e) {
+			return null;
+		}
 	}
 	
 	/**

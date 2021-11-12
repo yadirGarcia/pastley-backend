@@ -28,6 +28,21 @@ public interface SaleRepository extends JpaRepository<Sale, Long>{
 	public List<Sale> findByStatu(boolean statu);
 	
 	/**
+	 * Method that allows knowing all the sales of a user.
+	 * @param idCoustomer, Represents the id of the user.
+	 * @return List with sales found.
+	 */
+	public List<Sale> findByIdCoustomer(Long idCoustomer);
+	
+	/**
+	 * Method that allows to know the sales by a payment method.
+	 * @param idMethodPay, Represents the id of the payment method.
+	 * @return @return List with sales found.
+	 */
+	public List<Sale> findByIdMethodPay(Long idMethodPay);
+	
+	
+	/**
 	 * Method that allows you to filter the sales that are registered between a range of dates.
 	 * @param start, Represents the start date.
 	 * @param end, Represents the end date.
@@ -35,4 +50,13 @@ public interface SaleRepository extends JpaRepository<Sale, Long>{
 	 */
 	@Query(nativeQuery = false, value = "SELECT s FROM Sale s WHERE s.dateRegister BETWEEN :start AND :end ORDER BY s.dateRegister")
 	public List<Sale> findByRangeDateRegister(@Param("start") String start, @Param("end") String end);
+	
+	/**
+	 * Method that allows to consult all the sales of a month and year indicated.
+	 * @param month, Represents the month.
+	 * @param year, Represents the year.
+	 * @return List with sales found.
+	 */
+	@Query(nativeQuery = false, value = "SELECT s FROM Sale s WHERE MONTHNAME(s.dateRegister) = :month AND YEAR(s.dateRegister) = :year ORDER BY s.dateRegister")
+	public List<Sale> findByMonthAndYear(@Param("month") String month, @Param("year") int year);
 }
