@@ -43,12 +43,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 	@Autowired
 	private ProductFeignClient productFeignClient;
 
-	/**
-	 * Method that allows you to consult a sale by its id.
-	 * 
-	 * @param id, Represents the identifier of the sale.
-	 * @return Sale.
-	 */
 	@Override
 	public Sale findById(Long id) {
 		if (id > 0) {
@@ -64,58 +58,44 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 
-	/**
-	 * Method that allows all sales to be consulted.
-	 */
 	@Override
 	public List<Sale> findAll() {
 		return saleRepository.findAll();
 	}
+	
+	public List<Sale> findByIdCustomerAll(Long idCustoner){
+		if(idCustoner <= 0) 
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del cliente no es valido.");
+		return saleRepository.findByIdCoustomer(idCustoner);
+	}
+	
+	public List<Sale> findByIdMethodPayAll(Long idMethodPay){
+		if(idMethodPay <= 0)
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del metodo de pago no es valido.");
+		return saleRepository.findByIdMethodPay(idMethodPay);
+	}
+	
+	public List<Sale> findByMonthAndYear(String month, int year){
+		if(!PastleyValidate.isChain(month)) 
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El mes no es valido.");
+		if(year <=0) 
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El año debe ser mayor a cero.");
+		return saleRepository.findByMonthAndYear(month, year);
+	}
+	
+	public List<Sale> findByMonthAndYearCurrent(){
+		PastleyDate date = new PastleyDate();
+		return findByMonthAndYear(date.currentMonthName(), date.currentYear());
+	}
 
-	/**
-	 * Method that allows you to check sales by their status.
-	 * 
-	 * @param statu, Represents the state.
-	 * @return List of Sale.
-	 */
 	@Override
 	public List<Sale> findByStatuAll(boolean statu) {
 		return saleRepository.findByStatu(statu);
 	}
 
-	/**
-	 * Method that allows consulting the sales that are in a date range.
-	 * 
-	 * @param start, Represents the start date.
-	 * @param end,   Represents the end date.
-	 * @return List of Sale.
-	 */
 	public List<Sale> findByRangeDateRegister(String start, String end) {
 		String array_date[] = findByRangeDateRegisterValidateDate(start, end);
 		return saleRepository.findByRangeDateRegister(array_date[0], array_date[1]);
-	}
-
-	/**
-	 * Method that allows to validate the two dates.
-	 * 
-	 * @param start, Represents the start date.
-	 * @param end,   Represents the end date.
-	 * @return Array.
-	 */
-	private String[] findByRangeDateRegisterValidateDate(String start, String end) {
-		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
-			PastleyDate date = new PastleyDate();
-			try {
-				String array_date[] = { date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
-						date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) };
-				return array_date;
-			} catch (ParseException e) {
-				throw new PastleyException(HttpStatus.NOT_FOUND,
-						"El formato permitido para las fechas es: 'Año-Mes-Dia'.");
-			}
-		} else {
-			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la fecha inicio o la fecha fin.");
-		}
 	}
 
 	@Override
@@ -123,13 +103,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		return null;
 	}
 	
-	/**
-	 * Method that allows you to register or update a sale.
-	 * 
-	 * @param entity, Represents the sale.
-	 * @param type,   Represents the type of operation
-	 * @return Sale.
-	 */
 	public Sale save(Sale entity, byte type) {
 		if (entity != null) {
 			String message = entity.validate(false);
@@ -158,33 +131,14 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 
-	/**
-	 * Method that allows you to register a sale.
-	 * 
-	 * @param entity, Represents the sale.
-	 * @param type,   Represents the type of operation
-	 * @return Sale.
-	 */
 	public Sale saveToSave(Sale entity, byte type) {
 		return null;
 	}
 
-	/**
-	 * Method that allows you to update a sale.
-	 * 
-	 * @param entity, Represents the sale.
-	 * @param type,   Represents the type of operation
-	 * @return Sale.
-	 */
 	public Sale saveToUpdate(Sale entity, byte type) {
 		return null;
 	}
 
-	/**
-	 * Method that allows you to delete a sale
-	 * 
-	 * @param id, Represents the identifier of the sale.
-	 */
 	@Override
 	public boolean delete(Long id) {
 		findById(id);
@@ -205,12 +159,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la venta con el id " + id + ".");
 	}
 
-	/**
-	 * Method that allows a person to consult their document.
-	 * 
-	 * @param documentPerson, Represents the person document.
-	 * @return Person.
-	 */
 	public PersonModel findPersonByDocument(Long documentPerson) {
 		if (documentPerson > 0) {
 			PersonModel person = personFeignClient.findByDocument(documentPerson);
@@ -224,12 +172,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 
-	/**
-	 * Method that allows consulting a user by his id.
-	 * 
-	 * @param idUser, Represents the id of the user.
-	 * @return User.
-	 */
 	public UserModel findUserById(Long idUser) {
 		if (idUser > 0) {
 			return new UserModel();
@@ -238,12 +180,6 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 		}
 	}
 
-	/**
-	 * Method that allows knowing a product by its id
-	 * 
-	 * @param idProduct, Represents the product id.
-	 * @return Product.
-	 */
 	public ProductModel findProductById(Long idProduct) {
 		if (idProduct > 0) {
 			ProductModel product = productFeignClient.findById(idProduct);
@@ -254,6 +190,22 @@ public class SaleService implements PastleyInterface<Long, Sale> {
 			return product;
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del producto no es valido.");
+		}
+	}
+	
+	private String[] findByRangeDateRegisterValidateDate(String start, String end) {
+		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
+			PastleyDate date = new PastleyDate();
+			try {
+				String array_date[] = { date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+						date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) };
+				return array_date;
+			} catch (ParseException e) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"El formato permitido para las fechas es: 'Año-Mes-Dia'.");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la fecha inicio o la fecha fin.");
 		}
 	}
 }
