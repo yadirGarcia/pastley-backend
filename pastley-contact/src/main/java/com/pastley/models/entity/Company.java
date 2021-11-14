@@ -46,7 +46,7 @@ public class Company implements Serializable {
 
 	@Column(name = "address", nullable = false, length = 200)
 	private String address;
-	
+
 	@Column(name = "description", nullable = true, length = 500)
 	private String desciption;
 
@@ -67,7 +67,7 @@ public class Company implements Serializable {
 
 	@Column(name = "logo", nullable = true, length = 500)
 	private String logo;
-	
+
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
@@ -79,13 +79,13 @@ public class Company implements Serializable {
 
 	@Column(name = "alert_min_stock", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private Integer alertMinStock;
-	
+
 	@Column(name = "date_register", nullable = false)
 	private String dateRegister;
-	 
+
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
-	
+
 	public String validate(boolean isId) {
 		String chain = null;
 		if (isId) {
@@ -103,12 +103,26 @@ public class Company implements Serializable {
 			chain = "El email de empresa no es valido.";
 		if (!PastleyValidate.isChain(address))
 			chain = "La clave de empresa no es valida.";
-		if (size <=0 )
+		if (size <= 0)
 			chain = "La cantidad minima de un producto no es valida.";
 		return chain;
 	}
-	
+
 	public void uppercase() {
 		this.name = PastleyValidate.uppercase(name);
+	}
+
+	public void update(Company company) {
+		if(company == null)
+			return;
+		this.desciption = validateInfo(desciption, company.getDesciption());
+		this.mission = validateInfo(mission, company.getMission());
+		this.vision = validateInfo(vision, company.getVision());
+		this.aboutUs = validateInfo(aboutUs, company.getAboutUs());
+		this.logo = validateInfo(aboutUs, company.getLogo());
+	}
+	
+	private String validateInfo(String a, String b) {
+		return PastleyValidate.isChain(a) ? a : PastleyValidate.isChain(b) ? b : a;
 	}
 }

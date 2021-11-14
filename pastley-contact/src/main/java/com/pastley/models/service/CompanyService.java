@@ -1,5 +1,6 @@
 package com.pastley.models.service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,14 @@ public class CompanyService implements PastleyInterface<Long, Company> {
 	public Company save(Company entity) {
 		return null;
 	}
+	
+	public Company updateButdget(Long id, BigInteger value) {
+		Company company = findById(id);
+		if(value == null)
+			value = BigInteger.ZERO;
+		company.setButdget(company.getButdget().add(value));
+		return save(company, (byte)2);
+	}
 
 	public Company save(Company entity, byte type) {
 		if(entity != null) {
@@ -73,6 +82,7 @@ public class CompanyService implements PastleyInterface<Long, Company> {
 		Company company = findById(entity.getId());
 		PastleyDate date = new PastleyDate();
 		entity.uppercase();
+		entity.update(company);
 		entity.setDateRegister(company.getDateRegister());
 		entity.setDateUpdate(date.currentToDateTime(null));
 		entity.setStatu((type == 3) ? !entity.isStatu() : entity.isStatu());
