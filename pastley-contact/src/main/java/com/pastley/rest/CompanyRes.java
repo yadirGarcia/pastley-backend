@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pastley.entity.Company;
-import com.pastley.service.CompanyService;
+import com.pastley.models.entity.Company;
+import com.pastley.models.service.CompanyService;
 import com.pastley.util.PastleyResponse;
 
 @RestController

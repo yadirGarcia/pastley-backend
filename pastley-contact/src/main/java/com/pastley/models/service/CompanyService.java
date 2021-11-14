@@ -1,12 +1,13 @@
-package com.pastley.service;
+package com.pastley.models.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.pastley.dao.CompanyDAO;
-import com.pastley.entity.Company;
+
+import com.pastley.models.dao.CompanyDAO;
+import com.pastley.models.entity.Company;
 import com.pastley.util.PastleyInterface;
 
 @Service

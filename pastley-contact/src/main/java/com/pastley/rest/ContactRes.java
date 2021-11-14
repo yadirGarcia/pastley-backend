@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pastley.entity.*;
-
-import com.pastley.service.*;
+import com.pastley.models.entity.Contact;
+import com.pastley.models.entity.TypePQR;
+import com.pastley.models.service.ContactService;
+import com.pastley.models.service.TypePQRService;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyResponse;
 
