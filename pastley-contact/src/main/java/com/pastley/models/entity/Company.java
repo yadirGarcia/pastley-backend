@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.pastley.util.PastleyValidate;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -77,4 +79,36 @@ public class Company implements Serializable {
 
 	@Column(name = "alert_min_stock", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private Integer alertMinStock;
+	
+	@Column(name = "date_register", nullable = false)
+	private String dateRegister;
+	 
+	@Column(name = "date_update", nullable = true)
+	private String dateUpdate;
+	
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id del empresa debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(name))
+			chain = "El nombre de la empresa no es valido.";
+		if (!PastleyValidate.isChain(address))
+			chain = "La dirección de empresa no es valida.";
+		if (butdget == null)
+			chain = "El presupuesto de empresa no es valido.";
+		if (!PastleyValidate.isChain(address))
+			chain = "El email de empresa no es valido.";
+		if (!PastleyValidate.isChain(address))
+			chain = "La clave de empresa no es valida.";
+		if (size <=0 )
+			chain = "La cantidad minima de un producto no es valida.";
+		return chain;
+	}
+	
+	public void uppercase() {
+		this.name = PastleyValidate.uppercase(name);
+	}
 }

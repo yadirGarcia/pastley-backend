@@ -49,12 +49,6 @@ public class TypePQR implements Serializable {
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
 
-	/**
-	 * Metodo que valida los atributos de la clase.
-	 * 
-	 * @param isId, Representa si se desea validar el id.
-	 * @return el error ocurrido.
-	 */
 	public String validate(boolean isId) {
 		String chain = null;
 		if (isId) {

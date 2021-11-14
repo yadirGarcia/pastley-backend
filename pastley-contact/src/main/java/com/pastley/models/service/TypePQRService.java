@@ -109,7 +109,7 @@ public class TypePQRService implements PastleyInterface<Long, TypePQR> {
 			String messageType = (type == 1) ? "registrar"
 					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
 			if (message == null) {
-				TypePQR typePqr = (entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
+				TypePQR typePqr = (entity.getId() != null && entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
 				typePqr = typePQRRepository.save(typePqr);
 				if (typePqr == null)
 					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el tipo pqr.");
@@ -118,7 +118,7 @@ public class TypePQRService implements PastleyInterface<Long, TypePQR> {
 				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + type + " el tipo pqr, " + message + ".");
 			}
 		} else {
-			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el el tipo de pqr.");
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el tipo de pqr.");
 		}
 	}
 
