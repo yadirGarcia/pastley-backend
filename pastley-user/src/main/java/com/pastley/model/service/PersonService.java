@@ -1,4 +1,4 @@
-package com.pastley.service;
+package com.pastley.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.dao.PersonDAO;
+import com.pastley.model.entity.Person;
+import com.pastley.model.repository.PersonRespository;
 import com.pastley.util.PastleyInterface;
-import com.pastley.entity.Person;
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -19,11 +19,7 @@ import com.pastley.entity.Person;
 @Service
 public class PersonService implements PastleyInterface<Long, Person>{
 	@Autowired
-	private PersonDAO personDAO;
-	
-	///////////////////////////////////////////////////////
-	// Method - Find
-	///////////////////////////////////////////////////////
+	private PersonRespository personDAO;
 	
 	@Override
 	public Person findById(Long id) {
@@ -74,10 +70,7 @@ public class PersonService implements PastleyInterface<Long, Person>{
 			return new ArrayList<>();
 		}
 	}
-	
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
+
 	@Override
 	public Person save(Person entity) {
 		try {
@@ -86,10 +79,11 @@ public class PersonService implements PastleyInterface<Long, Person>{
 			return null;
 		}
 	}
-
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
+	
+	public Person save(Person entity, byte type) {
+		return null;
+	}
+	
 	@Override
 	public boolean delete(Long id) {
 		try {

@@ -1,9 +1,9 @@
-package com.pastley.dao;
+package com.pastley.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.pastley.entity.TypeDocument;
+import com.pastley.model.entity.Role;
 
 /**
  * @project Pastley-User.
@@ -12,8 +12,8 @@ import com.pastley.entity.TypeDocument;
  * @contributors soleimygomez, serbuitrago, jhonatanbeltran.
  * @version 1.0.0.
  */
-
 @Repository
-public interface TypeDocumentDAO extends JpaRepository<TypeDocument,Long> {
-	public TypeDocument findByName(String name);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+	
+	public Role findByName(String name);
 }

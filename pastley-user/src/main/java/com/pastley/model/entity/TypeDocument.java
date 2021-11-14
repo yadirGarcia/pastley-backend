@@ -1,4 +1,4 @@
-package com.pastley.entity;
+package com.pastley.model.entity;
 
 import java.io.Serializable;
 
@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -20,6 +23,8 @@ import com.pastley.util.PastleyValidate;
  */
 @Entity
 @Table(name = "type_document")
+@Data
+@NoArgsConstructor
 public class TypeDocument implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -40,18 +45,6 @@ public class TypeDocument implements Serializable {
 
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
-
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-
-	public TypeDocument() {
-
-	}
-
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 
 	/**
 	 * Method that validates the attributes of the class.
@@ -78,53 +71,4 @@ public class TypeDocument implements Serializable {
 	public void uppercase() {
 		this.name = PastleyValidate.uppercase(this.name);
 	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	///////////////////////////////////////////////////////
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
-
 }

@@ -1,4 +1,4 @@
-package com.pastley.security.service;
+package com.pastley.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.security.entity.Role;
-import com.pastley.security.repository.RoleRepository;
+import com.pastley.model.entity.Role;
+import com.pastley.model.repository.RoleRepository;
 import com.pastley.util.PastleyInterface;
 
 /**
@@ -19,12 +19,9 @@ import com.pastley.util.PastleyInterface;
  */
 @Service
 public class RoleService implements PastleyInterface<Long, Role> {
+	
 	@Autowired
 	private RoleRepository roleDAO;
-
-	///////////////////////////////////////////////////////
-	// Method - Find
-	///////////////////////////////////////////////////////
 
 	@Override
 	public Role findById(Long id) {
@@ -51,11 +48,6 @@ public class RoleService implements PastleyInterface<Long, Role> {
 			return null;
 		}
 	}
-
-	
-	///////////////////////////////////////////////////////
-	// Method - Save and Update
-	///////////////////////////////////////////////////////
 	
 	@Override
 	public Role save(Role entity) {
@@ -65,12 +57,6 @@ public class RoleService implements PastleyInterface<Long, Role> {
 			return null;
 		}
 	}
-
-	
-	
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	
 	@Override
 	public boolean delete(Long id) {

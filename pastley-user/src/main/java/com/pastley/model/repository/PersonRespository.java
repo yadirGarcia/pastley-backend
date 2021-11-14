@@ -1,10 +1,11 @@
-package com.pastley.dao;
+package com.pastley.model.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.pastley.entity.Person;
+
+import com.pastley.model.entity.Person;
 
 /**
  * @project Pastley-User.
@@ -15,7 +16,7 @@ import com.pastley.entity.Person;
  */
 
 @Repository
-public interface PersonDAO extends JpaRepository<Person, Long> {
+public interface PersonRespository extends JpaRepository<Person, Long> {
 
 	public Person findByPhone(String phone);
 	public Person findByEmail(String email);

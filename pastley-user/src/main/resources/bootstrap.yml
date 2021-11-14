@@ -25,7 +25,4 @@ management:
         include: "*"
   endpoint:
     health:
-      show-details: always
-
-jwt:
-  secret: secret      
+      show-details: always     

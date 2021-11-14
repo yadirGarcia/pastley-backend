@@ -1,9 +1,9 @@
-package com.pastley.security.repository;
+package com.pastley.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.pastley.security.entity.Role;
+import com.pastley.model.entity.TypeDocument;
 
 /**
  * @project Pastley-User.
@@ -13,7 +13,6 @@ import com.pastley.security.entity.Role;
  * @version 1.0.0.
  */
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
-	
-	public Role findByName(String name);
+public interface TypeDocumentRespository extends JpaRepository<TypeDocument,Long> {
+	public TypeDocument findByName(String name);
 }

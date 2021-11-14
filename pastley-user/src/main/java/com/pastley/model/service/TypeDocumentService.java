@@ -1,4 +1,4 @@
-package com.pastley.service;
+package com.pastley.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.dao.TypeDocumentDAO;
-import com.pastley.entity.TypeDocument;
+import com.pastley.model.entity.TypeDocument;
+import com.pastley.model.repository.TypeDocumentRespository;
 import com.pastley.util.PastleyInterface;
 
 /**
@@ -21,11 +21,7 @@ import com.pastley.util.PastleyInterface;
 public class TypeDocumentService implements PastleyInterface<Long, TypeDocument>{
 
 	@Autowired
-	private TypeDocumentDAO typeDocumentDAO;
-	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
+	private TypeDocumentRespository typeDocumentDAO;
 	
 	@Override
 	public TypeDocument findById(Long id) {

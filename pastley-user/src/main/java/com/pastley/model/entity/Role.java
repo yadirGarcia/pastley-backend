@@ -1,19 +1,16 @@
-package com.pastley.security.entity;
+package com.pastley.model.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.pastley.security.enums.RoleEnum;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @project Pastley-User.
@@ -25,6 +22,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "role")
+@NoArgsConstructor
 public class Role implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -34,9 +32,8 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-    @Enumerated(EnumType.STRING)
 	@Column(name = "name", nullable = false, length = 50)
-	private RoleEnum name;
+	private String name;
 
 	@Column(name = "description", nullable = true, length = 140)
 	private String description;
@@ -52,17 +49,6 @@ public class Role implements Serializable {
 	
 	@Column(name="date_update", nullable = true)
 	private String dateUpdate;
-	
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public Role(Long id){
-		this.id = id;
-	}
-	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 
 	/**
 	 * Method that validates the attributes of the class.

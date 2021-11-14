@@ -9,8 +9,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class PastleyDate implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -24,17 +28,11 @@ public class PastleyDate implements Serializable{
 	private ZoneId zone;
 	private DateTimeFormatter format;
 	
-	///////////////////////////////////////////////////////
-	// Builders
-	///////////////////////////////////////////////////////
 	public PastleyDate() {
 		initZoneId(null);
 		initFormat(null);
 	}
 	
-	///////////////////////////////////////////////////////
-	// Init
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that initializes the zone.
 	 * 
@@ -53,9 +51,36 @@ public class PastleyDate implements Serializable{
 		this.format = DateTimeFormatter.ofPattern((PastleyValidate.isChain(format)) ? format : PastleyVariable.PASTLEY_DATE_TIME_FORMAT);
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Current
-	///////////////////////////////////////////////////////
+	/**
+	 * Method that allows knowing the current month.
+	 * @return the current month.
+	 */
+	public int currentYear() {
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.YEAR);
+	}
+
+	/**
+	 * Method that allows to know the current year.
+	 * @return the current year.
+	 */
+	public int currentMonth() {
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.MONTH);
+	}
+
+	/**
+	 * Method that allows knowing the name of the current month.
+	 * @return the current month name.
+	 */
+	public String currentMonthName() {
+		try {
+			return PastleyVariable.PASTLEY_ARRAY_DATE[currentMonth()];
+		}catch (Exception e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * Method that allows obtaining the current date.
 	 * 
@@ -95,9 +120,6 @@ public class PastleyDate implements Serializable{
 		return date;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Convert
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that converts a date.
 	 * @param date, Represents the convert date.
@@ -120,9 +142,6 @@ public class PastleyDate implements Serializable{
 	     return dt.parse(date);
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Format
-	///////////////////////////////////////////////////////
 	public String formatToDateTime(Date date, String format) {
 		if(date != null) {
 			if(!PastleyValidate.isChain(format)) {
@@ -134,69 +153,11 @@ public class PastleyDate implements Serializable{
 		return null;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Combine
-	///////////////////////////////////////////////////////
 	public Date combineFormatToDateTime(Date date, String format) {
 		try {
 			return convertToDateTime(formatToDateTime(date, format));
 		} catch (ParseException e) {
 			return null;
 		}
-	}
-	
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	///////////////////////////////////////////////////////
-	public ZoneId getZone() {
-		return zone;
-	}
-
-	public LocalTime getLocalTime() {
-		return localTime;
-	}
-
-	public void setLocalTime(LocalTime localTime) {
-		this.localTime = localTime;
-	}
-
-	public LocalDate getLocalDate() {
-		return localDate;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public void setLocalDate(LocalDate localDate) {
-		this.localDate = localDate;
-	}
-
-	public LocalDateTime getLocalDateTime() {
-		return localDateTime;
-	}
-
-	public void setLocalDateTime(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
-	}
-
-	public void setZone(ZoneId zone) {
-		this.zone = zone;
-	}
-
-	public DateTimeFormatter getFormat() {
-		return format;
-	}
-
-	public void setFormat(DateTimeFormatter format) {
-		this.format = format;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }
