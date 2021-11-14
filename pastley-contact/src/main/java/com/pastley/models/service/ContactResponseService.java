@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.models.dao.ContactResponseDAO;
+import com.pastley.models.dao.ContactResponseRepository;
 import com.pastley.models.entity.ContactResponse;
 import com.pastley.util.PastleyInterface;
 
 @Service
 public class ContactResponseService implements PastleyInterface<Long,ContactResponse>{
 	@Autowired
-	private ContactResponseDAO contactResponseDao;
+	private ContactResponseRepository contactResponseDao;
 	
 	///////////////////////////////////////////////////////
 	// Method

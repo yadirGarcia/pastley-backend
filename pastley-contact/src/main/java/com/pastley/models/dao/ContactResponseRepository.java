@@ -1,11 +1,9 @@
 package com.pastley.models.dao;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.pastley.models.entity.Contact;
+import com.pastley.models.entity.ContactResponse;
 
 /**
  * @project Pastley-Contact.
@@ -15,13 +13,6 @@ import com.pastley.models.entity.Contact;
  * @version 1.0.0.
  */
 @Repository
-public interface ContactDAO extends JpaRepository<Contact, Long> {
-	
-	/**
-	 * 
-	 * @param statu
-	 * @return
-	 */
-	public List<Contact> findByStatu(boolean statu);
+public interface ContactResponseRepository extends JpaRepository<ContactResponse, Long>{
 
 }
