@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.pastley.util.PastleyValidate;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +36,7 @@ public class ContactResponse implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "responser", nullable = false, length = 250)
+	@Column(name = "response", nullable = false, length = 250)
 	private String response;
 	
 	@Column(name = "date_register", nullable = false)
@@ -46,4 +48,18 @@ public class ContactResponse implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_contact", nullable = false)
 	private Contact contact;
+	
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(response))
+			chain = "El mensaje de respuesta no es valido.";
+		if(contact == null || contact.getId() <= 0)
+			chain = "El contacto no es valido.";
+		return chain;
+	}
 }

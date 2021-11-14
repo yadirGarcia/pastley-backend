@@ -115,7 +115,7 @@ public class TypePQRService implements PastleyInterface<Long, TypePQR> {
 					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el tipo pqr.");
 				return typePqr;
 			} else {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + type + " el tipo pqr, " + message + ".");
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el tipo pqr, " + message + ".");
 			}
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el tipo de pqr.");

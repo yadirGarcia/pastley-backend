@@ -63,12 +63,11 @@ public class Contact implements Serializable {
 	@Transient
 	private String name;
 	
-	
 	public String validate(boolean isId) {
 		String chain = null;
 		if (isId) {
 			if (id <= 0) {
-				chain = "El id del PQR debe ser mayor a cero.";
+				chain = "El id debe ser mayor a cero.";
 			}
 		}
 		if (!PastleyValidate.isChain(message))
