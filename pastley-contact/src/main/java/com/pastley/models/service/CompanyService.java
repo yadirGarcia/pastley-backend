@@ -67,7 +67,7 @@ public class CompanyService implements PastleyInterface<Long, Company> {
 					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la empresa.");
 				return company;
 			} else {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + type + " la empresa, " + message + ".");
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la empresa, " + message + ".");
 			}
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la empresa.");
