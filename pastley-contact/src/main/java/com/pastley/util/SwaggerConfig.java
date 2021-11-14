@@ -9,7 +9,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
 /**
  * @project Pastley-Contact.
  * @author Soleimy Daniela Gomez Baron.
@@ -17,19 +16,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @contributors soleimygomez, leynerjoseoa, SerBuitragp jhonatanbeltran.
  * @version 1.0.0.
  */
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 	@Bean
 	public Docket document() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.pastley.rest"))
+				.apis(RequestHandlerSelectors.basePackage(PastleyVariable.PASTLEY_PATH_REST))
 				.paths(PathSelectors.any())
 				.build();
 	}

@@ -1,10 +1,9 @@
-package com.pastley.dao;
+package com.pastley.models.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
-import com.pastley.entity.ContactResponse;
+import com.pastley.models.entity.Company;
 
 /**
  * @project Pastley-Contact.
@@ -14,6 +13,6 @@ import com.pastley.entity.ContactResponse;
  * @version 1.0.0.
  */
 @Repository
-public interface ContactResponseDAO extends JpaRepository<ContactResponse, Long>{
+public interface CompanyDAO extends JpaRepository<Company, Long> {
 
 }

@@ -1,4 +1,4 @@
-package com.pastley.entity;
+package com.pastley.models.entity;
 
 import java.io.Serializable;
 
@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-Sale.
  * @author Soleimy Daniela Gomez Baron.
@@ -19,7 +22,9 @@ import com.pastley.util.PastleyValidate;
  * @version 1.0.0.
  */
 @Entity
-@Table(name = "typePQR")
+@Table(name = "type_pqr")
+@Data
+@NoArgsConstructor
 public class TypePQR implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -44,15 +49,6 @@ public class TypePQR implements Serializable {
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
 
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public TypePQR() {
-	}
-
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 	/**
 	 * Metodo que valida los atributos de la clase.
 	 * 
@@ -74,60 +70,5 @@ public class TypePQR implements Serializable {
 
 	public void uppercase() {
 		this.name = PastleyValidate.uppercase(this.name);
-	}
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	/////////////////////////////////////////////////////
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
 	}
 }

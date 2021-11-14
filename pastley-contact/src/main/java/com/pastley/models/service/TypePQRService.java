@@ -1,4 +1,4 @@
-package com.pastley.service;
+package com.pastley.models.service;
 
 import com.pastley.util.PastleyInterface;
 import org.springframework.http.HttpStatus;
@@ -9,10 +9,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.dao.TypePQRDAO;
-import com.pastley.entity.*;
-import com.pastley.model.StatisticModel;
-
+import com.pastley.models.dao.TypePQRDAO;
+import com.pastley.models.entity.TypePQR;
+import com.pastley.models.model.StatisticModel;
 import com.pastley.util.exception.PastleyException;
 
 @Service

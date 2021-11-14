@@ -1,4 +1,4 @@
-package com.pastley.entity;
+package com.pastley.models.entity;
 
 import java.io.Serializable;
 
@@ -7,7 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @project Pastley-Contact.
@@ -17,7 +22,9 @@ import javax.persistence.Table;
  * @version 1.0.0.
  */
 @Entity
-@Table(name = "contactResponse")
+@Table(name = "contact_response")
+@Data
+@NoArgsConstructor
 public class ContactResponse implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -36,45 +43,7 @@ public class ContactResponse implements Serializable {
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
 	
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	ContactResponse(){
-	}
-	
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	///////////////////////////////////////////////////////
-	
-	public Long getId() {
-		return id;
-	}
-
-	public String getResponse() {
-		return response;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setResponse(String response) {
-		this.response = response;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
+	@ManyToOne
+	@JoinColumn(name = "id_contact", nullable = false)
+	private Contact contact;
 }
