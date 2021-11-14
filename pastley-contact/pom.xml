@@ -59,30 +59,13 @@
 		</dependency>
 		
 		<!-- -->
-		<!-- JPA -->
-		<!-- -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<!-- -->
-		<!-- MYSQL -->
-		<!-- -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<!-- -->
 		<!-- CONFIG -->
 		<!-- -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
-
+		
 		<!-- -->
 		<!-- BOOTSTRAP -->
 		<!-- -->
@@ -98,7 +81,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-
+		
 		<!-- -->
 		<!-- ACTUADOR -->
 		<!-- -->
@@ -106,11 +89,62 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
+		
+		<!-- -->
+		<!-- RESILIENCE4J -->
+		<!-- -->
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<version>7.0</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
+		
+		<!-- -->
+		<!-- AOP -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<!-- -->
+		<!-- ZIPKIN -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
+		</dependency>
+
+		<!-- -->
+		<!-- SLEUTH -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		
+		<!-- -->
+		<!-- JPA -->
+		<!-- -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- -->
+		<!-- MYSQL -->
+		<!-- -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- -->
+		<!-- LOMBOK -->
+		<!-- -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
