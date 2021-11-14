@@ -1,4 +1,5 @@
 package com.pastley.models.dao;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,6 @@ import org.springframework.data.repository.query.Param;
  * @contributors soleimygomez, leynerjoseoa, SerBuitragp jhonatanbeltran.
  * @version 1.0.0.
  */
-
 @Repository
 public interface TypePQRRepository  extends JpaRepository<TypePQR, Long>{
 	

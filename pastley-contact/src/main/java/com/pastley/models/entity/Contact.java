@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.pastley.util.PastleyValidate;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,4 +55,30 @@ public class Contact implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_type_pqr", nullable = false)
 	private TypePQR typePqr;
+	
+	@Transient
+	private Long document;
+	@Transient
+	private String email;
+	@Transient
+	private String name;
+	
+	
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id del PQR debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(message))
+			chain = "El mensaje no es valido.";
+		if (!PastleyValidate.isChain(email))
+			chain = "El email de la persona no es valido.";
+		if (!PastleyValidate.isChain(name))
+			chain = "El nombre de la persona no es valido.";
+		if(document == null || document <= 0)
+			chain = "El documento de la persona no es valido.";
+		return chain;
+	}
 }
