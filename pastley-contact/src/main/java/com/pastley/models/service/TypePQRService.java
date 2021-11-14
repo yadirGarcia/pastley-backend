@@ -14,9 +14,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pastley.models.dao.TypePQRRepository;
 import com.pastley.models.entity.TypePQR;
 import com.pastley.models.model.StatisticModel;
+import com.pastley.models.repository.TypePQRRepository;
 import com.pastley.util.exception.PastleyException;
 
 @Service

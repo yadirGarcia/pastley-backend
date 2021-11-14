@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.pastley.models.dao.ContactRepository;
 import com.pastley.models.entity.Contact;
+import com.pastley.models.entity.TypePQR;
+import com.pastley.models.repository.ContactRepository;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyInterface;
 import com.pastley.util.PastleyValidate;
@@ -27,6 +28,9 @@ public class ContactService implements PastleyInterface<Long, Contact> {
 
 	@Autowired
 	private ContactRepository contactRepository;
+	
+	@Autowired
+	private TypePQRService typePQRService;
 
 	@Override
 	public Contact findById(Long id) {
@@ -88,6 +92,8 @@ public class ContactService implements PastleyInterface<Long, Contact> {
 			String messageType = (type == 1) ? "registrar"
 					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
 			if (message == null) {
+				TypePQR typePQR = typePQRService.findById(entity.getTypePqr().getId());
+				entity.setTypePqr(typePQR);
 				Contact contact = (entity.getId() != null && entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
 				contact = contactRepository.save(contact);
 				if (contact == null)

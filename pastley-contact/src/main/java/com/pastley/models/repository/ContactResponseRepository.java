@@ -1,4 +1,4 @@
-package com.pastley.models.dao;
+package com.pastley.models.repository;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface ContactResponseRepository extends JpaRepository<ContactResponse
 	 * @param idContact
 	 * @return
 	 */
-	@Query(nativeQuery = false, value = "SELECT cr FROM ContactResponser cr WHERE cr.contact.id = :idContact")
+	@Query(nativeQuery = false, value = "SELECT cr FROM ContactResponse cr WHERE cr.contact.id = :idContact")
 	public List<ContactResponse> findByIdContact(Long idContact);
 	
 	/**
@@ -33,6 +33,6 @@ public interface ContactResponseRepository extends JpaRepository<ContactResponse
 	 * @param end
 	 * @return
 	 */
-	@Query(nativeQuery = false, value = "SELECT cr FROM ContactResponser cr WHERE cr.dateRegister BETWEEN :start AND :end ORDER BY cr.dateRegister")
+	@Query(nativeQuery = false, value = "SELECT cr FROM ContactResponse cr WHERE cr.dateRegister BETWEEN :start AND :end ORDER BY cr.dateRegister")
 	public List<ContactResponse> findByRangeDateRegister(@Param("start") String start, @Param("end") String end);
 }
