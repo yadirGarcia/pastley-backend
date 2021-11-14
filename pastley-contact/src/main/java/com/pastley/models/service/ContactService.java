@@ -100,7 +100,7 @@ public class ContactService implements PastleyInterface<Long, Contact> {
 					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el contacto.");
 				return contact;
 			} else {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + type + " el contacto, " + message + ".");
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el contacto, " + message + ".");
 			}
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el contacto.");
