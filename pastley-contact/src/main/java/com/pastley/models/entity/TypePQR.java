@@ -62,9 +62,8 @@ public class TypePQR implements Serializable {
 				chain = "El id del PQR debe ser mayor a cero.";
 			}
 		}
-		if (chain == null && !PastleyValidate.isChain(name)) {
+		if (!PastleyValidate.isChain(name))
 			chain = "El nombre del PQR no es valido.";
-		}
 		return chain;
 	}
 

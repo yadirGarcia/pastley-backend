@@ -1,6 +1,6 @@
 package com.pastley.rest;
 
-import java.util.List;
+import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,105 +13,73 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pastley.util.PastleyResponse;
-import com.pastley.util.PastleyValidate;
 import com.pastley.models.entity.TypePQR;
 import com.pastley.models.service.TypePQRService;
-import com.pastley.util.PastleyDate;
 
 @RestController
 @RequestMapping("typePqr")
-public class TypePQRRes {
+public class TypePQRRes implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Autowired
 	private TypePQRService typePQRService;
 
-	///////////////////////////////////////////////////////
-	// Method - Get
-	///////////////////////////////////////////////////////
-	/**
-	 * Method that allows consulting a payment method by its id.
-	 * 
-	 * @param id, Represents the identifier of the payment method.
-	 * @return The generated response.
-	 */
 
-	@GetMapping(value = { "/findById/{id}", "{id}" })
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = { "/find/id/{id}", "{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		TypePQR methodTypePQR = typePQRService.findById(id);
-		if (methodTypePQR != null) {
-			response.add("method", methodTypePQR, HttpStatus.OK);
-		} else {
-			response.add("message", "No existe ningun Tipo PQR con el id " + id + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findById(id));
 	}
 
 	/**
-	 * Method that allows consulting a payment method by its name.
 	 * 
-	 * @param name, Represents the name of the payment method.
-	 * @return The generated response.
+	 * @param name
+	 * @return
 	 */
-	@GetMapping(value = { "/findByName/{name}" })
+	@GetMapping(value = { "/find/name/{name}" })
 	public ResponseEntity<?> findByName(@PathVariable("name") String name) {
-		PastleyResponse response = new PastleyResponse();
-		if (PastleyValidate.isChain(name)) {
-			TypePQR methodTypePQR = typePQRService.findByName(name);
-			if (methodTypePQR != null) {
-				response.add("method", methodTypePQR, HttpStatus.OK);
-			} else {
-				response.add("message", "No existe ningun Tipo PQR con el nombre " + name + ".", HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "El nombre del PQR '" + name + "' no es valido.", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findByName(name));
 	}
 
 	/**
-	 * Method that allows you to obtain all payment methods.
 	 * 
-	 * @return The generated response.
+	 * @return
 	 */
-	@GetMapping(value = "/findAll")
+	@GetMapping(value = {"", "/all"})
 	public ResponseEntity<?> findAll() {
-		PastleyResponse response = new PastleyResponse();
-		List<TypePQR> list = typePQRService.findAll();
-		if (list.isEmpty()) {
-			response.add("message", "No hay ningun PQR registrado.", HttpStatus.NO_CONTENT);
-		} else {
-			response.add("methods", list, HttpStatus.OK);
-			response.add("message", "Se han encontrado " + list.size() + " PQR.");
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findAll());
 	}
-
+	
 	/**
-	 * Method that allows you to obtain all payment methods through your state.
 	 * 
-	 * @return The generated response.
+	 * @param statu
+	 * @return
 	 */
-	@GetMapping(value = "/findByStatuAll/{statu}")
+	@GetMapping(value = "/all/find/statu/{statu}")
 	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") Boolean statu) {
-		PastleyResponse response = new PastleyResponse();
-		List<TypePQR> list = typePQRService.findByStatuAll(statu);
-		if (list.isEmpty()) {
-			response.add("message", "No hay ningun PQR resgitrado con el estado " + statu + ".", HttpStatus.NO_CONTENT);
-		} else {
-			response.add("methods", list, HttpStatus.OK);
-			response.add("message", "Se han encontrado " + list.size() + " PQR con el estado " + statu + ".");
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findByStatuAll(statu));
 	}
 	
-	
+	/**
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	@GetMapping(value = "/range/all/find/date/register/{start}/{end}")
+	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("start") String start, @PathVariable("end") String end) {
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findByRangeDateRegister(start, end));
+	}
 	
 	/**
-	 * Method that allows to know the amount of sale made by a payment method.
 	 * 
-	 * @param id, Represents the identifier of the payment method.
-	 * @return The generated response.
+	 * @param id
+	 * @return
 	 */
 	@GetMapping(value = "/statistic/find/type/{id}")
 	public ResponseEntity<?> findByStatisticSale(@PathVariable Long id) {
@@ -119,153 +87,52 @@ public class TypePQRRes {
 	}
 
 	/**
-	 * Method that allows to know the amount of sales made by a payment method.
 	 * 
-	 * @return The generated response.
+	 * @return
 	 */
 	@GetMapping(value = "/statistic/all/find/type")
 	public ResponseEntity<?> findByStatisticSaleAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.findByStatisticTypeAll());
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Post
-	///////////////////////////////////////////////////////
 	/**
-	 * Method that allows you to register a payment method.
 	 * 
-	 * @param method, Represents the payment method to register.
-	 * @return The generated response.
+	 * @param method
+	 * @return
 	 */
-	@PostMapping(value = "/create")
-	public ResponseEntity<?> create(@RequestBody TypePQR method) {
-		PastleyResponse response = new PastleyResponse();
-		if (method != null) {
-			String message = method.validate(false);
-			if (message == null) {
-				method.uppercase();
-				TypePQR aux = typePQRService.findByName(method.getName());
-				if (aux == null) {
-					PastleyDate date = new PastleyDate();
-					method.setStatu(true);
-					method.setDateUpdate(null);
-					method.setDateRegister(date.currentToDateTime(null));
-					aux = typePQRService.save(method);
-					
-					if (aux != null) {
-						response.add("method", aux, HttpStatus.OK);
-						response.add("message", "Se ha registrado el PQR con id " + aux.getId() + ".");
-					} else {
-						response.add("message", "No se ha registrado el PQR.", HttpStatus.NO_CONTENT);
-					}
-				} else {
-					response.add("message", "Ya existe un PQR con ese nombre '" + method.getName() + "'.",
-							HttpStatus.NO_CONTENT);
-				}
-			} else {
-				response.add("message", message, HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "No se ha recibido el PQR.", HttpStatus.NOT_FOUND);
-		}
-		return ResponseEntity.ok(response.getMap());
+	@PostMapping()
+	public ResponseEntity<?> create(@RequestBody TypePQR type) {
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.save(type, (byte)1));
 	}
 
-	///////////////////////////////////////////////////////
-	// Method - Put
-	///////////////////////////////////////////////////////
 	/**
-	 * Method that allows updating a payment method.
 	 * 
-	 * @param method, Represents the payment method to update.
-	 * @return The generated response.
+	 * @param type
+	 * @return
 	 */
-	@PutMapping(value = "/update")
-	public ResponseEntity<?> update(@RequestBody TypePQR method) {
-		PastleyResponse response = new PastleyResponse();
-		if (method != null) {
-			String message = method.validate(true);
-			if (message == null) {
-				method.uppercase();
-				TypePQR aux = typePQRService.findById(method.getId());
-				if (aux != null) {
-					 
-					PastleyDate date = new PastleyDate();
-					method.setStatu(true);
-					method.setDateRegister(aux.getDateRegister());
-					method.setDateUpdate(date.currentToDateTime(null));
-					aux = typePQRService.save(method);
-					if (aux != null) {
-						response.add("method", aux, HttpStatus.OK);
-						response.add("message", "Se ha actualizado el PQR con id " + aux.getId() + ".");
-					} else {
-						response.add("message", "No se ha actualizado el PQR con id " + method.getId() + ".",
-								HttpStatus.NO_CONTENT);
-					}
-				} else {
-					response.add("message", "No existe ningun PQR con el id " + method.getId() + ".",
-							HttpStatus.NO_CONTENT);
-				}
-			} else {
-				response.add("message", message, HttpStatus.NO_CONTENT);
-			}
-		} else {
-			response.add("message", "No se ha recibido el PQR.", HttpStatus.NOT_FOUND);
-		}
-		return ResponseEntity.ok(response.getMap());
+	@PutMapping()
+	public ResponseEntity<?> update(@RequestBody TypePQR type) {
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.save(type, (byte)2));
 	}
 	
 	/**
-	 * Method that allows changing the status of a payment method.
-	 * @param id, Represents the identifier of the payment method.
-	 * @return The generated response.
+	 * 
+	 * @param id
+	 * @return
 	 */
 	@PutMapping(value = "/update/statu/{id}")
 	public ResponseEntity<?> updateStatu(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		if(id > 0) {
-			TypePQR method = typePQRService.findById(id);
-			if(method != null) {
-				method.setStatu(!method.isStatu());
-				method = typePQRService.save(method);
-				if(method != null) {
-					response.add("method", method, HttpStatus.OK);
-					response.add("message", "Se ha actualizado el estado del PQR con id " + id + ".");
-				}else {
-					response.add("message", "No se ha actualizado el estado del PQR con id " + id + ".",
-							HttpStatus.NO_CONTENT);
-				}
-			}else {
-				response.add("message", "No existe ningun PQR con el id " + id + ".", HttpStatus.NOT_FOUND);
-			}
-		}else {
-			response.add("message", "El id del PQR no es valido.", HttpStatus.NOT_FOUND);
-		}
-		return ResponseEntity.ok(response.getMap());
+		TypePQR type = typePQRService.findById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.save(type, (byte)3));
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - Delete
-	///////////////////////////////////////////////////////
 	/**
-	 * Method that allows you to delete a payment method by means of its id.
 	 * 
-	 * @param id, Represents the identifier of the payment method to be deleted.
-	 * @return The generated response.
+	 * @param id
+	 * @return
 	 */
-	@DeleteMapping(value = "/delete/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-		PastleyResponse response = new PastleyResponse();
-		TypePQR aux = typePQRService.findById(id);
-		if (aux != null) {
-			typePQRService.delete(id);
-			response.add("message", "Se ha eliminado el PQR con id " + id + ".", HttpStatus.OK);
-			
-		} else {
-			response.add("message", "No existe ningun PQR con el id " + id + ".", HttpStatus.NO_CONTENT);
-		}
-		return ResponseEntity.ok(response.getMap());
+		return ResponseEntity.status(HttpStatus.OK).body(typePQRService.delete(id));
 	}
-	
-	 
 }
