@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.pastley.models.dao.CompanyRepository;
 import com.pastley.models.entity.Company;
+import com.pastley.models.repository.CompanyRepository;
 import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyInterface;
 import com.pastley.util.exception.PastleyException;

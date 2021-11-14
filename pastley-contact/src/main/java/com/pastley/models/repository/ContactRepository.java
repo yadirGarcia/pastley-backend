@@ -1,4 +1,4 @@
-package com.pastley.models.dao;
+package com.pastley.models.repository;
 
 import java.util.List;
 

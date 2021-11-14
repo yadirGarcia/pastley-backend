@@ -78,6 +78,8 @@ public class Contact implements Serializable {
 			chain = "El nombre de la persona no es valido.";
 		if(document == null || document <= 0)
 			chain = "El documento de la persona no es valido.";
+		if(typePqr == null || typePqr.getId()<= 0)
+			chain = "El id tipo pqr no es valido.";
 		return chain;
 	}
 }
