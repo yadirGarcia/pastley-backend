@@ -7,7 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @project Pastley-Sale.
@@ -18,6 +23,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "contact")
+@Data
+@NoArgsConstructor
 public class Contact implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,10 +34,10 @@ public class Contact implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "message", nullable = false)
+	@Column(name = "message", nullable = false, length = 1000)
 	private String message;
 
-	@Column(name = "statu",  nullable = false)
+	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
 	@Column(name = "date_register", nullable = false)
@@ -42,75 +49,7 @@ public class Contact implements Serializable {
 	@Column(name = "id_user", nullable = false)
 	private Long idUser;
 	
-	@Column(name = "id_type_pqr",nullable = false)
-	private Long idTypePQR;
-
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	Contact() {
-	}
-	
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	///////////////////////////////////////////////////////
-	public Long getId() {
-		return id;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
-
-	public Long getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(Long idUser) {
-		this.idUser = idUser;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Long getIdTypePQR() {
-		return idTypePQR;
-	}
-
-	public void setIdTypePQR(Long idTypePQR) {
-		this.idTypePQR = idTypePQR;
-	}
+	@ManyToOne
+	@JoinColumn(name = "id_type_pqr", nullable = false)
+	private TypePQR typePqr;
 }
