@@ -1,4 +1,4 @@
-package com.pastley.security.entity;
+package com.pastley.model.entity;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -15,11 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.pastley.entity.Person;
 import com.pastley.util.PastleyValidate;
 import com.sun.istack.NotNull;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @project Pastley-User.
@@ -28,9 +28,10 @@ import lombok.Data;
  * @contributors soleimygomez, serbuitrago, jhonatanbeltran.
  * @version 1.0.0.
  */
-@Data
 @Entity
 @Table(name = "user")
+@Data
+@NoArgsConstructor
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -71,33 +72,15 @@ public class User implements Serializable {
 
 	@Column(name = "date_session", nullable = true)
 	private String dateSession;
-	
-	///////////////////////////////////////////////////////
-	// Relation
-	///////////////////////////////////////////////////////
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_person", nullable = false)
 	private Person person;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_role", nullable = false)
-	private Role role;
 	
 	@ManyToMany
 	@NotNull
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private Set<Role> roles = new HashSet<>();
-
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public User() {
-	}
-	
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 
 	/**
 	 * Method that validates the attributes of the class.
@@ -112,12 +95,32 @@ public class User implements Serializable {
 				chain = "El id del rol debe ser mayor a cero.";
 			}
 		}
-		if (!PastleyValidate.isChain(password)) {
+		if (!PastleyValidate.isChain(password)) 
 			chain = "La clave no es valida.";
-		}
-		if(person == null) {
-			chain = "No se ha recibido la persona.";
-		}
+		if(!PastleyValidate.isChain(nickname))
+			chain = "El apodo no es valido.";
+		if(person == null) 
+			chain = "No se ha recibido la persona.";	
 		return chain;
+	}
+
+	/**
+	 * 
+	 * @param dateRegister
+	 * @param dateUpdate
+	 */
+	public void date(String dateRegister, String dateUpdate) {
+		this.dateRegister= dateRegister;
+		this.dateUpdate= dateUpdate;
+	}
+	
+	/**
+	 * 
+	 * @param statu
+	 * @param session
+	 */
+	public void is(boolean statu, boolean session) {
+		this.statu = statu;
+		this.session = session;
 	}
 }

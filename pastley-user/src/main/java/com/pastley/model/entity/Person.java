@@ -1,4 +1,4 @@
-package com.pastley.entity;
+package com.pastley.model.entity;
 
 import java.io.Serializable;
 
@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -20,6 +23,8 @@ import com.pastley.util.PastleyValidate;
  */
 @Entity
 @Table(name = "person")
+@Data
+@NoArgsConstructor
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -59,15 +64,6 @@ public class Person implements Serializable {
 	@Column(name = "id_type_document", nullable = false)
 	private Long idTypeDocument;
 
-	///////////////////////////////////////////////////////
-	// Builder
-	///////////////////////////////////////////////////////
-	public Person() {
-	}
-
-	///////////////////////////////////////////////////////
-	// Method
-	///////////////////////////////////////////////////////
 
 	/**
 	 * Method that validates the attributes of the class.
@@ -107,23 +103,6 @@ public class Person implements Serializable {
 	}
 	
 
-	public Person update(Person person) {
-		if(person != null) {
-			this.id =  person.getId();
-			this.document = person.getDocument();
-			this.name = person.getName();
-			this.subname = person.getSubname();
-			this.phone = person.getPhone();
-			this.email = person.getEmail();
-			this.address = person.getAddress();
-			this.dateBirthday = person.getDateBirthday();
-			this.dateRegister = person.getDateRegister();
-			this.dateUpdate = person.getDateUpdate();
-			this.idTypeDocument = person.getIdTypeDocument();
-		}
-		return this;
-	}
-
 	/**
 	 * Convert variables to uppercase.
 	 */
@@ -131,101 +110,4 @@ public class Person implements Serializable {
 		this.name = PastleyValidate.uppercase(this.name);
 		this.subname = PastleyValidate.uppercase(this.subname);
 	}
-
-	///////////////////////////////////////////////////////
-	// Getter and Setter
-	///////////////////////////////////////////////////////
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getDocument() {
-		return document;
-	}
-
-	public void setDocument(Long document) {
-		this.document = document;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSubname() {
-		return subname;
-	}
-
-	public void setSubname(String subname) {
-		this.subname = subname;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getDateBirthday() {
-		return dateBirthday;
-	}
-
-	public void setDateBirthday(String dateBirthday) {
-		this.dateBirthday = dateBirthday;
-	}
-
-	public String getDateRegister() {
-		return dateRegister;
-	}
-
-	public void setDateRegister(String dateRegister) {
-		this.dateRegister = dateRegister;
-	}
-
-	public String getDateUpdate() {
-		return dateUpdate;
-	}
-
-	public void setDateUpdate(String dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Long getIdTypeDocument() {
-		return idTypeDocument;
-	}
-
-	public void setIdTypeDocument(Long idTypeDocument) {
-		this.idTypeDocument = idTypeDocument;
-	}
-
 }

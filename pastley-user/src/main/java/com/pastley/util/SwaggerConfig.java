@@ -27,7 +27,7 @@ public class SwaggerConfig {
 	public Docket document() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.pastley.rest"))
+				.apis(RequestHandlerSelectors.basePackage(PastleyVariable.PASTLEY_PATH_REST))
 				.paths(PathSelectors.any())
 				.build();
 	}

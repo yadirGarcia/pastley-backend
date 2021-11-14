@@ -27,7 +27,7 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.4</spring-cloud.version>
 	</properties>
-	
+
 	<dependencies>
 		<!-- -->
 		<!-- WEB -->
@@ -47,11 +47,11 @@
 		</dependency>
 
 		<!-- -->
-		<!-- SECURITY -->
+		<!-- ZIPKIN -->
 		<!-- -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
 
 		<!-- -->
@@ -126,29 +126,11 @@
 		</dependency>
 
 		<!-- -->
-		<!-- JWT -->
-		<!-- -->
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
-		</dependency>
-
-		<!-- -->
-		<!-- LOG -->
-		<!-- -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-
-		<!-- -->
 		<!-- LOMBOK -->
 		<!-- -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.22</version>
 			<scope>provided</scope>
 		</dependency>
 
