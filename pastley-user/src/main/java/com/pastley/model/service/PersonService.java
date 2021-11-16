@@ -24,16 +24,19 @@ import com.pastley.util.exception.PastleyException;
 public class PersonService implements PastleyInterface<Long, Person>{
 	
 	@Autowired
-	private PersonRepository personDAO;
+	private PersonRepository personRepository;
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired 
+	private TypeDocumentService typeDocumentService;
 	
 	@Override
 	public Person findById(Long id) {
 		if (id <= 0)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id de la persona no es valido.");
-		Optional<Person> person = personDAO.findById(id);
+		Optional<Person> person = personRepository.findById(id);
 		if (!person.isPresent())
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ninguna persona con el id " + id + ".");
 		return person.orElse(null);
@@ -42,7 +45,7 @@ public class PersonService implements PastleyInterface<Long, Person>{
 	public Person findByEmail(String email) {
 		if(!PastleyValidate.isChain(email))
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El email de la persona no es valido.");
-		Person person = personDAO.findByEmail(email);
+		Person person = personRepository.findByEmail(email);
 		if (person== null)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ninguna persona con el email " + email + ".");
 		return person;
@@ -51,7 +54,7 @@ public class PersonService implements PastleyInterface<Long, Person>{
 	public Person findByDocument(Long document) {
 		if(document == null || document <= 0)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El documento de la persona no es valido.");
-		Person person = personDAO.findByDocument(document);
+		Person person = personRepository.findByDocument(document);
 		if (person== null)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ninguna persona con el documento " + document + ".");
 		return person;
@@ -59,13 +62,13 @@ public class PersonService implements PastleyInterface<Long, Person>{
 
 	@Override
 	public List<Person> findAll() {
-		return personDAO.findAll();
+		return personRepository.findAll();
 	}
 	
 	public List<Person> findByIdTypeDocumentAll(Long idTypeDocument) {
 		if(idTypeDocument <= 0)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El tipo de documento de la persona no es valido.");
-		return personDAO.findByIdTypeDocument(idTypeDocument);
+		return personRepository.findByIdTypeDocument(idTypeDocument);
 	}
 	
 	/**
@@ -83,10 +86,13 @@ public class PersonService implements PastleyInterface<Long, Person>{
 			String messageType = (type == 1) ? "registrar"
 					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
 			if (message == null) {
-				Person method = (entity.getId() != null && entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
-				method = personDAO.save(method);
-				if (method != null) {
-					return method;
+				Person person = (entity.getId() != null && entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
+				if(type == 2 || type == 1) {
+					person.setTypeDocument(typeDocumentService.findById(entity.getId()));	
+				}
+				person = personRepository.save(person);
+				if (person != null) {
+					return person;
 				} else {
 					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la persona.");
 				}
@@ -115,18 +121,20 @@ public class PersonService implements PastleyInterface<Long, Person>{
 
 	private Person saveToUpdate(Person entity, byte type) {
 		Person person = findById(entity.getId());
-		if(person == null)
-			throw new PastleyException(HttpStatus.NOT_FOUND,
-					"No se ha encontrado persona con e l id " + entity.getId() + ".");
-		
-		boolean isDocument = (person.getDocument() != person.getDocument()) ? validateDocument(entity.getDocument()): true;
-		if(!isDocument)
-			throw new PastleyException(HttpStatus.NOT_FOUND,
-					"Ya existe una persona con el documento " + entity.getDocument() + ".");
-		boolean isEmail = (!person.getEmail().equalsIgnoreCase(person.getEmail())) ? validateEmail(entity.getEmail()): true;
-		if(!isEmail)
-			throw new PastleyException(HttpStatus.NOT_FOUND,
-					"Ya existe una persona con el email " + entity.getEmail() + ".");
+		if(type != 3) {
+			if(person == null)
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"No se ha encontrado persona con el id " + entity.getId() + ".");
+			
+			boolean isDocument = (person.getDocument() != person.getDocument()) ? validateDocument(entity.getDocument()): true;
+			if(!isDocument)
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"Ya existe una persona con el documento " + entity.getDocument() + ".");
+			boolean isEmail = (!person.getEmail().equalsIgnoreCase(person.getEmail())) ? validateEmail(entity.getEmail()): true;
+			if(!isEmail)
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"Ya existe una persona con el email " + entity.getEmail() + ".");
+		}
 		PastleyDate date = new PastleyDate();
 		entity.uppercase();
 		entity.setDateRegister(person.getDateRegister());
@@ -163,7 +171,7 @@ public class PersonService implements PastleyInterface<Long, Person>{
 		}
 		if(isUser) 
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la persona el id " + id + ", esta asociado a un usuario.");
-		personDAO.existsById(id);
+		personRepository.existsById(id);
 		try {
 			if (findById(id) == null) {
 				return true;
