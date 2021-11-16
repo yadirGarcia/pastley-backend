@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.pastley.util.PastleyValidate;
@@ -34,7 +36,7 @@ public class Person implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "document", nullable = false)
+	@Column(name = "document", unique = true, nullable = false)
 	private Long document;
 
 	@Column(name = "name", nullable = false, length = 50)
@@ -46,7 +48,7 @@ public class Person implements Serializable {
 	@Column(name = "phone", nullable = false)
 	private String phone;
 
-	@Column(name = "email", nullable = false, length = 50)
+	@Column(name = "email", unique = true, nullable = false, length = 50)
 	private String email;
 
 	@Column(name = "address", length = 50, nullable = true)
@@ -60,9 +62,10 @@ public class Person implements Serializable {
 
 	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
-
-	@Column(name = "id_type_document", nullable = false)
-	private Long idTypeDocument;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_type_document", nullable = false)
+	private TypeDocument typeDocument;
 
 
 	/**
@@ -96,7 +99,7 @@ public class Person implements Serializable {
 		if (document <= 0) {
 			chain = "El documento de la persona no es valido.";
 		}
-		if (idTypeDocument <= 0) {
+		if (typeDocument != null && typeDocument.getId() <= 0) {
 			chain = "El tipo de documento de la persona no es valido.";
 		}
 		return chain;

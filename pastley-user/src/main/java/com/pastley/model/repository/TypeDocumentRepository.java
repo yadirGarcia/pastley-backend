@@ -12,7 +12,9 @@ import com.pastley.model.entity.TypeDocument;
  * @contributors soleimygomez, serbuitrago, jhonatanbeltran.
  * @version 1.0.0.
  */
+
 @Repository
-public interface TypeDocumentRespository extends JpaRepository<TypeDocument,Long> {
+public interface TypeDocumentRepository extends JpaRepository<TypeDocument,Long> {
+	
 	public TypeDocument findByName(String name);
 }
