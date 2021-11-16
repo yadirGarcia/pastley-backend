@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import com.pastley.util.PastleyValidate;
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -67,5 +67,11 @@ public class Role implements Serializable {
 			chain = "El nombre del rol no es valido.";
 		}
 		return chain;
+	}
+	/**
+	 * Convert variables to uppercase.
+	 */
+	public void uppercase() {
+		this.name = PastleyValidate.uppercase(this.name);
 	}
 }

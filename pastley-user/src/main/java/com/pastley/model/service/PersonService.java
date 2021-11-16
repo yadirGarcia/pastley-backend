@@ -1,14 +1,18 @@
 package com.pastley.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pastley.model.entity.Person;
-import com.pastley.model.repository.PersonRespository;
+import com.pastley.model.repository.PersonRepository;
+import com.pastley.util.PastleyDate;
 import com.pastley.util.PastleyInterface;
+import com.pastley.util.PastleyValidate;
+import com.pastley.util.exception.PastleyException;
 /**
  * @project Pastley-User.
  * @author Leyner Jose Ortega Arias.
@@ -18,79 +22,156 @@ import com.pastley.util.PastleyInterface;
  */
 @Service
 public class PersonService implements PastleyInterface<Long, Person>{
+	
 	@Autowired
-	private PersonRespository personDAO;
+	private PersonRepository personDAO;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Override
 	public Person findById(Long id) {
-		try {
-			return personDAO.findById(id).orElse(null);
-		} catch (Exception e) {
-			return null;
-		}
+		if (id <= 0)
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El id de la persona no es valido.");
+		Optional<Person> person = personDAO.findById(id);
+		if (!person.isPresent())
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ninguna persona con el id " + id + ".");
+		return person.orElse(null);
+	}
+	
+	public Person findByEmail(String email) {
+		if(!PastleyValidate.isChain(email))
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El email de la persona no es valido.");
+		Person person = personDAO.findByEmail(email);
+		if (person== null)
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ninguna persona con el email " + email + ".");
+		return person;
+	}
+	
+	public Person findByDocument(Long document) {
+		if(document == null || document <= 0)
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El documento de la persona no es valido.");
+		Person person = personDAO.findByDocument(document);
+		if (person== null)
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ninguna persona con el documento " + document + ".");
+		return person;
 	}
 
 	@Override
 	public List<Person> findAll() {
-		try {
-			return personDAO.findAll();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
+		return personDAO.findAll();
 	}
 	
-	public Person findByPhone(String phone) {
-		try {
-			return personDAO.findByPhone(phone);
-		} catch (Exception e) {
-			return null;
-		}
+	public List<Person> findByIdTypeDocumentAll(Long idTypeDocument) {
+		if(idTypeDocument <= 0)
+			throw new PastleyException(HttpStatus.NOT_FOUND, "El tipo de documento de la persona no es valido.");
+		return personDAO.findByIdTypeDocument(idTypeDocument);
 	}
 	
-	public Person findByEmail(String email) {
-		try {
-			return personDAO.findByPhone(email);
-		} catch (Exception e) {
-			return null;
-		}
+	/**
+	 * 
+	 */
+	@Override
+	public Person save(Person entity) {
+		return null;
 	}
 	
-	public Person findByDocument(Long document) {
-		try {
-			return personDAO.findByDocument(document);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	public List<Person> findByIdTypeDocument(Long idTypeDocument){
-		try {
-			return personDAO.findByIdTypeDocument(idTypeDocument);
-		} catch (Exception e) {
-			return new ArrayList<>();
+
+	public Person save(Person entity, byte type) {
+		if (entity != null) {
+			String message = entity.validate(false);
+			String messageType = (type == 1) ? "registrar"
+					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
+			if (message == null) {
+				Person method = (entity.getId() != null && entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
+				method = personDAO.save(method);
+				if (method != null) {
+					return method;
+				} else {
+					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la persona.");
+				}
+			} else {
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la persona, " + message + ".");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la persona.");
 		}
 	}
 
-	@Override
-	public Person save(Person entity) {
+	private Person saveToSave(Person entity, byte type) {
+		if(!validateDocument(entity.getDocument()))
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"Ya existe una persona con el documento " + entity.getDocument() + ".");
+		if(!validateEmail(entity.getEmail()))
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"Ya existe una persona con el email " + entity.getEmail() + ".");
+		PastleyDate date = new PastleyDate();
+		entity.uppercase();
+		entity.setId(0L);
+		entity.setDateRegister(date.currentToDateTime(null));
+		entity.setDateUpdate(null);
+		return entity;
+	}
+
+	private Person saveToUpdate(Person entity, byte type) {
+		Person person = findById(entity.getId());
+		if(person == null)
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"No se ha encontrado persona con e l id " + entity.getId() + ".");
+		
+		boolean isDocument = (person.getDocument() != person.getDocument()) ? validateDocument(entity.getDocument()): true;
+		if(!isDocument)
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"Ya existe una persona con el documento " + entity.getDocument() + ".");
+		boolean isEmail = (!person.getEmail().equalsIgnoreCase(person.getEmail())) ? validateEmail(entity.getEmail()): true;
+		if(!isEmail)
+			throw new PastleyException(HttpStatus.NOT_FOUND,
+					"Ya existe una persona con el email " + entity.getEmail() + ".");
+		PastleyDate date = new PastleyDate();
+		entity.uppercase();
+		entity.setDateRegister(person.getDateRegister());
+		entity.setDateUpdate(date.currentToDateTime(null));	
+		return entity;
+	}
+
+	private boolean validateDocument(Long document) {
+		Person person = null;
 		try {
-			return personDAO.save(entity);
-		} catch (Exception e) {
-			return null;
+			person =  findByDocument(document);
+		} catch (PastleyException e) {
 		}
+		return (person == null) ? true : false;
 	}
 	
-	public Person save(Person entity, byte type) {
-		return null;
+	private boolean validateEmail(String email) {
+		Person person = null;
+		try {
+			person =  findByEmail(email);
+		} catch (PastleyException e) {
+		}
+		return (person == null) ? true : false;
 	}
 	
 	@Override
 	public boolean delete(Long id) {
+		Person person = findById(id);
+		boolean isUser = false;
 		try {
-			personDAO.deleteById(id);
-			return findById(id)==null;
-		} catch (Exception e) {
-			return false;
+			isUser = userService.findByDocumentPerson(person.getDocument()) != null;
+		}catch (Exception e) {
+			isUser = false;
 		}
+		if(isUser) 
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la persona el id " + id + ", esta asociado a un usuario.");
+		personDAO.existsById(id);
+		try {
+			if (findById(id) == null) {
+				return true;
+			}
+		} catch (PastleyException e) {
+			return true;
+		}
+		throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado la persona el id " + id + ".");
 	}
+
 }
