@@ -5,6 +5,8 @@ import java.math.BigInteger;
 
 import javax.persistence.*;
 
+import com.pastley.util.PastleyValidate;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -66,5 +68,44 @@ public class Product implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_category")
 	private Category category;
+	
+	public String validate(boolean isId) {
+		String chain = null;
+		if (isId) {
+			if (id <= 0) {
+				chain = "El id del producto debe ser mayor a cero.";
+			}
+		}
+		if (!PastleyValidate.isChain(name))
+			chain = "El nombre del producto no es valido.";
+		if (!PastleyValidate.isChain(vat))
+			chain = "El iva del producto no es valido.";
+		if(!PastleyValidate.isNumber(vat))
+			chain = "El iva solo debe tener caracteres numericos.";
+		if(PastleyValidate.isChain(vat) && vat.length() > 3)
+			chain = "El iva es un porcentaje de 0 a 100 no puede ser superior.";
+		if(!PastleyValidate.bigIntegerHigherZero(price))
+			chain = "El precio del producto no es valido.";
+		if (!PastleyValidate.isChain(discount))
+			chain = "El descuento del producto no es valido.";
+		if(!PastleyValidate.isNumber(discount))
+			chain = "El descuento solo debe tener caracteres numericos.";
+		if(PastleyValidate.isChain(discount) && discount.length() > 3)
+			chain = "El descuento es un porcentaje de 0 a 100 no puede ser superior.";
+		if (stock<0)
+			chain = "El stock debe ser mayor o igual a cero.";
+		if (stockMin<=0)
+			chain = "El stock minimo debe ser mayor a cero.";
+		if(category == null || category.getId() <= 0)
+			chain = "El categoria no es valida.";
+		return chain;
+	}
+	
+	/**
+	 * Convert variables to uppercase.
+	 */
+	public void uppercase() {
+		this.name = PastleyValidate.uppercase(this.name);
+	}
 
 }
