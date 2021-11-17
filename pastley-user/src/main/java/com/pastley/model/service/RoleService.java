@@ -26,7 +26,7 @@ import com.pastley.util.exception.PastleyException;
 public class RoleService implements PastleyInterface<Long, Role> {
 
 	@Autowired
-	private RoleRepository roleDAO;
+	private RoleRepository roleRepository;
 	
 	@Autowired
 	private UserService userService;
@@ -35,7 +35,7 @@ public class RoleService implements PastleyInterface<Long, Role> {
 	public Role findById(Long id) {
 		if (id <= 0)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "El id del rol no es valido.");
-		Optional<Role> role = roleDAO.findById(id);
+		Optional<Role> role = roleRepository.findById(id);
 		if (!role.isPresent())
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ningun rol con el id " + id + ".");
 		return role.orElse(null);
@@ -44,7 +44,7 @@ public class RoleService implements PastleyInterface<Long, Role> {
 	public Role findByName(String name) {
 		if (!PastleyValidate.isChain(name))
 			throw new PastleyException(HttpStatus.NOT_FOUND, "EL nombre del rol  no es valido.");
-		Role role = roleDAO.findByName(name);
+		Role role = roleRepository.findByName(name);
 		if (role == null)
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No existe ningun rol con el nombre " + name + ".");
 		return role;
@@ -52,7 +52,7 @@ public class RoleService implements PastleyInterface<Long, Role> {
 
 	@Override
 	public List<Role> findAll() {
-		return roleDAO.findAll();
+		return roleRepository.findAll();
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class RoleService implements PastleyInterface<Long, Role> {
 					: ((type == 2) ? "actualizar" : ((type == 3) ? "actualizar estado" : "n/a"));
 			if (message == null) {
 				Role role = (entity.getId() != null && entity.getId() > 0) ? saveToUpdate(entity, type) : saveToSave(entity, type);
-				role = roleDAO.save(role);
+				role = roleRepository.save(role);
 				if (role != null) {
 					return role;
 				} else {
@@ -137,7 +137,7 @@ public class RoleService implements PastleyInterface<Long, Role> {
 		if(!list.isEmpty())
 			throw new PastleyException(HttpStatus.NOT_FOUND,
 					"No se ha eliminado el rol con el id  "+id +  ", tiene asociado "+list.size()+" usuarios.");
-		roleDAO.deleteById(id);
+		roleRepository.deleteById(id);
 		try {
 			if (findById(id) == null) {
 				return true;
@@ -147,5 +147,4 @@ public class RoleService implements PastleyInterface<Long, Role> {
 		}
 		throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha eliminado el rol con el id " + id + ".");
 	}
-
 }
