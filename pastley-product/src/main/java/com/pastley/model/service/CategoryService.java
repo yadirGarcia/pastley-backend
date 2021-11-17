@@ -1,5 +1,6 @@
 package com.pastley.model.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,22 @@ public class CategoryService implements PastleyInterface<Long, Category>{
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
 	}
+	
+	public List<Category> findByRangeDateRegister(String start, String end) {
+		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
+			PastleyDate date = new PastleyDate();
+			try {
+				String array_date[] = { date.formatToDateTime(date.convertToDate(start.replaceAll("-", "/")), null),
+						date.formatToDateTime(date.convertToDate(end.replaceAll("-", "/")), null) };
+				return categoryRepository.findByRangeDateRegister(array_date[0], array_date[1]);
+			} catch (ParseException e) {
+				throw new PastleyException(HttpStatus.NOT_FOUND,
+						"El formato permitido para las fechas es: 'Año-Mes-Dia'.");
+			}
+		} else {
+			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la fecha inicio o la fecha fin.");
+		}
+	}
 
 	/**
 	 * 
@@ -67,10 +84,10 @@ public class CategoryService implements PastleyInterface<Long, Category>{
 				if (category != null) {
 					return category;
 				} else {
-					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el rol.");
+					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la categoria.");
 				}
 			} else {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el rol, " + message + ".");
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " la categoria, " + message + ".");
 			}
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido la categoria.");
@@ -105,11 +122,11 @@ public class CategoryService implements PastleyInterface<Long, Category>{
 				entity.setStatu((type == 3) ? !entity.isStatu() : entity.isStatu());
 			} else {
 				throw new PastleyException(HttpStatus.NOT_FOUND,
-						"Ya existe un rol con el nombre " + entity.getName() + ".");
+						"Ya existe una categoria con el nombre " + entity.getName() + ".");
 			}
 		} else {
 			throw new PastleyException(HttpStatus.NOT_FOUND,
-					"No se ha encontrado rol con el id " + entity.getId() + ".");
+					"No se ha encontrado la categoria con el id " + entity.getId() + ".");
 		}
 		return entity;
 	}

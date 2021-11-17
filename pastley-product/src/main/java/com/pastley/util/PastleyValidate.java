@@ -14,11 +14,8 @@ import java.util.regex.Matcher;
  */
 public class PastleyValidate implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 	
-	///////////////////////////////////////////////////////
-	// Method - Chain
-	///////////////////////////////////////////////////////
 	/**
 	 * Method that allows to validate the strings.
 	 * 
@@ -27,17 +24,6 @@ public class PastleyValidate implements Serializable{
 	 */
 	public static boolean isChain(String chain) {
 		return chain != null && chain.trim().length() > 0;
-	}
-	
-	public static boolean isEmail(String chain) {
-		if(isChain(chain)) {
-			Pattern pattern = Pattern
-					.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-							+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-			Matcher mather = pattern.matcher(chain);
-			return mather.find();
-		}
-		return false;
 	}
 	
 	/**
@@ -52,9 +38,32 @@ public class PastleyValidate implements Serializable{
 		return chain;
 	}
 	
-	///////////////////////////////////////////////////////
-	// Method - BigInteger
-	///////////////////////////////////////////////////////
+	/**
+	 * Method that validates if a string contains pure numbers.
+	 * 
+	 * @param str, Represents the string.
+	 * @return Boolean true if it meets false if not.
+	 */
+	public static boolean isNumber(String str) {
+		if (isChain(str)) {
+			char[] array = PastleyVariable.PASTLEY_ARRAY_NUMBER;
+			char[] aux = str.toCharArray();
+			for (char i : aux) {
+				boolean salir = true;
+				for (char j : array) {
+					if (i == j) {
+						salir = false;
+					}
+				}
+				if (salir) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Method that allows verifying if a biginteger is greater than zero.
 	 * 

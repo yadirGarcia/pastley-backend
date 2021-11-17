@@ -15,11 +15,6 @@ public class CategoryRest {
     @Autowired
     private CategoryService categoryService;
     
-    /**
-	 * 
-	 * @param id
-	 * @return
-	 */
 	@GetMapping(value = { "/find/id/{id}", "/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findById(id));
@@ -30,13 +25,14 @@ public class CategoryRest {
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findByName(name));
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	@GetMapping(value = { "", "/all" })
 	public ResponseEntity<?> findAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
+	}
+	
+	@GetMapping(value = "/range/all/find/date/register/{start}/{end}")
+	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("start") String start, @PathVariable("end") String end) {
+		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findByRangeDateRegister(start, end));
 	}
 
 	@PostMapping()
@@ -54,7 +50,6 @@ public class CategoryRest {
 		Category category = categoryService.findById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.save(category, (byte) 3));
 	}
-	
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
