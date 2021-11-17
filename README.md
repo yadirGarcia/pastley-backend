@@ -30,8 +30,6 @@ Sistema ERP que permite gestionar una pastelería automatización en las ventas 
 
 - [@SerBuitrago](https://github.com/SerBuitrago)
 - [@leynerjoseoa](https://github.com/leynerjoseoa)
-- [@soleimygomez](https://github.com/soleimygomez)
-- [@jhonatanbeltran](https://github.com/jhonatanbeltran)
 
   
 ## Estado
