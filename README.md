@@ -4,12 +4,12 @@
     </a> 
 </p> 
     
-# Pastley
+# PASTLEY
 
 Sistema ERP que permite gestionar una pastelería automatización en las ventas de los productos y la centralización de los mismos en un catálogo virtual que esté disponible las 24 horas para todo el público y que desde ahí mismo se puedan realizar pedidos con esto se logra reducir los tiempos de ventas y tener una mayor confiabilidad.
 
 
-## Características
+## CARACTERISTICAS
 
 ### Autenticacion
 
@@ -57,28 +57,27 @@ nuestra (queja, reclamo o petición), esto se registrará en la base de datos de
 petición y se re enviará al correo electrónico del usuario el mensaje que realizó.
 
 
-## Documentation
-
+## DOCUMENTACION
 [Documentation](https://drive.google.com/file/d/1z73tLfO8bVCXkmsOkv2Q_f2uBGTyNW_P/view?usp=sharing)
 
 
-## Screenshots
+## SCREENSHOTS
 
 ![App Screenshot](https://i.ibb.co/g4XXPZN/Captura-de-pantalla-de-2021-11-17-19-05-57.png)
 ![App Screenshot](https://i.ibb.co/W6rF6kX/Captura-de-pantalla-de-2021-11-17-19-06-27.png)
 
 
-## Arquitectura de Implementacion
+## ARQUITECTURA DE IMPLEMENTACION
 
 ![App Arquitectura](https://i.ibb.co/Tgj2cBf/Copia-de-Arquitectura-Arquitetura-de-implementacion-drawio.png)
 
 
-## Descripcion Microservicios
+## DESCRIPCION MICROSERVICIOS
 
 ![App Arquitectura](https://i.ibb.co/SN0DXfH/Copia-de-Arquitectura-Descripci-n-detallada-microservicio-drawio.png)
 
 
-## Color Reference
+## PALETA DE COLORES
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
@@ -88,13 +87,13 @@ petición y se re enviará al correo electrónico del usuario el mensaje que rea
 | Example Color | ![#000000](https://via.placeholder.com/10/000000?text=+) #000000 |
 
 
-## Lenguajes y Herramientas Programación
+## LENGUAJES Y HERRAMIENTAS PROGRAMACION
 
 
 ![Logo](https://i.ibb.co/Yfqc7JK/Project-Lombok-1.png)
 
 
-## Installation
+## INSTALACION
 
 Install my-project with npm
 
@@ -104,13 +103,13 @@ Install my-project with npm
 ```
   
 
-## Actores
+## ACTORES
 
 - [@SerBuitrago](https://github.com/SerBuitrago)
 - [@leynerjoseoa](https://github.com/leynerjoseoa)
 
 
-## Contribuyendo
+## CONTRIBUYENTES
 
 - [@yadirGarcia](https://github.com/yadirGarcia)
 - [@soleimygomez](https://github.com/soleimygomez)
@@ -119,13 +118,13 @@ Install my-project with npm
 ¡Las contribuciones son siempre bienvenidas!
 
 
-## Agradecimientos
+## AGRADECIMIENTOS
 
  - [Al docente de microservicios por guiarnos y permitirnos adquirir los conocimientos aplicados en el presente proyecto. ](https://web.facebook.com/kajarka35/)
 
 
 
-## Estado
+## ESTADO
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
