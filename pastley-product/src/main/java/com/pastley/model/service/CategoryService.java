@@ -49,6 +49,10 @@ public class CategoryService implements PastleyInterface<Long, Category>{
 		return categoryRepository.findAll();
 	}
 	
+	public List<Category> findByStatuAll(boolean statu) {
+		return categoryRepository.findByStatu(statu);
+	}
+	
 	public List<Category> findByRangeDateRegister(String start, String end) {
 		if (PastleyValidate.isChain(start) && PastleyValidate.isChain(end)) {
 			PastleyDate date = new PastleyDate();

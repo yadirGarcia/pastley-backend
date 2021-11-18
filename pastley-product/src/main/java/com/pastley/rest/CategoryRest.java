@@ -30,6 +30,11 @@ public class CategoryRest {
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
 	}
 	
+	@GetMapping(value = {"/all/find/statu/{statu}" })
+	public ResponseEntity<?> findByStatuAll(@PathVariable("statu") boolean statu) {
+		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findByStatuAll(statu));
+	}
+	
 	@GetMapping(value = "/range/all/find/date/register/{start}/{end}")
 	public ResponseEntity<?> findByRangeDateRegister(@PathVariable("start") String start, @PathVariable("end") String end) {
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findByRangeDateRegister(start, end));

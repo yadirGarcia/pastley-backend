@@ -99,7 +99,7 @@ public class ProductService implements PastleyInterface<Long, Product>{
 					throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el producto.");
 				}
 			}else {
-				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el producto, " + message + ".");
+				throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha " + messageType + " el producto, " + message);
 			}
 		}else {
 			throw new PastleyException(HttpStatus.NOT_FOUND, "No se ha recibido el producto.");
