@@ -97,7 +97,7 @@ public class Product implements Serializable {
 		if (stockMin<=0)
 			chain = "El stock minimo debe ser mayor a cero.";
 		if(category == null || category.getId() <= 0)
-			chain = "El categoria no es valida.";
+			chain = "La categoria no es valida.";
 		return chain;
 	}
 	

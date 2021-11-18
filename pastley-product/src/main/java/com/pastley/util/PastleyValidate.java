@@ -2,8 +2,6 @@ package com.pastley.util;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * @project Pastley-Sale.
