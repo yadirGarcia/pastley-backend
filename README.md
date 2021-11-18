@@ -8,24 +8,6 @@
 
 Sistema ERP que permite gestionar una pastelería automatización en las ventas de los productos y la centralización de los mismos en un catálogo virtual que esté disponible las 24 horas para todo el público y que desde ahí mismo se puedan realizar pedidos con esto se logra reducir los tiempos de ventas y tener una mayor confiabilidad.
 
-## Documentation
-
-[Documentation](https://drive.google.com/file/d/1z73tLfO8bVCXkmsOkv2Q_f2uBGTyNW_P/view?usp=sharing)
-
-## Screenshots
-
-![App Screenshot](https://i.ibb.co/g4XXPZN/Captura-de-pantalla-de-2021-11-17-19-05-57.png)
-![App Screenshot](https://i.ibb.co/W6rF6kX/Captura-de-pantalla-de-2021-11-17-19-06-27.png)
-
-
-## Arquitectura de Implementacion
-
-![App Arquitectura](https://i.ibb.co/Tgj2cBf/Copia-de-Arquitectura-Arquitetura-de-implementacion-drawio.png)
-
-## Descripcion Microservicios
-
-![App Arquitectura](https://i.ibb.co/SN0DXfH/Copia-de-Arquitectura-Descripci-n-detallada-microservicio-drawio.png)
-
 
 ## Características
 
@@ -75,6 +57,26 @@ nuestra (queja, reclamo o petición), esto se registrará en la base de datos de
 petición y se re enviará al correo electrónico del usuario el mensaje que realizó.
 
 
+## Documentation
+
+[Documentation](https://drive.google.com/file/d/1z73tLfO8bVCXkmsOkv2Q_f2uBGTyNW_P/view?usp=sharing)
+
+
+## Screenshots
+
+![App Screenshot](https://i.ibb.co/g4XXPZN/Captura-de-pantalla-de-2021-11-17-19-05-57.png)
+![App Screenshot](https://i.ibb.co/W6rF6kX/Captura-de-pantalla-de-2021-11-17-19-06-27.png)
+
+
+## Arquitectura de Implementacion
+
+![App Arquitectura](https://i.ibb.co/Tgj2cBf/Copia-de-Arquitectura-Arquitetura-de-implementacion-drawio.png)
+
+
+## Descripcion Microservicios
+
+![App Arquitectura](https://i.ibb.co/SN0DXfH/Copia-de-Arquitectura-Descripci-n-detallada-microservicio-drawio.png)
+
 
 ## Color Reference
 
@@ -90,6 +92,7 @@ petición y se re enviará al correo electrónico del usuario el mensaje que rea
 
 
 ![Logo](https://i.ibb.co/Yfqc7JK/Project-Lombok-1.png)
+
 
 ## Installation
 
@@ -118,8 +121,7 @@ Install my-project with npm
 
 ## Agradecimientos
 
- - [TODO SE LO DEBEMOS A YADIR QUE HIZO TODA LA APLICACION](https://web.facebook.com/kajarka35/)
-
+ - [Al docente de microservicios por guiarnos y permitirnos adquirir los conocimientos aplicados en el presente proyecto. ](https://web.facebook.com/kajarka35/)
 
 
 
