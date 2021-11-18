@@ -9,6 +9,7 @@
 Sistema ERP que permite gestionar una pastelería automatización en las ventas de los productos y la centralización de los mismos en un catálogo virtual que esté disponible las 24 horas para todo el público y que desde ahí mismo se puedan realizar pedidos con esto se logra reducir los tiempos de ventas y tener una mayor confiabilidad.
 
 
+
 ## CARACTERISTICAS
 
 ### Autenticacion
@@ -57,8 +58,10 @@ nuestra (queja, reclamo o petición), esto se registrará en la base de datos de
 petición y se re enviará al correo electrónico del usuario el mensaje que realizó.
 
 
+
 ## DOCUMENTACION
 [Documentation](https://drive.google.com/file/d/1z73tLfO8bVCXkmsOkv2Q_f2uBGTyNW_P/view?usp=sharing)
+
 
 
 ## SCREENSHOTS
@@ -67,14 +70,17 @@ petición y se re enviará al correo electrónico del usuario el mensaje que rea
 ![App Screenshot](https://i.ibb.co/W6rF6kX/Captura-de-pantalla-de-2021-11-17-19-06-27.png)
 
 
+
 ## ARQUITECTURA DE IMPLEMENTACION
 
 ![App Arquitectura](https://i.ibb.co/Tgj2cBf/Copia-de-Arquitectura-Arquitetura-de-implementacion-drawio.png)
 
 
+
 ## DESCRIPCION MICROSERVICIOS
 
 ![App Arquitectura](https://i.ibb.co/SN0DXfH/Copia-de-Arquitectura-Descripci-n-detallada-microservicio-drawio.png)
+
 
 
 ## PALETA DE COLORES
@@ -87,10 +93,12 @@ petición y se re enviará al correo electrónico del usuario el mensaje que rea
 | Example Color | ![#000000](https://via.placeholder.com/10/000000?text=+) #000000 |
 
 
+
 ## LENGUAJES Y HERRAMIENTAS PROGRAMACION
 
 
 ![Logo](https://i.ibb.co/Yfqc7JK/Project-Lombok-1.png)
+
 
 
 ## INSTALACION
@@ -102,11 +110,13 @@ Install my-project with npm
   cd my-project
 ```
   
-
+  
+  
 ## ACTORES
 
 - [@SerBuitrago](https://github.com/SerBuitrago)
 - [@leynerjoseoa](https://github.com/leynerjoseoa)
+
 
 
 ## CONTRIBUYENTES
@@ -116,6 +126,7 @@ Install my-project with npm
 - [@jhonatanbeltran](https://github.com/jhonatanbeltran)
 
 ¡Las contribuciones son siempre bienvenidas!
+
 
 
 ## AGRADECIMIENTOS
