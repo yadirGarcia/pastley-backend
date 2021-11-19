@@ -83,7 +83,11 @@ Sistema ERP que permite gestionar una pastelería automatización en las ventas 
 
 
 ## Lenguajes Y herramientas de programación
-![Logo](https://i.ibb.co/Yfqc7JK/Project-Lombok-1.png)
+
+### Frontend
+![Frontend](https://i.ibb.co/L66ZpHh/Front.png)
+### Backend
+![Backend](https://i.ibb.co/Yfqc7JK/Project-Lombok-1.png)
 
    
 ## Autores
@@ -108,4 +112,3 @@ Sistema ERP que permite gestionar una pastelería automatización en las ventas 
 ## Licencia
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-
